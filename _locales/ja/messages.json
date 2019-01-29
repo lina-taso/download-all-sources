@@ -1,0 +1,285 @@
+{
+    //
+    // Addon info
+    //
+    "extensionName" : {
+        "message" : "Download All Sources"
+    },
+    "extensionDescription" : {
+        "message" : "ページ中の全てのリンク、ソースをダウンロードします。"
+    },
+
+    "menus_download" : {
+        "message" : "&Download All Sources..."
+    },
+
+    //
+    // Manager UI
+    //
+    "tab_downloading" : {
+        "message" : "動作中"
+    },
+    "tab_waiting" : {
+        "message" : "DL待ち"
+    },
+    "tab_finished" : {
+        "message" : "完了"
+    },
+    "list_filename" : {
+        "message" : "ファイル名"
+    },
+    "list_filesize" : {
+        "message" : "ファイルサイズ"
+    },
+    "list_speed" : {
+        "message" : "速度"
+    },
+    "list_remain" : {
+        "message" : "残り時間"
+    },
+    "new_download_title" : {
+        "message" : "新しいダウンロード"
+    },
+    "new_download_single" : {
+        "message" : "単発"
+    },
+    "new_download_multiple" : {
+        "message" : "複数"
+    },
+    "new_download_single_url" : {
+        "message" : "ダウンロードURL"
+    },
+    "new_download_single_referer" : {
+        "message" : "リファラ [任意]"
+    },
+    "new_download_single_filename" : {
+        "message" : "ファイル名 [任意]"
+    },
+    "new_download_single_location" : {
+        "message" : "ディレクトリ [任意]"
+    },
+    "new_download_multiple_url" : {
+        "message" : "ダウンロードURL (1行ずつ)"
+    },
+    "new_download_multiple_referer" : {
+        "message" : "リファラ [任意]"
+    },
+    "new_download_multiple_location" : {
+        "message" : "ディレクトリ [任意]"
+    },
+    "download_detail_title" : {
+        "message" : "ダウンロード詳細"
+    },
+    "download_detail_status" : {
+        "message" : "ステータス"
+    },
+    "download_detail_info" : {
+        "message" : "情報"
+    },
+    "download_detail_status2" : {
+        "message" : "状態"
+    },
+    "download_detail_reason" : {
+        "message" : "終了理由"
+    },
+    "download_detail_start" : {
+        "message" : "開始日時"
+    },
+    "download_detail_end" : {
+        "message" : "完了日時"
+    },
+    "download_detail_final_url" : {
+        "message" : "最終URL"
+    },
+    "download_detail_progress" : {
+        "message" : "進捗"
+    },
+    "download_detail_current" : {
+        "message" : "ダウンロード済サイズ"
+    },
+    "download_detail_total" : {
+        "message" : "ファイルサイズ"
+    },
+    "download_detail_registered" : {
+        "message" : "登録日時"
+    },
+    "download_detail_url" : {
+        "message" : "ダウンロードURL"
+    },
+    "download_detail_referer" : {
+        "message" : "リファラ"
+    },
+    "download_detail_filename" : {
+        "message" : "ファイル名"
+    },
+    "download_detail_location" : {
+        "message" : "ディレクトリ"
+    },
+    "source_download_title" : {
+        "message" : "ソースダウンロード"
+    },
+    "source_download_filter_filetype" : {
+        "message" : "ファイル種別フィルタ"
+    },
+    "source_download_filter_keyword" : {
+        "message" : "キーワードフィルタ"
+    },
+    "source_download_option" : {
+        "message" : "オプション"
+    },
+    "source_download_filter_audio" : {
+        "message" : "音声"
+    },
+    "source_download_filter_video" : {
+        "message" : "動画"
+    },
+    "source_download_filter_image" : {
+        "message" : "画像"
+    },
+    "source_download_filter_archive" : {
+        "message" : "圧縮"
+    },
+    "source_download_filter_document" : {
+        "message" : "ドキュメント"
+    },
+    "source_download_filter_executable" : {
+        "message" : "実行ファイル"
+    },
+    "source_download_filter_expression" : {
+        "message" : "フィルタ文字列"
+    },
+    "source_download_filter_regex" : {
+        "message" : "文字列は正規表現"
+    },
+    "source_download_option_referer" : {
+        "message" : "リファラ [任意]"
+    },
+    "source_download_option_referer_default" : {
+        "message" : "デフォルトのリファラ"
+    },
+    "source_download_option_location" : {
+        "message" : "ディレクトリ [任意]"
+    },
+    "source_download_header_url" : {
+        "message" : "URL"
+    },
+    "source_download_header_filetype" : {
+        "message" : "種別"
+    },
+    "confirm_title" : {
+        "message" : "確認"
+    },
+    "confirm_stop_download" : {
+        "message" : "このダウンロードを停止しますか？"
+    },
+    "show_filename_tags" : {
+        "message" : "ファイル名タグを表示"
+    },
+    "show_location_tags" : {
+        "message" : "ディレクトリ名タグを表示"
+    },
+
+    //
+    // Options UI
+    //
+    "options_location" : {
+        "message" : "ダウンロードディレクトリ"
+    },
+    "options_default_location" : {
+        "message" : "デフォルトディレクトリ (サブディレクトリ)"
+    },
+    "options_location_description" : {
+        "message" : "基点となるダウンロードディレクトリは、Firefoxのデフォルトの保存先です。\nFirefoxの設定ページ (about:preferences) でデフォルトの保存先を変更できます。"
+    },
+    "options_general" : {
+        "message" : "一般的な設定"
+    },
+    "options_simultaneous" : {
+        "message" : "最大同時ダウンロード数"
+    },
+    "options_simultaneous_server" : {
+        "message" : "サーバ毎の最大同時ダウンロード数"
+    },
+    "options_new_parameters" : {
+        "message" : "新しいダウンロードの設定"
+    },
+    "options_new_remember_referer" : {
+        "message" : "前回のリファラURLを記憶する"
+    },
+    "options_new_remember_filename" : {
+        "message" : "前回のファイル名を記憶する (単発ダウンロードのみ)"
+    },
+    "options_new_remember_location" : {
+        "message" : "前回のディレクトリを記憶する"
+    },
+    "options_source_parameters" : {
+        "message" : "ソースダウンロードの設定"
+    },
+    "options_source_remember_filetype" : {
+        "message" : "前回のファイル種別フィルタを記憶する"
+    },
+    "options_source_remember_keyword" : {
+        "message" : "前回のキーワードフィルタを記憶する"
+    },
+    "options_source_remember_referer" : {
+        "message" : "前回のリファラオプションを記憶する"
+    },
+    "options_source_remember_location" : {
+        "message" : "前回のディレクトリを記憶する"
+    },
+
+    //
+    // Common
+    //
+    "filename_tags" : {
+        "message" : "ファイル名タグ"
+    },
+    "location_tags" : {
+        "message" : "ディレクトリ名タグ"
+    },
+    "tag_year" : {
+        "message" : "年 (YYYY)"
+    },
+    "tag_month" : {
+        "message" : "月 (Month)"
+    },
+    "tag_date" : {
+        "message" : "日 (DD)"
+    },
+    "tag_hour" : {
+        "message" : "時 (hh)"
+    },
+    "tag_minute" : {
+        "message" : "分 (mm)"
+    },
+    "tag_second" : {
+        "message" : "秒 (ss)"
+    },
+    "tag_domain" : {
+        "message" : "ダウンロードURLのドメイン名"
+    },
+    "tag_path" : {
+        "message" : "ダウンロードURLのルートパス (/path/to/file -> path/to)"
+    },
+    "tag_refdomain" : {
+        "message" : "デフォルトリファラのドメイン名"
+    },
+    "tag_refpath" : {
+        "message" : "デフォルトリファラのルートパス"
+    },
+    "tag_delimiter" : {
+        "message" : "ディレクトリ区切り\nWindowsを利用中なら'\\'も'/'も利用可能"
+    },
+    "button_close" : {
+        "message" : "閉じる"
+    },
+    "button_download" : {
+        "message" : "ダウンロード"
+    },
+    "button_stop" : {
+        "message" : "停止"
+    },
+    "button_cancel" : {
+        "message" : "キャンセル"
+    }
+}

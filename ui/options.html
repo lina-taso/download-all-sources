@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Download All Sources Options</title>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/options.js"></script>
+        <link rel="stylesheet" href="css/all.css"> <!-- fontawesome -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/options.css">
+    </head>
+
+    <body>
+        <div class="container-fluid">
+            <h2 data-string="options_location"></h2>
+            <div class="form-group">
+                <label for="download-location" data-string="options_default_location"></label>
+                <input id="download-location" class="form-control">
+                <small id="download-location-sample" class="form-text text-muted"></small>
+                <p class="form-text text-muted" data-string="options_location_description"></p>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title" data-string="location_tags"></h4>
+                    <dl class="row">
+                        <dt class="col-3">:Y:</dt>
+                        <dd class="col-9" data-string="tag_year"></dd>
+                        <dt class="col-3">:M:</dt>
+                        <dd class="col-9" data-string="tag_month"></dd>
+                        <dt class="col-3">:D:</dt>
+                        <dd class="col-9" data-string="tag_date"></dd>
+                        <dt class="col-3">:h:</dt>
+                        <dd class="col-9" data-string="tag_hour"></dd>
+                        <dt class="col-3">:m:</dt>
+                        <dd class="col-9" data-string="tag_minute"></dd>
+                        <dt class="col-3">:s:</dt>
+                        <dd class="col-9" data-string="tag_second"></dd>
+                        <dt class="col-3">:dom:</dt>
+                        <dd class="col-9" data-string="tag_domain"></dd>
+                        <dt class="col-3">:path:</dt>
+                        <dd class="col-9" data-string="tag_path"></dd>
+                        <dt class="col-3">/</dt>
+                        <dd class="col-9" data-string="tag_delimiter"></dd>
+                    </dl>
+                </div>
+            </div>
+
+            <h2 data-string="options_general"></h2>
+            <div class="form-group">
+                <label for="simultaneous-whole" data-string="options_simultaneous"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="simultaneous-whole" type="range" class="custom-range" min="1" max="24" value="16">
+                    </div>
+                    <div id="simultaneous-whole-label" class="col-1">16</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="simultaneous-per-server" data-string="options_simultaneous_server"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="simultaneous-per-server" type="range" class="custom-range" min="1" max="24" value="16">
+                    </div>
+                    <div id="simultaneous-per-server-label" class="col-1">16</div>
+                </div>
+            </div>
+
+            <h2 data-string="options_new_parameters"></h2>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-new-referer" type="checkbox" class="custom-control-input" data-value="new-referer-value">
+                    <label for="remember-new-referer" class="custom-control-label" data-string="options_new_remember_referer"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-new-filename" type="checkbox" class="custom-control-input" data-value="new-filename-value">
+                    <label for="remember-new-filename" class="custom-control-label" data-string="options_new_remember_filename"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-new-location" type="checkbox" class="custom-control-input" data-value="new-location-value">
+                    <label for="remember-new-location" class="custom-control-label" data-string="options_new_remember_location"></label>
+                </div>
+            </div>
+
+            <h2 data-string="options_source_parameters"></h2>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-source-filetype" type="checkbox" class="custom-control-input" data-value="source-filetype-value">
+                    <label for="remember-source-filetype" class="custom-control-label" data-string="options_source_remember_filetype"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-source-keyword" type="checkbox" class="custom-control-input" data-value="source-keyword-value source-regex-value">
+                    <label for="remember-source-keyword" class="custom-control-label" data-string="options_source_remember_keyword"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-source-referer" type="checkbox" class="custom-control-input" data-value="source-referer-value source-referer-default-value">
+                    <label for="remember-source-referer" class="custom-control-label" data-string="options_source_remember_referer"></label>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-checkbox">
+                    <input id="remember-source-location" type="checkbox" class="custom-control-input" data-value="source-location-value">
+                    <label for="remember-source-location" class="custom-control-label" data-string="options_source_remember_location"></label>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

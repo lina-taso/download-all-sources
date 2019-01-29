@@ -1,0 +1,655 @@
+/**
+ * @fileOverview Download All Sources Manager content script
+ * @name manager.js
+ * @author tukapiyo <webmaster@filewo.net>
+ * @license Mozilla Public License, version 2.0
+ */
+
+// background
+var bg;
+
+// constants
+const progressInterval = 2000,
+      pageTitle = 'Download All Source Manager',
+      allowProtocol = /^(https|http):/,
+      allowUrl = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
+      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom):))*$/,
+      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath):))*$/,
+      denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/;
+
+// valuables
+var source = [],
+    baseurl;
+
+
+$(async () => {
+    bg = await browser.runtime.getBackgroundPage();
+    localization();
+    updateList();
+    setInterval(updateList, progressInterval);
+    $('#download-button').on('click', download);
+    $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
+    $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
+    // item
+    $('.item-redo-button').on('click', function() { reDownload(this.dataset.dlid); });
+    $('.item-delete-button')
+        .on('click', function() {
+            bg.deleteQueue(this.dataset.dlid);
+            $('#item-' + this.dataset.dlid).remove();
+        });
+
+    // source list sort
+    $('#sort-url')
+        .on('click', function() {
+            if (this.dataset.order == 'asc') this.dataset.order = 'desc';
+            else if (this.dataset.order == 'desc') this.dataset.order = '';
+            else this.dataset.order = 'asc';
+            $('#sort-filetype').attr('data-order', '');
+            outputSourceList();
+        });
+    $('#sort-filetype')
+        .on('click', function() {
+            if (this.dataset.order == 'asc') this.dataset.order = 'desc';
+            else if (this.dataset.order == 'desc') this.dataset.order = '';
+            else this.dataset.order = 'asc';
+            $('#sort-url').attr('data-order', '');
+            outputSourceList();
+        });
+    // filter
+    $('#byFiletype input, #byKeyword input').on('input', function() {
+        outputSourceList();
+        checkActiveFilter();
+    });
+
+    // modal
+    $('#new-download')
+        .on('show.bs.modal', async function() {
+            // inital value
+            const config = await bg.config.getPref();
+            if (config['remember-new-referer']) $('#dl-single-referer, #dl-multiple-referer').val(config['new-referer-value']);
+            if (config['remember-new-filename']) $('#dl-single-filename').val(config['new-filename-value']);
+            if (config['remember-new-location']) $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']);
+            // initial location sample
+            $('#dl-single-location, #dl-multiple-location').each(function() { this.dispatchEvent(new Event('input')); });
+        })
+        .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
+    // modal
+    $('#download-detail')
+        .on('show.bs.modal', function(e) {
+            const button = e.relatedTarget;
+            this.dataset.dlid = button.dataset.dlid;
+            $('#detail-stop-button').attr('data-dlid', button.dataset.dlid);
+            updateDetail(true);
+            $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
+        })
+        .on('hidden.bs.modal', function() {
+            // to stop animation
+            $(this).attr('data-status', '');
+            clearInterval($(this).attr('data-timer'));
+        });
+    // in detail modal
+    $('#stop-button').on('click', stopDownload);
+    // modal
+    $('#source-download')
+        .on('show.bs.modal', async () => {
+            updateSourceList();
+            // only once
+            $('#source-all').on('input', function() {
+                if (this.checked)
+                    $('#source-list .source-item:not(#source-item-template) .source-url input').prop('checked', true);
+                else
+                    $('#source-list .source-item:not(#source-item-template) .source-url input').prop('checked', false);
+                // count downloads
+                $('#source-download-button1, #source-download-button2').attr(
+                    'data-count',
+                    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').length
+                );
+            });
+            $('#source-list').on('input', '.source-url input', function() {
+                // count downloads
+                $('#source-download-button1, #source-download-button2').attr(
+                    'data-count',
+                    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').length
+                );
+            });
+            $('#dl-source-referer-default').on('input', function() {
+                if (this.checked)
+                    $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid');
+                else
+                    $('#dl-source-referer').val('').prop('readonly', false);
+            });
+            // inital value
+            const config = await bg.config.getPref();
+            // inital souce-filetype
+            if (config['remember-source-filetype'])
+                config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
+            // inital souce-keyword
+            if (config['remember-source-keyword']) {
+                $('#filter-expression').val(config['source-keyword-value']);
+                $('#filter-regex').prop('checked', config['source-regex-value']);
+            }
+            // inital souce-referer
+            if (!config['remember-source-referer']
+                || config['remember-source-referer'] && config['source-referer-default-value'])
+                $('#dl-source-referer-default').click();
+            else if (config['remember-source-referer']) {
+                $('#dl-source-referer-default').prop('checked', false);
+                $('#dl-source-referer').val(config['source-referer-value']);
+            }
+            // inital souce-location
+            if (config['remember-source-location']) $('#dl-source-location').val(config['source-location-value']);
+            // initial location sample
+            $('#dl-source-location')[0].dispatchEvent(new Event('input'));
+            // tab color
+            checkActiveFilter();
+            outputSourceList(source);
+        });
+    // modal
+    $('#confirm-dialog')
+        .on('show.bs.modal', function(e) {
+            var button = e.relatedTarget;
+            this.dataset.dlid = button.dataset.dlid;
+        })
+        .on('shown.bs.modal', function() {
+            $(this).find('[data-focus=true]').focus();
+        });
+
+    // url validation
+    $('#dl-single-url, #dl-single-referer, #dl-multiple-referer, #dl-source-referer')
+        .on('input', function() {
+            if (!this.value) {
+                $(this).toggleClass('is-invalid', false);
+                return;
+            }
+            try {
+                new URL(this.value);
+                $(this).toggleClass('is-invalid', false);
+            }
+            catch (e) {
+                $(this).toggleClass('is-invalid', true);
+            }
+        });
+    $('#dl-multiple-url')
+        .on('input', function() {
+            if (!this.value) {
+                $(this).toggleClass('is-invalid', false);
+                return;
+            }
+            try {
+                ($(this).val().split('\n')).forEach((line) => {
+                    new URL(line);
+                    $(this).toggleClass('is-invalid', false);
+                });
+            }
+            catch (e) {
+                $(this).toggleClass('is-invalid', true);
+            }
+        });
+    // filename validation
+    $('#dl-single-filename')
+        .on('input', function() {
+            var valid = allowFilename.test(this.value);
+            $(this).toggleClass('is-invalid', !valid);
+            // sample
+            if (valid) $('#dl-single-filename-sample').text(bg.replaceTags(this.value));
+            else $('#dl-single-filename-sample').text('');
+        });
+    // location validation
+    $('#dl-single-location, #dl-multiple-location, #dl-source-location')
+        .on('input', async function() {
+            var defaultLocation = await bg.config.getPref('download-location'),
+                location = bg.normalizeLocation(defaultLocation + this.value),
+                valid = allowLocation.test(location) && !denyLocation.test(location);
+            $(this).toggleClass('is-invalid', !valid);
+            // sample
+            if (valid) $('#' + this.id + '-sample').text(bg.replaceTags(
+                location,
+                'http://www.example.com/path/name/',
+                this.id == 'dl-source-location' ? baseurl : ''
+            ));
+            else $('#' + this.id + '-sample').text('');
+        });
+
+    // hash anchor (auto tab showing)
+    switch (document.location.hash) {
+    case '#downloading':
+    case '#waiting':
+    case '#finished':
+        $('[href="'+document.location.hash+'"]').tab('show');
+        break;
+    case '#source':
+        $('#source-download').modal('show');
+        break;
+    default:
+    };
+    // location bar
+    history.replaceState('', '', document.location.pathname);
+});
+
+async function download()
+{
+    const target = $('#new-download-modal-tab > [aria-selected=true]').attr('aria-controls'),
+          config = await bg.config.getPref();
+
+    switch (target) {
+    case 'single':
+        // check invalid
+        if (!$('#dl-single-url').val() || $('#single').find('.is-invalid').length) return;
+        // download
+        bg.downloadFile(
+            $('#dl-single-url').val(),
+            [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
+            bg.replaceTags(
+                bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
+                $('#dl-single-url').val()
+            ),
+            bg.replaceTags(
+                $('#dl-single-filename').val(),
+                $('#dl-single-url').val()
+            ));
+
+        // config save
+        if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
+        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
+        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
+        break;
+    case 'multiple':
+        // check invalid
+        if ($('#multiple').find('.is-invalid').length) return;
+        // download
+        $('#dl-multiple-url').val().split('\n').filter(v => v).forEach((url) => {
+            bg.downloadFile(
+                url,
+                [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
+                bg.replaceTags(
+                    bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
+                    url
+                ),
+                ''
+            );
+        });
+
+        // config save
+        if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
+        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
+        break;
+    }
+
+    $('#new-download input, #new-download textarea').val('');
+    $('#new-download').modal('hide');
+
+}
+
+async function sourceDownload()
+{
+    const config = await bg.config.getPref();
+
+    // check invalid
+    if ($('#source').find('.is-invalid').length) return;
+    // download
+    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').each(function() {
+        bg.downloadFile(
+            this.value,
+            [{ name : 'X-DAS-Referer', value : $('#dl-source-referer').val() }],
+            bg.replaceTags(
+                bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
+                this.value,
+                baseurl
+            ),
+            ''
+        );
+    });
+
+    // config save
+    if (config['remember-source-filetype']) bg.config.setPref('source-filetype-value', (() => {
+        let result = [];
+        $('.filter-type-checkbox:checked').each(function() { result.push(this.id.replace(/^filter-/, '')); });
+        return result;
+    })());
+    if (config['remember-source-keyword']) {
+        bg.config.setPref('source-keyword-value', $('#filter-expression').val());
+        bg.config.setPref('source-regex-value', $('#filter-regex').prop('checked'));
+    }
+    if (config['remember-source-referer']) {
+        if ($('#dl-source-referer-default').prop('checked'))
+            bg.config.setPref('source-referer-default-value', true);
+        else {
+            bg.config.setPref('source-referer-default-value', false);
+            bg.config.setPref('source-referer-value', $('#dl-source-referer').val());
+        }
+    }
+    if (config['remember-source-location']) bg.config.setPref('source-location-value', $('#dl-source-location').val());
+
+    $('#source-download').modal('hide');
+}
+
+function reDownload(dlid)
+{
+    bg.downloadFile(
+        bg.downloadQueue[dlid].originalUrl,
+        bg.downloadQueue[dlid].requestHeaders,
+        bg.downloadQueue[dlid].location,
+        bg.downloadQueue[dlid].filename
+    );
+}
+
+function stopDownload()
+{
+    bg.stopDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function updateDetail(init)
+{
+    const dlid = $('#download-detail').attr('data-dlid'),
+          queue = bg.downloadQueue[dlid];
+
+    // init
+    if (init) {
+        $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
+        $('#detail-info-url').val(queue.originalUrl);
+        let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
+        $('#detail-info-referer').val(referer ? referer.value : '(none)');
+        $('#detail-info-filename').val(() => {
+            if (queue.filename) return queue.filename;
+            else if (queue.responseFilename) return queue.responseFilename + ' (auto)';
+            else return '';
+        });
+        $('#detail-info-location').val(queue.location || '(Default download directory)');
+    }
+
+    $('#download-detail').attr('data-status', queue.status);
+    $('#detail-status-status').val(queue.status);
+    $('#detail-status-reason').val(queue.reason);
+    $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
+    $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
+    $('#detail-status-url').val(queue.responseUrl);
+    if (queue.total) {
+        let progress = parseInt(queue.loaded / queue.total * 100);
+        $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
+        $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
+    }
+    else {
+        $('#detail-status-progress').css('width', '100%').text('unknown');
+        $('#detail-status-total').val('unknown');
+    }
+    $('#detail-status-current').val(queue.loaded.toLocaleString('en-US'));
+}
+
+function updateList()
+{
+    const $template = $('#download-item-template');
+
+    for(let i in bg.downloadQueue) {
+        let queue = bg.downloadQueue[i];
+        let $item;
+
+        // listed item
+        if ($('#item-' + i).length) {
+            $item = $('#item-' + i);
+
+            switch (queue.status) {
+            case 'downloading':
+            case 'downloaded':
+                if (!$('#downloading-list').has($item).length)
+                    $item.appendTo($('#downloading-list'));
+                break;
+            case 'waiting':
+                if ($('#waiting-list').has($item).length)
+                    continue;
+                else
+                    $item.appendTo($('#waiting-list'));
+                break;
+            case 'finished':
+                if ($('#finished-list').has($item).length)
+                    continue;
+                else
+                    $item.appendTo($('#finished-list'));
+                break;
+            case 'deleted':
+                $item.remove();
+                continue;
+            }
+        }
+        // new item
+        else {
+            $item = $template.clone(true).attr('id', 'item-' + i);
+
+            switch (queue.status) {
+            case 'downloading':
+            case 'downloaded':
+                $item.appendTo($('#downloading-list'));
+                break;
+            case 'waiting':
+                $item.appendTo($('#waiting-list'));
+                break;
+            case 'finished':
+                $item.appendTo($('#finished-list'));
+                break;
+            case 'deleted':
+                continue;
+            }
+        }
+
+        // update status
+        $item.find('.item-status > :eq(0)').attr('class', classStatus(queue.status, queue.reason));
+        $item.find('.item-filename').text(() => {
+            if (queue.filename) return queue.filename;
+            else if (queue.responseFilename) return queue.responseFilename;
+            else return queue.originalUrl;
+        });
+        if (queue.total)
+            $item.find('.item-progress').css('width', parseInt(queue.loaded/queue.total*100) + '%').text(calcByte(queue.loaded) + ' / ' + calcByte(queue.total));
+        else
+            $item.find('.item-progress').css('width', '100%').text(calcByte(queue.loaded) + ' / ' + 'unknown');
+        $item.find('.item-speed').text(queue.status != 'downloading' ? '-' : calcBps($item.attr('data-current'), queue.loaded));
+        $item.find('.item-remain').text(queue.status != 'downloading' ? '-' : calcRemain($item.attr('data-current'), queue.loaded, queue.total));
+        $item.attr('data-current', queue.loaded);
+
+        // id
+        $item.find('.item-status > [data-dlid]').attr('data-dlid', i);
+    }
+
+    // badge
+    $('#downloading-tab > .badge').text($('#downloading-list > li.download-item:not(#download-item-template)').length);
+    $('#waiting-tab > .badge').text($('#waiting-list > li.download-item:not(#download-item-template)').length);
+    $('#finished-tab > .badge').text($('#finished-list > li.download-item:not(#download-item-template)').length);
+
+    // title
+    document.title = $('#downloading-tab > .badge').text() == '0' ? pageTitle : 'DL:' + $('#downloading-tab > .badge').text() + ' ' + pageTitle;
+
+    function calcByte(byte)
+    {
+        if (byte < 1024) return byte.toFixed(1) + ' B';
+        byte /= 1024;
+        if (byte < 1024) return byte.toFixed(1) + ' KB';
+        byte /= 1024;
+        if (byte < 1024) return byte.toFixed(1) + ' MB';
+        byte /= 1024;
+        if (byte < 1024) return byte.toFixed(1) + ' GB';
+        byte /= 1024;
+        return byte.toFixed(1) + ' TB';
+    }
+    function calcBps(prev, current)
+    {
+        if (!prev) return '0 B/s';
+        prev = parseInt(prev);
+        var Bps = (current - prev) / progressInterval * 1000;
+        return calcByte(Bps) + '/s';
+    }
+    function calcRemain(prev, current, total)
+    {
+        if (!prev || !total) return 'unknown';
+        prev = parseInt(prev);
+        if (prev == current) return 'stalled';
+        return Math.floor((total - current) / (current - prev) * progressInterval / 1000) + ' s';
+    }
+    function classStatus(status, reason)
+    {
+        switch (status) {
+        case 'downloading': return 'fas fa-play fa-fw';
+        case 'downloaded':  return 'fas fa-arrow-down fa-fw';
+        case 'waiting':     return 'fas fa-stop fa-fw';
+        case 'finished':
+            if (reason == 'complete') return 'fas fa-check fa-fw';
+            else return 'fas fa-times fa-fw';
+        default:
+            return '';
+        }
+    }
+}
+
+function updateSourceList()
+{
+    const list = bg.lastSource.list;
+
+    baseurl = bg.lastSource.baseurl;
+
+    // data
+    for (let url of bg.lastSource.list) {
+        let urlobj = new URL(url);
+        if (!allowProtocol.test(urlobj.protocol)) continue;
+
+        let match = urlobj.pathname.match("\\.([\\w]+)$");
+        source.push({ url : url, filetype : match ? match[1] : '' });
+    }
+
+    bg.lastSource = {};
+}
+
+function outputSourceList()
+{
+    const $template = $('#source-item-template');
+
+    // all checkbox uncheck
+    $('#source-all').prop('checked', false);
+    $('#source-download-button1, #source-download-button2').attr('data-count', 0);
+
+    // all filter
+    var list = sortSourceList(filterTypeSourceList(filterSourceList()));
+
+    // clear list
+    $('#source-list > .source-item:not(#source-item-template)').remove();
+
+    // html
+    for (let i in list) {
+        let $item = $template.clone().removeAttr('id');
+
+        // checkbox id & attr
+        $item.attr('data-filetype', list[i].filetype).find('.source-url input')
+            .attr({ id : 'source' + i, value : list[i].url });
+        // label for & text
+        $item.find('.source-url label').attr('for', 'source' + i).text(list[i].url);
+        // extension
+        $item.find('.source-type').text(list[i].filetype);
+
+        $item.appendTo($('#source-list'));
+    }
+}
+
+function sortSourceList(filteredSource)
+{
+    var list = filteredSource || Array.from(source),
+        sortkey,
+        order;
+
+    if ($('#sort-url').attr('data-order') != '') {
+        sortkey = 'url';
+        order = $('#sort-url').attr('data-order');
+    }
+    else if ($('#sort-filetype').attr('data-order') != '') {
+        sortkey = 'filetype';
+        order = $('#sort-filetype').attr('data-order');
+    }
+
+    switch (sortkey) {
+    case 'url':
+        list.sort((a, b) => {
+            if (a.url < b.url) return -1 * (order == 'asc' ? 1 : -1);
+            if (a.url > b.url) return 1 * (order == 'asc' ? 1 : -1);
+            return 0;
+        });
+        break;
+    case 'filetype':
+        list.sort((a, b) => {
+            if (a.filetype < b.filetype) return -1 * (order == 'asc' ? 1 :- 1);
+            if (a.filetype > b.filetype) return 1 * (order == 'asc' ? 1 : -1);
+            return 0;
+        });
+        break;
+    default:
+    }
+
+    return list;
+}
+
+function filterSourceList(filteredSource)
+{
+    const $filterExpression = $('#filter-expression'),
+          $filterRegex = $('#filter-regex');
+
+    var list = filteredSource || source,
+        filtered,
+        regexFlag = $filterRegex.prop('checked');
+
+    if (regexFlag) {
+        try {
+            let re = new RegExp($filterExpression.val());
+            $filterExpression.toggleClass('is-invalid', false);
+            filtered = list.filter((a) => { return re.test(a.url); });
+        }
+        catch (e) {
+            // regular expression error
+            $filterExpression.toggleClass('is-invalid', true);
+        }
+    }
+    else {
+        $filterExpression.toggleClass('is-invalid', false);
+        filtered = list.filter((a) => { return a.url.indexOf($filterExpression.val()) !== -1; });
+    }
+
+    return filtered;
+}
+
+function filterTypeSourceList(filteredSource)
+{
+    var list = filteredSource || source,
+        filtered;
+
+    if ($('#filter-audio').prop('checked') || $('#filter-video').prop('checked') || $('#filter-image').prop('checked')
+        || $('#filter-archive').prop('checked') || $('#filter-document').prop('checked') || $('#filter-executable').prop('checked')) {
+
+        var audio = new RegExp('^wav|mp3|wma|aac|flac|alac|mid|midi|aif|aiff|aifc|afc$'),
+            video = new RegExp('^mpg|mpeg|mp4|avi|ts|mov|wmv|asf$'),
+            image = new RegExp('^png|jpg|jpeg|gif|bmp|ico$'),
+            archive = new RegExp('^zip|lzh|cab|tar|gz|tgz|hqx|sit$'),
+            document = new RegExp('^pdf|doc|docx|docm|xls|xlsx|xlsm|ppt|pptx|pptm$'),
+            executable = new RegExp('^exe|xpi|crx|apk|ipa|bin|pkg$');
+
+        filtered = list.filter((a) => {
+            if ($('#filter-audio').prop('checked') && audio.test(a.filetype)) return true;
+            if ($('#filter-video').prop('checked') && video.test(a.filetype)) return true;
+            if ($('#filter-image').prop('checked') && image.test(a.filetype)) return true;
+            if ($('#filter-archive').prop('checked') && archive.test(a.filetype)) return true;
+            if ($('#filter-document').prop('checked') && document.test(a.filetype)) return true;
+            if ($('#filter-executable').prop('checked') && executable.test(a.filetype)) return true;
+            else return false;
+        });
+    }
+    else
+        filtered = list;
+
+    return filtered;
+}
+
+function checkActiveFilter()
+{
+    $('button[data-target="#byFiletype"]').toggleClass('disabled', $('#byFiletype input:checked').length == 0);
+    $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
+}
+
+function localization()
+{
+    $('[data-string]').each(function() {
+        $(this).text(browser.i18n.getMessage(this.dataset.string));
+    });
+}

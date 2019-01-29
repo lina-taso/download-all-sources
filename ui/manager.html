@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Download All Sources Manager</title>
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/manager.js"></script>
+        <link rel="stylesheet" href="css/all.css"> <!-- fontawesome -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/manager.css">
+    </head>
+
+    <body>
+        <div class="container-fluid my-3">
+            <div class="row">
+                <!-- sidebar -->
+                <div class="col-lg-2 col-md-3">
+                    <img class="img-fluid d-block mx-auto mb-3" src="/images/title.svg">
+
+                    <button type="button" class="btn btn-warning btn-lg btn-block mb-3" data-toggle="modal" data-target="#new-download">
+                        <i class="fas fa-plus-square"></i>&nbsp;New
+                    </button>
+
+                    <!-- tab -->
+                    <div class="list-group list-group-flush mb-3" role="tablist" aria-orientation="vertical">
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn active"
+                                id="downloading-tab" href="#downloading"
+                                data-toggle="pill" role="tab" aria-controls="downloading" aria-selected="true">
+                            <span data-string="tab_downloading"></span>
+                            <span class="badge badge-dark badge-pill">0</span>
+                        </button>
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
+                                id="waiting-tab" href="#waiting"
+                                data-toggle="pill" role="tab" aria-controls="waiting" aria-selected="false">
+                            <span data-string="tab_waiting"></span>
+                            <span class="badge badge-dark badge-pill">0</span>
+                        </button>
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
+                                id="finished-tab" href="#finished"
+                                data-toggle="pill" role="tab" aria-controls="finished" aria-selected="false">
+                            <span data-string="tab_finished"></span>
+                            <span class="badge badge-dark badge-pill">0</span>
+                        </button>
+                    </div>
+
+                    <!-- setting -->
+                    <button id="setting-button" type="button" class="btn btn-secondary mb-3">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                </div>
+                <!-- main -->
+                <div class="col-lg-10 col-md-9">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="downloading" role="tabpanel" aria-labelledby="downloading-tab">
+                            <ul id="downloading-list" class="list-group list-group-flush mb-3">
+                                <!-- header -->
+                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                    <div class="row align-items-center">
+                                        <div class="col-lg-1 col-md-2 col-2"></div>
+                                        <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
+                                        <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_speed"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_remain"></div>
+                                    </div>
+                                </li>
+
+                                <!-- template -->
+                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-current="">
+                                    <div class="row align-items-center">
+                                        <div class="item-status   col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
+                                            <i class=""></i>
+                                            <i class="item-info-button fas fa-info-circle fa-fw" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
+                                            <i class="item-stop-button far fa-stop-circle fa-fw" data-toggle="modal" data-target="#confirm-dialog" data-dlid=""></i>
+                                            <i class="item-redo-button fas fa-redo fa-fw" data-dlid=""></i>
+                                            <i class="item-delete-button fas fa-trash fa-fw" data-dlid=""></i>
+                                        </div>
+                                        <div class="item-filename col-lg-5 col-md-6 col-10"></div>
+                                        <div class="progress      col-lg-2 d-none d-lg-flex px-0">
+                                            <div class="item-progress text-center progress-bar progress-bar-striped bg-info px-2"></div>
+                                        </div>
+                                        <div class="item-speed    col-lg-2 col-md-2 col-6 text-center"></div>
+                                        <div class="item-remain   col-lg-2 col-md-2 col-6 text-center"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
+                            <ul id="waiting-list" class="list-group list-group-flush mb-3">
+                                <!-- header -->
+                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-2 col-2"></div>
+                                        <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
+                                        <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_speed"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_remain"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="tab-pane fade" id="finished" role="tabpanel" aria-labelledby="finished-tab">
+                            <ul id="finished-list" class="list-group list-group-flush mb-3">
+                                <!-- header -->
+                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                    <div class="row">
+                                        <div class="col-lg-1 col-md-2 col-2"></div>
+                                        <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
+                                        <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_speed"></div>
+                                        <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_remain"></div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- new download modal -->
+        <div id="new-download" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-string="new_download_title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- download tab -->
+                        <div id="new-download-modal-tab" class="nav nav-tabs mb-3" role="tablist">
+                            <button class="nav-link nav-item active" id="single-tab" href="#single"
+                                    data-toggle="tab" role="tab" aria-controls="single" aria-selected="true" data-string="new_download_single"></button>
+                            <button class="nav-link nav-item" id="multiple-tab" href="#multiple"
+                                    data-toggle="tab" role="tab" aria-controls="multiple" aria-selected="false" data-string="new_download_multiple"></button>
+                        </div>
+                        <div class="tab-content">
+                            <!-- single download -->
+                            <div class="tab-pane fade show active" id="single" role="tabpanel" aria-labelledby="single-tab">
+                                <!-- download url -->
+                                <div class="form-group">
+                                    <label for="dl-single-url" data-string="new_download_single_url"></label>
+                                    <input id="dl-single-url" class="form-control" data-focus="true">
+                                </div>
+                                <!-- referer -->
+                                <div class="form-group">
+                                    <label for="dl-single-referer" data-string="new_download_single_referer"></label>
+                                    <input id="dl-single-referer" class="form-control">
+                                </div>
+                                <!-- filename -->
+                                <div class="form-group">
+                                    <label for="dl-single-filename" data-string="new_download_single_filename"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-single-filename-tags" aria-expanded="false" aria-controls="dl-single-filename-tags"
+                                            data-string="show_filename_tags"></button>
+                                    <input id="dl-single-filename" class="form-control">
+                                    <small id="dl-single-filename-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-single-filename-tags">
+                                        <div class="card-body">
+                                            <h4 class="card-title" data-string="Filename_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-md-2 col-4">:Y:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-md-2 col-4">:M:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-md-2 col-4">:D:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-md-2 col-4">:h:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_hour"></dd>
+                                                <dt class="col-md-2 col-4">:m:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_minute"></dd>
+                                                <dt class="col-md-2 col-4">:s:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_second"></dd>
+                                                <dt class="col-md-2 col-4">:dom:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- location -->
+                                <div class="form-group">
+                                    <label for="dl-single-location" data-string="new_download_single_location"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-single-location-tags" aria-expanded="false" aria-controls="dl-single-location-tags"
+                                            data-string="show_location_tags"></button>
+                                    <input id="dl-single-location" class="form-control">
+                                    <small id="dl-single-location-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-single-location-tags">
+                                        <div class="card-body">
+                                            <h4 class="card-title" data-string="location_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-md-2 col-4">:Y:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-md-2 col-4">:M:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-md-2 col-4">:D:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-md-2 col-4">:h:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_hour"></dd>
+                                                <dt class="col-md-2 col-4">:m:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_minute"></dd>
+                                                <dt class="col-md-2 col-4">:s:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_second"></dd>
+                                                <dt class="col-md-2 col-4">:dom:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-md-2 col-4">:path:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_path"></dd>
+                                                <dt class="col-md-2 col-4">/</dt>
+                                                <dd class="col-md-4 col-8">
+                                                    <span data-string="tag_delimiter"></span>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- multiple download -->
+                            <div class="tab-pane fade" id="multiple" role="tabpanel" aria-labelledby="multiple-tab">
+                                <!-- download url -->
+                                <div class="form-group">
+                                    <label for="dl-multiple-url" data-string="new_download_multiple_url"></label>
+                                    <textarea id="dl-multiple-url" class="form-control" rows="6"></textarea>
+                                </div>
+                                <!-- referer -->
+                                <div class="form-group">
+                                    <label for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
+                                    <input id="dl-multiple-referer" class="form-control">
+                                </div>
+                                <!-- location -->
+                                <div class="form-group">
+                                    <label for="dl-multiple-location" data-string="new_download_multiple_location"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-multiple-location-tags" aria-expanded="false" aria-controls="dl-multiple-location-tags"
+                                            data-string="show_location_tags"></button>
+                                    <input id="dl-multiple-location" class="form-control">
+                                    <small id="dl-multiple-location-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-multiple-location-tags">
+                                        <div class="card-body">
+                                            <h4 class="card-title" data-string="location_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-md-2 col-4">:y:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-md-2 col-4">:m:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-md-2 col-4">:d:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-md-2 col-4">:dom:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-md-2 col-4">:path:</dt>
+                                                <dd class="col-md-4 col-8" data-string="tag_path"></dd>
+                                                <dt class="col-md-2 col-4">/</dt>
+                                                <dd class="col-md-4 col-8">
+                                                    <span data-string="tag_delimiter"></span>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close">Close</button>
+                        <button type="button" class="btn btn-warning" id="download-button" data-string="button_download">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- download detail modal -->
+        <div id="download-detail" class="modal fade" tabindex="-1" role="dialog" data-dlid="" data-timer="" data-status="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-string="download_detail_title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- status tab -->
+                        <div class="nav nav-tabs mb-3" role="tablist">
+                            <button class="nav-link nav-item active" id="status-tab" href="#status"
+                                    data-toggle="tab" role="tab" aria-controls="status" aria-selected="true" data-string="download_detail_status"></button>
+                            <button class="nav-link nav-item" id="info-tab" href="#info"
+                                    data-toggle="tab" role="tab" aria-controls="info" aria-selected="false" data-string="download_detail_info"></button>
+                        </div>
+                        <div class="tab-content">
+                            <!-- status -->
+                            <div class="tab-pane fade show active" id="status" role="tabpanel" aria-labelledby="status-tab">
+                                <div class="row">
+                                    <label for="detail-status-status" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_status2"></label>
+                                    <input id="detail-status-status" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-reason" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_reason"></label>
+                                    <input id="detail-status-reason" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-start" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_start"></label>
+                                    <input id="detail-status-start" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-end" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_end"></label>
+                                    <input id="detail-status-end" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-url" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_final_url"></label>
+                                    <input id="detail-status-url" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_progress"></label>
+                                    <div class="col-md-8 col-lg-9 d-flex align-items-center">
+                                        <div class="progress flex-fill">
+                                            <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info" role="progressbar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-current" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_current"></label>
+                                    <input id="detail-status-current" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-total" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_total"></label>
+                                    <input id="detail-status-total" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                            </div>
+                            <!-- info -->
+                            <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
+                                <div class="row">
+                                    <label for="detail-info-registerd" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_registered"></label>
+                                    <input id="detail-info-registered" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-info-url" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_url"></label>
+                                    <input id="detail-info-url" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-info-referer" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_referer"></label>
+                                    <input id="detail-info-referer" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-info-filename" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_filename"></label>
+                                    <input id="detail-info-filename" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-info-location" class="col-md-4 col-lg-3 col-form-label font-weight-bold" data-string="download_detail_location"></label>
+                                    <input id="detail-info-location" class="col-md-8 col-lg-9 form-control-plaintext" value="" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="detail-stop-button" type="button" class="btn btn-danger mr-auto"
+                                data-toggle="modal" data-target="#confirm-dialog" data-dlid="" data-string="button_stop"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- source download modal -->
+        <div id="source-download" class="modal fade" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-string="source_download_title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id="source">
+                        <!-- filter button -->
+                        <div class="d-flex horizontal-button-list">
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
+                                    data-target="#byFiletype" aria-expanded="false" aria-controls="byFiletype" data-string="source_download_filter_filetype"></button>
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
+                                    data-target="#byKeyword" aria-expanded="false" aria-controls="byKeyword" data-string="source_download_filter_keyword"></button>
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
+                                    data-target="#source-download-option" aria-expanded="false" aria-controls="source-download-option" data-string="source_download_option"></button>
+                            <button type="button" class="btn btn-warning ml-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
+                        </div>
+                        <!-- filter box -->
+                        <div id="byFiletype" class="collapse">
+                            <div class="card card-body">
+                                <div class="container row">
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-audio">
+                                        <label class="custom-control-label" for="filter-audio" data-string="source_download_filter_audio"></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-video">
+                                        <label class="custom-control-label" for="filter-video" data-string="source_download_filter_video"></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-image">
+                                        <label class="custom-control-label" for="filter-image" data-string="source_download_filter_image"></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-archive">
+                                        <label class="custom-control-label" for="filter-archive" data-string="source_download_filter_archive"></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-document">
+                                        <label class="custom-control-label" for="filter-document" data-string="source_download_filter_document"></label>
+                                    </div>
+                                    <div class="custom-control custom-checkbox col-lg-4">
+                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-executable">
+                                        <label class="custom-control-label" for="filter-executable" data-string="source_download_filter_executable"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="byKeyword" class="collapse">
+                            <div class="card card-body">
+                                <div class="form-group">
+                                    <label for="filter-expression" data-string="source_download_filter_expression"></label>
+                                    <input id="filter-expression" class="form-control">
+                                </div>
+                                <div class="custom-control custom-checkbox">
+                                    <input type="checkbox" class="custom-control-input" id="filter-regex">
+                                    <label class="custom-control-label" for="filter-regex" data-string="source_download_filter_regex"></label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- option box -->
+                        <div id="source-download-option" class="collapse">
+                            <div class="card card-body">
+                                <!-- referer -->
+                                <div class="form-group">
+                                    <label for="dl-source-referer" data-string="source_download_option_referer"></label>
+                                    <input id="dl-source-referer" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" id="dl-source-referer-default">
+                                        <label class="custom-control-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
+                                    </div>
+                                </div>
+                                <!-- location -->
+                                <div class="form-group">
+                                    <label for="dl-source-location" data-string="source_download_option_location"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-source-location-tags" aria-expanded="false" aria-controls="dl-source-location-tags"
+                                            data-string="show_location_tags"></button>
+                                    <input id="dl-source-location" class="form-control">
+                                    <small id="dl-source-location-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-source-location-tags">
+                                        <div class="card-body">
+                                            <h4 class="card-title" data-string="location_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-lg-2 col-md-3 col-4">:Y:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:M:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:D:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:h:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_hour"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:m:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_minute"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:s:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_second"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:dom:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:path:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_path"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:refdom:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_refdomain"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">:refpath:</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_refpath"></dd>
+                                                <dt class="col-lg-2 col-md-3 col-4">/</dt>
+                                                <dd class="col-lg-4 col-md-9 col-8">
+                                                    <span data-string="tag_delimiter"></span>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul id="source-list" class="list-group list-group-flush mt-3">
+                            <!-- header -->
+                            <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                <div class="row">
+                                    <div class="col-md-9 col-8">
+                                        <div class="custom-control custom-checkbox pl-5">
+                                            <input id="source-all" type="checkbox" class="custom-control-input">
+                                            <label class="custom-control-label" for="source-all">&#8203;</label>
+                                            <label id="sort-url" class="control-label my-0" data-order="" data-string="source_download_header_url"></label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 col-4 text-center">
+                                        <label id="sort-filetype" class="control-label my-0" data-order="" data-string="source_download_header_filetype"></label>
+                                    </div>
+                                </div>
+                            </li>
+                            <!-- template -->
+                            <li id="source-item-template" class="source-item list-group-item list-group-item-action py-0" data-filetype="">
+                                <div class="row">
+                                    <div class="source-url col-md-9 col-8">
+                                        <div class="custom-control custom-checkbox pl-5">
+                                            <input id="" type="checkbox" class="custom-control-input">
+                                            <label class="custom-control-label d-block py-1" for=""></label>
+                                        </div>
+                                    </div>
+                                    <div class="source-type col-md-3 col-4 py-1 text-center"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close">Close</button>
+                        <button type="button" class="btn btn-warning" id="source-download-button2" data-count="0" data-string="button_download">Download</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- confirm modal -->
+        <div id="confirm-dialog" class="modal fade" tabindex="-1" role="dialog" data-dlid="">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" data-string="confirm_title"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" data-string="confirm_stop_download"></div>
+                    <div class="modal-footer">
+                        <button id="stop-button" type="button" class="btn btn-danger" data-dismiss="modal" data-focus="true" data-string="button_stop">Stop</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

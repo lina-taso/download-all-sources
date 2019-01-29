@@ -1,0 +1,200 @@
+html, body {
+    word-break: break-all;
+}
+
+.custom-control-label.py-1::before,
+.custom-control-label.py-1::after {
+    top: .5rem;
+}
+.horizontal-button-list > :not(:last-child) {
+    margin-right: .25rem;
+}
+.progress {
+    height: initial;
+    font-size: initial;
+}
+[data-string] {
+    white-space: pre-line;
+}
+
+/* template */
+#download-item-template, #source-item-template {
+    display: none;
+}
+
+/* sample */
+#dl-single-filename-sample::before,
+#dl-single-location-sample::before,
+#dl-multiple-location-sample::before,
+#dl-source-location-sample::before {
+    content: 'Sample: ';
+}
+
+/* item-status */
+.item-status > :not(:last-child) {
+    margin-right: .25rem;
+}
+.item-status > :not(:first-child) {
+    display: none;
+    cursor: pointer;
+}
+.item-status:hover > :first-child {
+    display: none;
+}
+.item-status:hover > .item-info-button {
+    display: inline;
+}
+#downloading-list .item-status:hover > .item-stop-button,
+#waiting-list .item-status:hover > .item-stop-button {
+    display: inline;
+}
+#finished-list .item-status:hover > .item-redo-button,
+#finished-list .item-status:hover > .item-delete-button {
+    display: inline;
+}
+
+/* progress */
+#downloading-list .progress-bar {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+
+/* download-detail modal */
+#download-detail[data-status="downloading"] #detail-status-progress {
+    animation: progress-bar-stripes 1s linear infinite;
+}
+#download-detail[data-status="finished"] #detail-stop-button {
+    display: none;
+}
+
+/* source-download modal */
+#source-download-button1::after,
+#source-download-button2::after {
+    content: ' (' attr(data-count) ')';
+}
+button[data-target="#byFiletype"]::after,
+button[data-target="#byKeyword"]::after,
+button[data-target="#source-download-option"]::after {
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    padding-left: .5em;
+}
+button[data-target="#byFiletype"][aria-expanded="false"]::after,
+button[data-target="#byKeyword"][aria-expanded="false"]::after,
+button[data-target="#source-download-option"][aria-expanded="false"]::after {
+    content: "\f0d7";
+}
+button[data-target="#byFiletype"][aria-expanded="true"]::after,
+button[data-target="#byKeyword"][aria-expanded="true"]::after,
+button[data-target="#source-download-option"][aria-expanded="true"]::after {
+    content: "\f0d8";
+}
+#sort-url,
+#sort-filetype {
+    cursor: pointer;
+}
+#sort-url::after,
+#sort-filetype::after {
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    padding-left: .5em;
+}
+#sort-url[data-order=""]::after,
+#sort-filetype[data-order=""]::after {
+    content: "\f0dc";
+}
+#sort-url[data-order="asc"]::after,
+#sort-filetype[data-order="asc"]::after {
+    content: "\f0de";
+}
+#sort-url[data-order="desc"]::after,
+#sort-filetype[data-order="desc"]::after {
+    content: "\f0dd";
+}
+
+.source-item::before {
+    position: absolute;
+    font-family: "Font Awesome 5 Free"; font-weight: 400;
+    top: .3em;
+    content: '\f15b';
+}
+.source-item[data-filetype="wav"]::before,
+.source-item[data-filetype="mp3"]::before,
+.source-item[data-filetype="wma"]::before,
+.source-item[data-filetype="aac"]::before,
+.source-item[data-filetype="flac"]::before,
+.source-item[data-filetype="alac"]::before,
+.source-item[data-filetype="mid"]::before,
+.source-item[data-filetype="midi"]::before,
+.source-item[data-filetype="aif"]::before,
+.source-item[data-filetype="aiff"]::before,
+.source-item[data-filetype="aifc"]::before,
+.source-item[data-filetype="afc"]::before {
+    content: '\f1c7';
+}
+.source-item[data-filetype="mpg"]::before,
+.source-item[data-filetype="mpeg"]::before,
+.source-item[data-filetype="mp4"]::before,
+.source-item[data-filetype="avi"]::before,
+.source-item[data-filetype="ts"]::before,
+.source-item[data-filetype="mov"]::before,
+.source-item[data-filetype="wmv"]::before,
+.source-item[data-filetype="asf"]::before {
+    content: '\f1c8';
+}
+.source-item[data-filetype="png"]::before,
+.source-item[data-filetype="jpg"]::before,
+.source-item[data-filetype="jpeg"]::before,
+.source-item[data-filetype="gif"]::before,
+.source-item[data-filetype="bmp"]::before,
+.source-item[data-filetype="ico"]::before {
+    content: '\f1c5';
+}
+.source-item[data-filetype="zip"]::before,
+.source-item[data-filetype="lhz"]::before,
+.source-item[data-filetype="cab"]::before,
+.source-item[data-filetype="tar"]::before,
+.source-item[data-filetype="gz"]::before,
+.source-item[data-filetype="tgz"]::before,
+.source-item[data-filetype="hqx"]::before,
+.source-item[data-filetype="sit"]::before {
+    content: '\f1c6';
+}
+.source-item[data-filetype="pdf"]::before {
+    content: '\f1c1';
+}
+.source-item[data-filetype="doc"]::before,
+.source-item[data-filetype="docx"]::before,
+.source-item[data-filetype="docm"]::before {
+    content: '\f1c2';
+}
+.source-item[data-filetype="xls"]::before,
+.source-item[data-filetype="xlsx"]::before,
+.source-item[data-filetype="xlsm"]::before {
+    content: '\f1c3';
+}
+.source-item[data-filetype="ppt"]::before,
+.source-item[data-filetype="pptx"]::before,
+.source-item[data-filetype="pptm"]::before {
+    content: '\f1c4';
+}
+.source-item[data-filetype="html"]::before,
+.source-item[data-filetype="htm"]::before,
+.source-item[data-filetype="js"]::before,
+.source-item[data-filetype="css"]::before,
+.source-item[data-filetype="bat"]::before,
+.source-item[data-filetype="com"]::before,
+.source-item[data-filetype="ps"]::before,
+.source-item[data-filetype="vbs"]::before,
+.source-item[data-filetype="sh"]::before {
+    content: '\f1c9';
+}
+.source-item[data-filetype="txt"]::before,
+.source-item[data-filetype="rtf"]::before {
+    content: '\f15c';
+}
+
+@media (min-width: 576px) {
+    #new-download > .modal-dialog,
+    #download-detail > .modal-dialog,
+    #source-download > .modal-dialog {
+        max-width: 80%;
+    }
+}

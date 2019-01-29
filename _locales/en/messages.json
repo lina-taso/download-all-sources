@@ -1,0 +1,285 @@
+{
+    //
+    // Addon info
+    //
+    "extensionName" : {
+        "message" : "Download All Sources"
+    },
+    "extensionDescription" : {
+        "message" : "Download all links and sources in a page."
+    },
+
+    "menus_download" : {
+        "message" : "&Download All Sources..."
+    },
+
+    //
+    // Manager UI
+    //
+    "tab_downloading" : {
+        "message" : "Downloading"
+    },
+    "tab_waiting" : {
+        "message" : "Waiting"
+    },
+    "tab_finished" : {
+        "message" : "Finished"
+    },
+    "list_filename" : {
+        "message" : "Filename"
+    },
+    "list_filesize" : {
+        "message" : "Filesize"
+    },
+    "list_speed" : {
+        "message" : "Speed"
+    },
+    "list_remain" : {
+        "message" : "Remain"
+    },
+    "new_download_title" : {
+        "message" : "New Download"
+    },
+    "new_download_single" : {
+        "message" : "Single Download"
+    },
+    "new_download_multiple" : {
+        "message" : "Multiple Download"
+    },
+    "new_download_single_url" : {
+        "message" : "Download URL"
+    },
+    "new_download_single_referer" : {
+        "message" : "Referer [Optional]"
+    },
+    "new_download_single_filename" : {
+        "message" : "Filename [Optional]"
+    },
+    "new_download_single_location" : {
+        "message" : "Download Location [Optional]"
+    },
+    "new_download_multiple_url" : {
+        "message" : "Download URLs (per line)"
+    },
+    "new_download_multiple_referer" : {
+        "message" : "Referer [Optional]"
+    },
+    "new_download_multiple_location" : {
+        "message" : "Download Location [Optional]"
+    },
+    "download_detail_title" : {
+        "message" : "Download Detail"
+    },
+    "download_detail_status" : {
+        "message" : "Status"
+    },
+    "download_detail_info" : {
+        "message" : "Info"
+    },
+    "download_detail_status2" : {
+        "message" : "Download Status"
+    },
+    "download_detail_reason" : {
+        "message" : "Stopped reason"
+    },
+    "download_detail_start" : {
+        "message" : "Start time"
+    },
+    "download_detail_end" : {
+        "message" : "Finished time"
+    },
+    "download_detail_final_url" : {
+        "message" : "Final URL"
+    },
+    "download_detail_progress" : {
+        "message" : "Progress"
+    },
+    "download_detail_current" : {
+        "message" : "Downloaded size"
+    },
+    "download_detail_total" : {
+        "message" : "Total size"
+    },
+    "download_detail_registered" : {
+        "message" : "Registered time"
+    },
+    "download_detail_url" : {
+        "message" : "Download URL"
+    },
+    "download_detail_referer" : {
+        "message" : "Referer"
+    },
+    "download_detail_filename" : {
+        "message" : "Filename"
+    },
+    "download_detail_location" : {
+        "message" : "Location"
+    },
+    "source_download_title" : {
+        "message" : "Source Download"
+    },
+    "source_download_filter_filetype" : {
+        "message" : "Filter by filetype"
+    },
+    "source_download_filter_keyword" : {
+        "message" : "Filter by keyword"
+    },
+    "source_download_option" : {
+        "message" : "Download option"
+    },
+    "source_download_filter_audio" : {
+        "message" : "Audio"
+    },
+    "source_download_filter_video" : {
+        "message" : "Video"
+    },
+    "source_download_filter_image" : {
+        "message" : "Image"
+    },
+    "source_download_filter_archive" : {
+        "message" : "Archive"
+    },
+    "source_download_filter_document" : {
+        "message" : "Document"
+    },
+    "source_download_filter_executable" : {
+        "message" : "Executable"
+    },
+    "source_download_filter_expression" : {
+        "message" : "Filter expression"
+    },
+    "source_download_filter_regex" : {
+        "message" : "Expression is regular expression"
+    },
+    "source_download_option_referer" : {
+        "message" : "Referer [Optional]"
+    },
+    "source_download_option_referer_default" : {
+        "message" : "Set default referer"
+    },
+    "source_download_option_location" : {
+        "message" : "Download Location [Optional]"
+    },
+    "source_download_header_url" : {
+        "message" : "URL"
+    },
+    "source_download_header_filetype" : {
+        "message" : "Filetype"
+    },
+    "confirm_title" : {
+        "message" : "Confirm"
+    },
+    "confirm_stop_download" : {
+        "message" : "Stop downloading this item?"
+    },
+    "show_filename_tags" : {
+        "message" : "Show tags for filename"
+    },
+    "show_location_tags" : {
+        "message" : "Show tags for location"
+    },
+
+    //
+    // Options UI
+    //
+    "options_location" : {
+        "message" : "Download location"
+    },
+    "options_default_location" : {
+        "message" : "Default Location (sub directory)"
+    },
+    "options_location_description" : {
+        "message" : "Base location is Firefox's default download directory.\nYou can change it in Firefox's preferences page (about:preferences)."
+    },
+    "options_general" : {
+        "message" : "General parameters"
+    },
+    "options_simultaneous" : {
+        "message" : "Max simultaneous download"
+    },
+    "options_simultaneous_server" : {
+        "message" : "Max simultaneous download per server"
+    },
+    "options_new_parameters" : {
+        "message" : "New Download parameters"
+    },
+    "options_new_remember_referer" : {
+        "message" : "Remember last referer url"
+    },
+    "options_new_remember_filename" : {
+        "message" : "Remember last Filename (only single download)"
+    },
+    "options_new_remember_location" : {
+        "message" : "Remember last download location"
+    },
+    "options_source_parameters" : {
+        "message" : "Source Download parameters"
+    },
+    "options_source_remember_filetype" : {
+        "message" : "Remember last filter by filetype"
+    },
+    "options_source_remember_keyword" : {
+        "message" : "Remember last filter by keyword"
+    },
+    "options_source_remember_referer" : {
+        "message" : "Remember last referer option"
+    },
+    "options_source_remember_location" : {
+        "message" : "Remember last download location"
+    },
+
+    //
+    // Common
+    //
+    "filename_tags" : {
+        "message" : "Filename tags"
+    },
+    "location_tags" : {
+        "message" : "Location tags"
+    },
+    "tag_year" : {
+        "message" : "Year (YYYY)"
+    },
+    "tag_month" : {
+        "message" : "Month (Month)"
+    },
+    "tag_date" : {
+        "message" : "Date (DD)"
+    },
+    "tag_hour" : {
+        "message" : "Hour (hh)"
+    },
+    "tag_minute" : {
+        "message" : "Minute (mm)"
+    },
+    "tag_second" : {
+        "message" : "Second (ss)"
+    },
+    "tag_domain" : {
+        "message" : "Domain for download url"
+    },
+    "tag_path" : {
+        "message" : "URL root path (/path/to/file -> path/to)"
+    },
+    "tag_refdomain" : {
+        "message" : "Default referer domain"
+    },
+    "tag_refpath" : {
+        "message" : "Default referer root path"
+    },
+    "tag_delimiter" : {
+        "message" : "Directory delimiter\nEven if you run Windows, '\\' is available for delimiter but also '/' is too."
+    },
+    "button_close" : {
+        "message" : "Close"
+    },
+    "button_download" : {
+        "message" : "Download"
+    },
+    "button_stop" : {
+        "message" : "Stop"
+    },
+    "button_cancel" : {
+        "message" : "Cancel"
+    }
+}

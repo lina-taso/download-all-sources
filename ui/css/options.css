@@ -1,0 +1,18 @@
+body,html {
+    font-size: initial;
+}
+h2 {
+    margin-bottom: .5em;
+}
+h2:not(:first-child) {
+    margin-top: .75em;
+}
+
+[data-string] {
+    white-space: pre-line;
+}
+
+/* sample */
+#download-location-sample::before {
+    content: 'Sample: ';
+}
