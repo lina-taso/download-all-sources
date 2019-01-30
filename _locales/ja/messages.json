@@ -209,6 +209,18 @@
     "options_source_remember_location" : {
         "message" : "前回のディレクトリを記憶する"
     },
+    "options_filetype_parameters" : {
+        "message" : "フィルタ拡張子の定義"
+    },
+    "options_filetype_filetype" : {
+        "message" : "ファイルタイプ"
+    },
+    "options_filetype_ext" : {
+        "message" : "| (パイプ) 区切りの拡張子"
+    },
+    "options_filetype_reset" : {
+        "message" : "リセット"
+    },
 
     //
     // Common
