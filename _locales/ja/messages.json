@@ -127,24 +127,6 @@
     "source_download_option" : {
         "message" : "オプション"
     },
-    "source_download_filter_audio" : {
-        "message" : "音声"
-    },
-    "source_download_filter_video" : {
-        "message" : "動画"
-    },
-    "source_download_filter_image" : {
-        "message" : "画像"
-    },
-    "source_download_filter_archive" : {
-        "message" : "圧縮"
-    },
-    "source_download_filter_document" : {
-        "message" : "ドキュメント"
-    },
-    "source_download_filter_executable" : {
-        "message" : "実行ファイル"
-    },
     "source_download_filter_expression" : {
         "message" : "フィルタ文字列"
     },

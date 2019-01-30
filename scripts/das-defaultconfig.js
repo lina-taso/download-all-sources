@@ -17,6 +17,18 @@ var defaultconfig = {
     'source-referer-value' : '',
     'source-referer-default-value' : true,
     'remember-source-location' : false,
-    'source-location-value' : ''
+    'source-location-value' : '',
+    'filetype1-label' : 'Audio',
+    'filetype1-extension' : 'wav|mp3|wma|aac|flac|alac|mid|midi|aif|aiff|aifc|afc',
+    'filetype2-label' : 'Video',
+    'filetype2-extension' : 'mpg|mpeg|mp4|avi|ts|mov|wmv|asf',
+    'filetype3-label' : 'Image',
+    'filetype3-extension' : 'png|jpg|jpeg|gif|bmp|ico',
+    'filetype4-label' : 'Archive',
+    'filetype4-extension' : 'zip|lzh|cab|tar|gz|tgz|hqx|sit',
+    'filetype5-label' : 'Document',
+    'filetype5-extension' : 'pdf|doc|docx|docm|xls|xlsx|xlsm|ppt|pptx|pptm',
+    'filetype6-label' : 'Executable',
+    'filetype6-extension' : 'exe|xpi|crx|apk|ipa|bin|pkg'
 };
 Object.freeze(defaultconfig);

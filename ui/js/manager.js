@@ -19,7 +19,8 @@ const progressInterval = 2000,
 
 // valuables
 var source = [],
-    baseurl;
+    baseurl,
+    filter1, filter2, filter3, filter4, filter5, filter6;
 
 
 $(async () => {
@@ -57,8 +58,8 @@ $(async () => {
         });
     // filter
     $('#byFiletype input, #byKeyword input').on('input', function() {
-        outputSourceList();
         checkActiveFilter();
+        outputSourceList();
     });
 
     // modal
@@ -120,6 +121,13 @@ $(async () => {
             });
             // inital value
             const config = await bg.config.getPref();
+            // filter-filetypes
+            filter1 = new RegExp('^' + config['filetype1-extension'] + '$'),
+            filter2 = new RegExp('^' + config['filetype2-extension'] + '$'),
+            filter3 = new RegExp('^' + config['filetype3-extension'] + '$'),
+            filter4 = new RegExp('^' + config['filetype4-extension'] + '$'),
+            filter5 = new RegExp('^' + config['filetype5-extension'] + '$'),
+            filter6 = new RegExp('^' + config['filetype6-extension'] + '$');
             // inital souce-filetype
             if (config['remember-source-filetype'])
                 config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
@@ -615,23 +623,16 @@ function filterTypeSourceList(filteredSource)
     var list = filteredSource || source,
         filtered;
 
-    if ($('#filter-audio').prop('checked') || $('#filter-video').prop('checked') || $('#filter-image').prop('checked')
-        || $('#filter-archive').prop('checked') || $('#filter-document').prop('checked') || $('#filter-executable').prop('checked')) {
-
-        var audio = new RegExp('^wav|mp3|wma|aac|flac|alac|mid|midi|aif|aiff|aifc|afc$'),
-            video = new RegExp('^mpg|mpeg|mp4|avi|ts|mov|wmv|asf$'),
-            image = new RegExp('^png|jpg|jpeg|gif|bmp|ico$'),
-            archive = new RegExp('^zip|lzh|cab|tar|gz|tgz|hqx|sit$'),
-            document = new RegExp('^pdf|doc|docx|docm|xls|xlsx|xlsm|ppt|pptx|pptm$'),
-            executable = new RegExp('^exe|xpi|crx|apk|ipa|bin|pkg$');
+    if ($('#filter-filetype1').prop('checked') || $('#filter-filetype2').prop('checked') || $('#filter-filetype3').prop('checked')
+        || $('#filter-filetype4').prop('checked') || $('#filter-filetype5').prop('checked') || $('#filter-filetype6').prop('checked')) {
 
         filtered = list.filter((a) => {
-            if ($('#filter-audio').prop('checked') && audio.test(a.filetype)) return true;
-            if ($('#filter-video').prop('checked') && video.test(a.filetype)) return true;
-            if ($('#filter-image').prop('checked') && image.test(a.filetype)) return true;
-            if ($('#filter-archive').prop('checked') && archive.test(a.filetype)) return true;
-            if ($('#filter-document').prop('checked') && document.test(a.filetype)) return true;
-            if ($('#filter-executable').prop('checked') && executable.test(a.filetype)) return true;
+            if ($('#filter-filetype1').prop('checked') && filter1.test(a.filetype)) return true;
+            if ($('#filter-filetype2').prop('checked') && filter2.test(a.filetype)) return true;
+            if ($('#filter-filetype3').prop('checked') && filter3.test(a.filetype)) return true;
+            if ($('#filter-filetype4').prop('checked') && filter4.test(a.filetype)) return true;
+            if ($('#filter-filetype5').prop('checked') && filter5.test(a.filetype)) return true;
+            if ($('#filter-filetype6').prop('checked') && filter6.test(a.filetype)) return true;
             else return false;
         });
     }
@@ -647,9 +648,14 @@ function checkActiveFilter()
     $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
 }
 
-function localization()
+async function localization()
 {
+    const config = await bg.config.getPref();
+
     $('[data-string]').each(function() {
         $(this).text(browser.i18n.getMessage(this.dataset.string));
+    });
+    $('[data-configstring]').each(function() {
+        $(this).text(config[this.dataset.configstring]);
     });
 }

@@ -127,24 +127,6 @@
     "source_download_option" : {
         "message" : "Download option"
     },
-    "source_download_filter_audio" : {
-        "message" : "Audio"
-    },
-    "source_download_filter_video" : {
-        "message" : "Video"
-    },
-    "source_download_filter_image" : {
-        "message" : "Image"
-    },
-    "source_download_filter_archive" : {
-        "message" : "Archive"
-    },
-    "source_download_filter_document" : {
-        "message" : "Document"
-    },
-    "source_download_filter_executable" : {
-        "message" : "Executable"
-    },
     "source_download_filter_expression" : {
         "message" : "Filter expression"
     },
@@ -226,6 +208,18 @@
     },
     "options_source_remember_location" : {
         "message" : "Remember last download location"
+    },
+    "options_filetype_parameters" : {
+        "message" : "Filetype definitions for Filter"
+    },
+    "options_filetype_filetype" : {
+        "message" : "Filetype"
+    },
+    "options_filetype_ext" : {
+        "message" : "| (Pipe) separated extensions"
+    },
+    "options_filetype_reset" : {
+        "message" : "Reset"
     },
 
     //

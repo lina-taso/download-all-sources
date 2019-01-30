@@ -72,10 +72,32 @@ $(async () => {
                     $('#download-location-sample').text('');
                 }
             }
+            else if (this.id.startsWith('filetype') && this.id.endsWith('-extension')) {
+                let valid = /^\w+\(|\w+\)*$/.test(this.value);
+                $(this).toggleClass('is-invalid', !valid);
+                // save pref
+                if (valid)
+                    bg.config.setPref(this.id, this.value);
+            }
             else
                 bg.config.setPref(this.id, this.value || null);
         }
     });
+
+    // reset button
+    $('.filetype-reset')
+        .on('click', async function() {
+            const i = $('.filetype-reset').index(this) + 1,
+                  label = 'filetype' + i + '-label',
+                  ext = 'filetype' + i + '-extension';
+            // reset
+            await Promise.all([bg.config.setPref(label, null),
+                               bg.config.setPref(ext, null)]);
+            // reload
+            document.getElementById(label).value = await bg.config.getPref(label);
+            document.getElementById(ext).value = await bg.config.getPref(ext);
+            document.getElementById(ext).classList.remove('is-invalid');
+        });
 
     // initial location sample
     $('#download-location')[0].dispatchEvent(new Event('input'));
