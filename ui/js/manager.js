@@ -40,24 +40,20 @@ $(async () => {
         });
 
     // source list sort
-    $('#sort-url')
+    $('#sort-url, #sort-filetype, #sort-tag')
         .on('click', function() {
+            const targets = ['sort-url', 'sort-filetype', 'sort-tag'];
             if (this.dataset.order == 'asc') this.dataset.order = 'desc';
             else if (this.dataset.order == 'desc') this.dataset.order = '';
             else this.dataset.order = 'asc';
-            $('#sort-filetype').attr('data-order', '');
-            outputSourceList();
-        });
-    $('#sort-filetype')
-        .on('click', function() {
-            if (this.dataset.order == 'asc') this.dataset.order = 'desc';
-            else if (this.dataset.order == 'desc') this.dataset.order = '';
-            else this.dataset.order = 'asc';
-            $('#sort-url').attr('data-order', '');
+            for (let target of targets) {
+                if (this.id != target)
+                    $('#' + target).attr('data-order', '');
+            }
             outputSourceList();
         });
     // filter
-    $('#byFiletype input, #byKeyword input').on('input', function() {
+    $('#byFiletype input, #byKeyword input, #filter-dup').on('input', function() {
         checkActiveFilter();
         outputSourceList();
     });
@@ -509,16 +505,16 @@ function updateList()
 function updateSourceList()
 {
     const list = bg.lastSource.list;
-
     baseurl = bg.lastSource.baseurl;
 
     // data
-    for (let url of bg.lastSource.list) {
-        let urlobj = new URL(url);
-        if (!allowProtocol.test(urlobj.protocol)) continue;
-
-        let match = urlobj.pathname.match("\\.([\\w]+)$");
-        source.push({ url : url, filetype : match ? match[1] : '' });
+    for (let url of Object.keys (list)) {
+        if (!allowProtocol.test(list[url].protocol)) continue;
+        for (let i=0; i<list[url].tag.length; i++)
+            source.push(Object.assign({}, list[url],
+                                      { tag : list[url].tag[i],
+                                        title : list[url].title[i],
+                                        order : i }));
     }
 
     bg.lastSource = {};
@@ -533,7 +529,7 @@ function outputSourceList()
     $('#source-download-button1, #source-download-button2').attr('data-count', 0);
 
     // all filter
-    var list = sortSourceList(filterTypeSourceList(filterSourceList()));
+    var list = sortSourceList(filterSourceList(filterTypeSourceList(filterDuplicateSourceList())));
 
     // clear list
     $('#source-list > .source-item:not(#source-item-template)').remove();
@@ -549,6 +545,10 @@ function outputSourceList()
         $item.find('.source-url label').attr('for', 'source' + i).text(list[i].url);
         // extension
         $item.find('.source-type').text(list[i].filetype);
+        // tag
+        $item.find('.source-tag').text(list[i].tag);
+        // title
+        $item.find('.source-title').text(list[i].title).attr('title', list[i].title);
 
         $item.appendTo($('#source-list'));
     }
@@ -560,31 +560,16 @@ function sortSourceList(filteredSource)
         sortkey,
         order;
 
-    if ($('#sort-url').attr('data-order') != '') {
-        sortkey = 'url';
-        order = $('#sort-url').attr('data-order');
-    }
-    else if ($('#sort-filetype').attr('data-order') != '') {
-        sortkey = 'filetype';
-        order = $('#sort-filetype').attr('data-order');
-    }
+    var $sort = $('#sort-url, #sort-filetype, #sort-tag').filter('[data-order!=""]');
+    if ($sort.length) {
+        sortkey = $sort[0].id.replace(/^sort-/, '');
+        order = $sort.attr('data-order');
 
-    switch (sortkey) {
-    case 'url':
         list.sort((a, b) => {
-            if (a.url < b.url) return -1 * (order == 'asc' ? 1 : -1);
-            if (a.url > b.url) return 1 * (order == 'asc' ? 1 : -1);
+            if (a[sortkey] < b[sortkey]) return -1 * (order == 'asc' ? 1 : -1);
+            if (a[sortkey] > b[sortkey]) return 1 * (order == 'asc' ? 1 : -1);
             return 0;
         });
-        break;
-    case 'filetype':
-        list.sort((a, b) => {
-            if (a.filetype < b.filetype) return -1 * (order == 'asc' ? 1 :- 1);
-            if (a.filetype > b.filetype) return 1 * (order == 'asc' ? 1 : -1);
-            return 0;
-        });
-        break;
-    default:
     }
 
     return list;
@@ -638,6 +623,17 @@ function filterTypeSourceList(filteredSource)
     }
     else
         filtered = list;
+
+    return filtered;
+}
+
+function filterDuplicateSourceList(filteredSource)
+{
+    var list = filteredSource || source,
+        filtered,
+        hide = $('#filter-dup').prop('checked');
+
+    filtered = hide ? list.filter(ele => ele.order == 0) : list;
 
     return filtered;
 }

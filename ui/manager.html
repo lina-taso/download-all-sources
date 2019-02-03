@@ -492,32 +492,46 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="form-group mt-3">
+                            <div class="custom-control custom-checkbox">
+                                <input type="checkbox" class="custom-control-input" id="filter-dup" checked>
+                                <label class="custom-control-label" for="filter-dup" data-string="source_download_filter_dup"></label>
+                            </div>
+                        </div>
                         <ul id="source-list" class="list-group list-group-flush mt-3">
                             <!-- header -->
                             <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
                                 <div class="row">
-                                    <div class="col-md-9 col-8">
+                                    <div class="col-lg-8 col-sm-6 col-12">
                                         <div class="custom-control custom-checkbox pl-5">
                                             <input id="source-all" type="checkbox" class="custom-control-input">
                                             <label class="custom-control-label" for="source-all">&#8203;</label>
                                             <label id="sort-url" class="control-label my-0" data-order="" data-string="source_download_header_url"></label>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 col-4 text-center">
+                                    <div class="col-lg-1 col-sm-2 col-4 px-0 text-center">
                                         <label id="sort-filetype" class="control-label my-0" data-order="" data-string="source_download_header_filetype"></label>
+                                    </div>
+                                    <div class="col-lg-1 col-sm-2 col-4 px-0 text-center">
+                                        <label id="sort-tag" class="control-label my-0" data-order="" data-string="source_download_header_tag"></label>
+                                    </div>
+                                    <div class="col-lg-2 col-sm-2 col-4 px-0 text-center">
+                                        <label id="sort-title" class="control-label my-0" data-order="" data-string="source_download_header_title"></label>
                                     </div>
                                 </div>
                             </li>
                             <!-- template -->
                             <li id="source-item-template" class="source-item list-group-item list-group-item-action py-0" data-filetype="">
                                 <div class="row">
-                                    <div class="source-url col-md-9 col-8">
+                                    <div class="source-url   col-lg-8 col-sm-6 col-12">
                                         <div class="custom-control custom-checkbox pl-5">
                                             <input id="" type="checkbox" class="custom-control-input">
                                             <label class="custom-control-label d-block py-1" for=""></label>
                                         </div>
                                     </div>
-                                    <div class="source-type col-md-3 col-4 py-1 text-center"></div>
+                                    <div class="source-type  col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                                    <div class="source-tag   col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                                    <div class="source-title col-lg-2 col-sm-2 col-4 py-1 text-center"></div>
                                 </div>
                             </li>
                         </ul>

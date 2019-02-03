@@ -11,12 +11,17 @@ browser.browserAction.onClicked.addListener(onclicked);
 
 const firstrun_url = 'https://www2.filewo.net/wordpress/category/download-all-sources/',
       origin_url = window.document.URL,
-      runCode = `
-var urls = [];
-for(let attr of ["src", "href"]) {
-document.querySelectorAll("["+attr+"]").forEach((ele) => { urls.push(ele.getAttribute(attr)); });
+      runCode = `{let urls = {};
+for(let attr of ['src', 'href']) {
+  document.querySelectorAll('['+attr+']').forEach((ele) => {
+    let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+    let url = urlobj.toString();
+    if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
+    urls[url].tag.push(ele.tagName.toLowerCase());
+    urls[url].title.push(ele.title);
+  })
 }
-urls;`;
+urls};`;
 
 
 function startup()
@@ -77,17 +82,12 @@ var lastSource = {};
 browser.contextMenus.onClicked.addListener(async function(info, tab) {
     switch (info.menuItemId) {
     case 'download-all-src-showlist':
-        lastSource = { list : [], baseurl : '' };
         let list = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
             code : runCode
         }))[0];
-        // absolute path
-        for (let url of list) {
-            lastSource.list.push((new URL(url.replace(/#.*$/, ''), tab.url)).toString());
-        }
-        // uniq
-        lastSource.list = Array.from(new Set(lastSource.list));
+        lastSource = { list : list, baseurl : '' };
+
         // base url
         lastSource.baseurl = tab.url;
         browser.tabs.create({

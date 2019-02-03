@@ -142,11 +142,20 @@
     "source_download_option_location" : {
         "message" : "ディレクトリ [任意]"
     },
+    "source_download_filter_dup" : {
+        "message" : "重複するURLを非表示にする"
+    },
     "source_download_header_url" : {
         "message" : "URL"
     },
     "source_download_header_filetype" : {
         "message" : "種別"
+    },
+    "source_download_header_tag" : {
+        "message" : "タグ"
+    },
+    "source_download_header_title" : {
+        "message" : "タイトル"
     },
     "confirm_title" : {
         "message" : "確認"

@@ -142,11 +142,20 @@
     "source_download_option_location" : {
         "message" : "Download Location [Optional]"
     },
+    "source_download_filter_dup" : {
+        "message" : "Hide duplicate URLs"
+    },
     "source_download_header_url" : {
         "message" : "URL"
     },
     "source_download_header_filetype" : {
         "message" : "Filetype"
+    },
+    "source_download_header_tag" : {
+        "message" : "Tag"
+    },
+    "source_download_header_title" : {
+        "message" : "Title"
     },
     "confirm_title" : {
         "message" : "Confirm"

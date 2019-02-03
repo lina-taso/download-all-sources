@@ -67,6 +67,9 @@ html, body {
 }
 
 /* source-download modal */
+#source-list {
+    font-size: 90%;
+}
 #source-download-button1::after,
 #source-download-button2::after {
     content: ' (' attr(data-count) ')';
@@ -88,24 +91,29 @@ button[data-target="#source-download-option"][aria-expanded="true"]::after {
     content: "\f0d8";
 }
 #sort-url,
-#sort-filetype {
+#sort-filetype,
+#sort-tag {
     cursor: pointer;
 }
 #sort-url::after,
-#sort-filetype::after {
+#sort-filetype::after,
+#sort-tag::after {
     font-family: "Font Awesome 5 Free"; font-weight: 900;
     padding-left: .5em;
 }
 #sort-url[data-order=""]::after,
-#sort-filetype[data-order=""]::after {
+#sort-filetype[data-order=""]::after,
+#sort-tag[data-order=""]::after {
     content: "\f0dc";
 }
 #sort-url[data-order="asc"]::after,
-#sort-filetype[data-order="asc"]::after {
+#sort-filetype[data-order="asc"]::after,
+#sort-tag[data-order="asc"]::after {
     content: "\f0de";
 }
 #sort-url[data-order="desc"]::after,
-#sort-filetype[data-order="desc"]::after {
+#sort-filetype[data-order="desc"]::after,
+#sort-tag[data-order="desc"]::after {
     content: "\f0dd";
 }
 
@@ -191,10 +199,18 @@ button[data-target="#source-download-option"][aria-expanded="true"]::after {
     content: '\f15c';
 }
 
+.source-item .source-title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 @media (min-width: 576px) {
     #new-download > .modal-dialog,
-    #download-detail > .modal-dialog,
-    #source-download > .modal-dialog {
+    #download-detail > .modal-dialog {
         max-width: 80%;
+    }
+    #source-download > .modal-dialog {
+        max-width: 95%;
     }
 }
