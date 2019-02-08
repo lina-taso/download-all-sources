@@ -13,6 +13,7 @@ html, body {
     height: initial;
     font-size: initial;
 }
+/* localization */
 [data-string] {
     white-space: pre-line;
 }

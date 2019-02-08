@@ -8,6 +8,7 @@ h2:not(:first-child) {
     margin-top: .75em;
 }
 
+/* localization */
 [data-string] {
     white-space: pre-line;
 }
