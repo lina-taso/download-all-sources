@@ -8,7 +8,7 @@
 // background
 var bg;
 
-const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath):))*$/,
+const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext):))*$/,
       denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/;
 
 
@@ -57,14 +57,15 @@ $(async () => {
             break;
         default:
             if (this.id == 'download-location') {
-                let location = bg.normalizeLocation(this.value),
-                    valid = allowLocation.test(location) && !denyLocation.test(location);
+                const location = bg.normalizeLocation(this.value),
+                      valid = allowLocation.test(location) && !denyLocation.test(location);
                 $(this).toggleClass('is-invalid', !valid);
                 // sample and save pref
                 if (valid) {
                     $('#download-location-sample').text(bg.replaceTags(
                         location,
-                        'http://www.example.com/path/name/'
+                        'http://www.example.com/path/name/',
+                        null, null, null, 'filename', 'ext'
                     ));
                     bg.config.setPref(this.id, location || null);
                 }
@@ -73,7 +74,7 @@ $(async () => {
                 }
             }
             else if (this.id.startsWith('filetype') && this.id.endsWith('-extension')) {
-                let valid = /^\w+\(|\w+\)*$/.test(this.value);
+                const valid = /^\w+\(|\w+\)*$/.test(this.value);
                 $(this).toggleClass('is-invalid', !valid);
                 // save pref
                 if (valid)

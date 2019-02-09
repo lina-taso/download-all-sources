@@ -13,6 +13,8 @@ var defaultconfig = {
     'remember-source-keyword' : false,
     'source-keyword-value' : '',
     'source-regex-value' : false,
+    'remember-source-filename' : false,
+    'source-filename-value' : '',
     'remember-source-referer' : false,
     'source-referer-value' : '',
     'source-referer-default-value' : true,

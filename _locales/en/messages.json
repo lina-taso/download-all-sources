@@ -61,6 +61,9 @@
     "new_download_multiple_url" : {
         "message" : "Download URLs (per line)"
     },
+    "new_download_multiple_filename" : {
+        "message" : "Filename [Optional]"
+    },
     "new_download_multiple_referer" : {
         "message" : "Referer [Optional]"
     },
@@ -133,6 +136,9 @@
     "source_download_filter_regex" : {
         "message" : "Expression is regular expression"
     },
+    "source_download_option_filename" : {
+        "message" : "Filename [Optional]"
+    },
     "source_download_option_referer" : {
         "message" : "Referer [Optional]"
     },
@@ -198,7 +204,7 @@
         "message" : "Remember last referer url"
     },
     "options_new_remember_filename" : {
-        "message" : "Remember last Filename (only single download)"
+        "message" : "Remember last filename"
     },
     "options_new_remember_location" : {
         "message" : "Remember last download location"
@@ -214,6 +220,9 @@
     },
     "options_source_remember_referer" : {
         "message" : "Remember last referer option"
+    },
+    "options_source_remember_filename" : {
+        "message" : "Remember last download filename"
     },
     "options_source_remember_location" : {
         "message" : "Remember last download location"
@@ -268,6 +277,24 @@
         "message" : "Default referer domain"
     },
     "tag_refpath" : {
+        "message" : "Default referer root path"
+    },
+    "tag_tag" : {
+        "message" : "The name of HTML tag that has link URL"
+    },
+    "tag_title" : {
+        "message" : "The title value of the HTML tag that has link URL *replace to 'no-title' when empty"
+    },
+    "tag_name" : {
+        "message" : "Filename of final URL without extension (filename.ext -> filename)"
+    },
+    "tag_ext" : {
+        "message" : "File extension of final URL starting with a dot (.ext)"
+    },
+    "tag_ext2" : {
+        "message" : "File extension of final URL (ext) *replace to 'no-ext' when empty"
+    },
+    "tag_string" : {
         "message" : "Default referer root path"
     },
     "tag_delimiter" : {

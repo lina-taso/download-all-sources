@@ -64,6 +64,9 @@
     "new_download_multiple_referer" : {
         "message" : "リファラ [任意]"
     },
+    "new_download_multiple_filename" : {
+        "message" : "ファイル名 [任意]"
+    },
     "new_download_multiple_location" : {
         "message" : "ディレクトリ [任意]"
     },
@@ -133,6 +136,9 @@
     "source_download_filter_regex" : {
         "message" : "文字列は正規表現"
     },
+    "source_download_option_filename" : {
+        "message" : "ファイル名 [任意]"
+    },
     "source_download_option_referer" : {
         "message" : "リファラ [任意]"
     },
@@ -198,7 +204,7 @@
         "message" : "前回のリファラURLを記憶する"
     },
     "options_new_remember_filename" : {
-        "message" : "前回のファイル名を記憶する (単発ダウンロードのみ)"
+        "message" : "前回のファイル名を記憶する"
     },
     "options_new_remember_location" : {
         "message" : "前回のディレクトリを記憶する"
@@ -214,6 +220,9 @@
     },
     "options_source_remember_referer" : {
         "message" : "前回のリファラオプションを記憶する"
+    },
+    "options_source_remember_filename" : {
+        "message" : "前回のファイル名を記憶する"
     },
     "options_source_remember_location" : {
         "message" : "前回のディレクトリを記憶する"
@@ -269,6 +278,21 @@
     },
     "tag_refpath" : {
         "message" : "デフォルトリファラのルートパス"
+    },
+    "tag_tag" : {
+        "message" : "リンクURLを持っているHTMLタグ名"
+    },
+    "tag_title" : {
+        "message" : "リンクURLを持っているHTMLタグのタイトル値 *空の時は'no-title'に置き換えます"
+    },
+    "tag_name" : {
+        "message" : "拡張子を除いたファイル名 (filename.ext -> filename)"
+    },
+    "tag_ext" : {
+        "message" : "ドットから始まる最終URLのファイル拡張子 (.ext)"
+    },
+    "tag_ext2" : {
+        "message" : "最終URLのファイル拡張子 (ext) *空の時は'no-ext'に置き換えます"
     },
     "tag_delimiter" : {
         "message" : "ディレクトリ区切り\nWindowsを利用中なら'\\'も'/'も利用可能"

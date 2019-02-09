@@ -13,9 +13,10 @@ const progressInterval = 2000,
       pageTitle = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
       allowUrl = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
-      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom):))*$/,
-      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath):))*$/,
-      denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/;
+      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext):))*$/,
+      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext):))*$/,
+      denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/,
+      defaultTitle = 'no-title';
 
 // valuables
 var source = [],
@@ -46,10 +47,8 @@ $(async () => {
             if (this.dataset.order == 'asc') this.dataset.order = 'desc';
             else if (this.dataset.order == 'desc') this.dataset.order = '';
             else this.dataset.order = 'asc';
-            for (let target of targets) {
-                if (this.id != target)
-                    $('#' + target).attr('data-order', '');
-            }
+            for (let target of targets)
+                if (this.id != target) $('#' + target).attr('data-order', '');
             outputSourceList();
         });
     // filter
@@ -61,11 +60,17 @@ $(async () => {
     // modal
     $('#new-download')
         .on('show.bs.modal', async function() {
-            // inital value
+            // initial value
             const config = await bg.config.getPref();
-            if (config['remember-new-referer']) $('#dl-single-referer, #dl-multiple-referer').val(config['new-referer-value']);
-            if (config['remember-new-filename']) $('#dl-single-filename').val(config['new-filename-value']);
-            if (config['remember-new-location']) $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']);
+            // initial referer
+            if (config['remember-new-referer'])
+                $('#dl-single-referer, #dl-multiple-referer').val(config['new-referer-value']);
+            // initial filename
+            if (config['remember-new-filename'])
+                $('#dl-single-filename').val(config['new-filename-value']);
+            // initial location
+            if (config['remember-new-location'])
+                $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']);
             // initial location sample
             $('#dl-single-location, #dl-multiple-location').each(function() { this.dispatchEvent(new Event('input')); });
         })
@@ -115,7 +120,7 @@ $(async () => {
                 else
                     $('#dl-source-referer').val('').prop('readonly', false);
             });
-            // inital value
+            // initial value
             const config = await bg.config.getPref();
             // filter-filetypes
             filter1 = new RegExp('^' + config['filetype1-extension'] + '$'),
@@ -124,25 +129,29 @@ $(async () => {
             filter4 = new RegExp('^' + config['filetype4-extension'] + '$'),
             filter5 = new RegExp('^' + config['filetype5-extension'] + '$'),
             filter6 = new RegExp('^' + config['filetype6-extension'] + '$');
-            // inital souce-filetype
+            // initial source-filetype
             if (config['remember-source-filetype'])
                 config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
-            // inital souce-keyword
+            // initial source-keyword
             if (config['remember-source-keyword']) {
                 $('#filter-expression').val(config['source-keyword-value']);
                 $('#filter-regex').prop('checked', config['source-regex-value']);
             }
-            // inital souce-referer
-            if (!config['remember-source-referer']
-                || config['remember-source-referer'] && config['source-referer-default-value'])
+            // initial source-referer
+            if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
                 $('#dl-source-referer-default').click();
             else if (config['remember-source-referer']) {
                 $('#dl-source-referer-default').prop('checked', false);
                 $('#dl-source-referer').val(config['source-referer-value']);
             }
-            // inital souce-location
-            if (config['remember-source-location']) $('#dl-source-location').val(config['source-location-value']);
+            // initial source-filename
+            if (config['remember-source-filename'])
+                $('#dl-source-filename').val(config['source-filename-value']);
+            // initial source-location
+            if (config['remember-source-location'])
+                $('#dl-source-location').val(config['source-location-value']);
             // initial location sample
+            $('#dl-source-filename')[0].dispatchEvent(new Event('input'));
             $('#dl-source-location')[0].dispatchEvent(new Event('input'));
             // tab color
             checkActiveFilter();
@@ -190,13 +199,22 @@ $(async () => {
             }
         });
     // filename validation
-    $('#dl-single-filename')
+    $('#dl-single-filename, #dl-source-filename')
         .on('input', function() {
             var valid = allowFilename.test(this.value);
             $(this).toggleClass('is-invalid', !valid);
             // sample
-            if (valid) $('#dl-single-filename-sample').text(bg.replaceTags(this.value));
-            else $('#dl-single-filename-sample').text('');
+            if (valid) $('#' + this.id + '-sample').text(
+                bg.replaceTags(
+                    this.value,
+                    'http://www.example.com/path/name/',
+                    this.id == 'dl-source-filename' ? baseurl : '',
+                    'tag',
+                    'title',
+                    'filename',
+                    '.ext'
+                ));
+            else $('#' + this.id + '-sample').text('');
         });
     // location validation
     $('#dl-single-location, #dl-multiple-location, #dl-source-location')
@@ -206,11 +224,16 @@ $(async () => {
                 valid = allowLocation.test(location) && !denyLocation.test(location);
             $(this).toggleClass('is-invalid', !valid);
             // sample
-            if (valid) $('#' + this.id + '-sample').text(bg.replaceTags(
-                location,
-                'http://www.example.com/path/name/',
-                this.id == 'dl-source-location' ? baseurl : ''
-            ));
+            if (valid) $('#' + this.id + '-sample').text(
+                bg.replaceTags(
+                    location,
+                    'http://www.example.com/path/name/',
+                    this.id == 'dl-source-location' ? baseurl : '',
+                    'tag',
+                    'title',
+                    'filename',
+                    'ext'
+                ));
             else $('#' + this.id + '-sample').text('');
         });
 
@@ -237,26 +260,29 @@ async function download()
 
     switch (target) {
     case 'single':
+        const targetUrl = $('#dl-single-url').val();
         // check invalid
-        if (!$('#dl-single-url').val() || $('#single').find('.is-invalid').length) return;
+        if (!targetUrl || $('#single').find('.is-invalid').length) return;
         // download
         bg.downloadFile(
-            $('#dl-single-url').val(),
+            targetUrl,
             [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
-            bg.replaceTags(
+            bg.replaceTags( // location
                 bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
-                $('#dl-single-url').val()
+                targetUrl, null, null, null, ':name:', ':ext:'
             ),
-            bg.replaceTags(
+            bg.replaceTags( // filename
                 $('#dl-single-filename').val(),
-                $('#dl-single-url').val()
-            ));
+                targetUrl, null, null, null, ':name:', ':ext:'
+            )
+        );
 
         // config save
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
         if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
         break;
+
     case 'multiple':
         // check invalid
         if ($('#multiple').find('.is-invalid').length) return;
@@ -265,16 +291,20 @@ async function download()
             bg.downloadFile(
                 url,
                 [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
-                bg.replaceTags(
+                bg.replaceTags( // location
                     bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
-                    url
+                    url, null, null, null, ':name:', ':ext:'
                 ),
-                ''
+                bg.replaceTags( // filename
+                    $('#dl-multiple-filename').val(),
+                    url, null, null, null, ':name:', ':ext:'
+                )
             );
         });
 
         // config save
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
+        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-multiple-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
         break;
     }
@@ -292,15 +322,20 @@ async function sourceDownload()
     if ($('#source').find('.is-invalid').length) return;
     // download
     $('#source-list .source-item:not(#source-item-template) .source-url input:checked').each(function() {
+        const targetUrl = this.value,
+              tag = $(this).closest('.row').children('.source-tag').text(),
+              title = $(this).closest('.row').children('.source-title').text() || defaultTitle;
         bg.downloadFile(
-            this.value,
+            targetUrl,
             [{ name : 'X-DAS-Referer', value : $('#dl-source-referer').val() }],
-            bg.replaceTags(
+            bg.replaceTags( // location
                 bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
-                this.value,
-                baseurl
+                targetUrl, baseurl, tag, null, ':name:', ':ext:'
             ),
-            ''
+            bg.replaceTags( // filename
+                $('#dl-source-filename').val(),
+                targetUrl, baseurl, tag, title, ':name:', ':ext:'
+            )
         );
     });
 
@@ -314,6 +349,7 @@ async function sourceDownload()
         bg.config.setPref('source-keyword-value', $('#filter-expression').val());
         bg.config.setPref('source-regex-value', $('#filter-regex').prop('checked'));
     }
+    if (config['remember-source-filename']) bg.config.setPref('source-filename-value', $('#dl-source-filename').val());
     if (config['remember-source-referer']) {
         if ($('#dl-source-referer-default').prop('checked'))
             bg.config.setPref('source-referer-default-value', true);
@@ -523,14 +559,12 @@ function updateSourceList()
 function outputSourceList()
 {
     const $template = $('#source-item-template');
+    // run all filter
+    const list = sortSourceList(filterSourceList(filterTypeSourceList(filterDuplicateSourceList())));
 
     // all checkbox uncheck
     $('#source-all').prop('checked', false);
     $('#source-download-button1, #source-download-button2').attr('data-count', 0);
-
-    // all filter
-    var list = sortSourceList(filterSourceList(filterTypeSourceList(filterDuplicateSourceList())));
-
     // clear list
     $('#source-list > .source-item:not(#source-item-template)').remove();
 
@@ -556,14 +590,12 @@ function outputSourceList()
 
 function sortSourceList(filteredSource)
 {
-    var list = filteredSource || Array.from(source),
-        sortkey,
-        order;
+    const list = filteredSource || Array.from(source),
+          $sort = $('#sort-url, #sort-filetype, #sort-tag').filter('[data-order!=""]');
 
-    var $sort = $('#sort-url, #sort-filetype, #sort-tag').filter('[data-order!=""]');
     if ($sort.length) {
-        sortkey = $sort[0].id.replace(/^sort-/, '');
-        order = $sort.attr('data-order');
+        let sortkey = $sort[0].id.replace(/^sort-/, ''),
+            order = $sort.attr('data-order');
 
         list.sort((a, b) => {
             if (a[sortkey] < b[sortkey]) return -1 * (order == 'asc' ? 1 : -1);
@@ -578,11 +610,11 @@ function sortSourceList(filteredSource)
 function filterSourceList(filteredSource)
 {
     const $filterExpression = $('#filter-expression'),
-          $filterRegex = $('#filter-regex');
+          $filterRegex = $('#filter-regex'),
+          list = filteredSource || source,
+          regexFlag = $filterRegex.prop('checked');
 
-    var list = filteredSource || source,
-        filtered,
-        regexFlag = $filterRegex.prop('checked');
+    var filtered;
 
     if (regexFlag) {
         try {
@@ -605,8 +637,9 @@ function filterSourceList(filteredSource)
 
 function filterTypeSourceList(filteredSource)
 {
-    var list = filteredSource || source,
-        filtered;
+    const list = filteredSource || source;
+
+    var filtered;
 
     if ($('#filter-filetype1').prop('checked') || $('#filter-filetype2').prop('checked') || $('#filter-filetype3').prop('checked')
         || $('#filter-filetype4').prop('checked') || $('#filter-filetype5').prop('checked') || $('#filter-filetype6').prop('checked')) {
@@ -629,13 +662,10 @@ function filterTypeSourceList(filteredSource)
 
 function filterDuplicateSourceList(filteredSource)
 {
-    var list = filteredSource || source,
-        filtered,
-        hide = $('#filter-dup').prop('checked');
+    const list = filteredSource || source,
+          hide = $('#filter-dup').prop('checked');
 
-    filtered = hide ? list.filter(ele => ele.order == 0) : list;
-
-    return filtered;
+    return hide ? list.filter(ele => ele.order == 0) : list;
 }
 
 function checkActiveFilter()

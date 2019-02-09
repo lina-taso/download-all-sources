@@ -164,22 +164,26 @@
                                 <div class="form-group">
                                     <div class="card collapse" id="dl-single-filename-tags">
                                         <div class="card-body">
-                                            <h4 class="card-title" data-string="Filename_tags"></h4>
+                                            <h4 class="card-title" data-string="filename_tags"></h4>
                                             <dl class="row">
-                                                <dt class="col-md-2 col-4">:Y:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-md-2 col-4">:M:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-md-2 col-4">:D:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-md-2 col-4">:h:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_hour"></dd>
-                                                <dt class="col-md-2 col-4">:m:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_minute"></dd>
-                                                <dt class="col-md-2 col-4">:s:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_second"></dd>
-                                                <dt class="col-md-2 col-4">:dom:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-3">:Y:</dt>
+                                                <dd class="col-9" data-string="tag_year"></dd>
+                                                <dt class="col-3">:M:</dt>
+                                                <dd class="col-9" data-string="tag_month"></dd>
+                                                <dt class="col-3">:D:</dt>
+                                                <dd class="col-9" data-string="tag_date"></dd>
+                                                <dt class="col-3">:h:</dt>
+                                                <dd class="col-9" data-string="tag_hour"></dd>
+                                                <dt class="col-3">:m:</dt>
+                                                <dd class="col-9" data-string="tag_minute"></dd>
+                                                <dt class="col-3">:s:</dt>
+                                                <dd class="col-9" data-string="tag_second"></dd>
+                                                <dt class="col-3">:dom:</dt>
+                                                <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3">:name:</dt>
+                                                <dd class="col-9" data-string="tag_name"></dd>
+                                                <dt class="col-3">:ext:</dt>
+                                                <dd class="col-9" data-string="tag_ext"></dd>
                                             </dl>
                                         </div>
                                     </div>
@@ -198,26 +202,28 @@
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
-                                                <dt class="col-md-2 col-4">:Y:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-md-2 col-4">:M:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-md-2 col-4">:D:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-md-2 col-4">:h:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_hour"></dd>
-                                                <dt class="col-md-2 col-4">:m:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_minute"></dd>
-                                                <dt class="col-md-2 col-4">:s:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_second"></dd>
-                                                <dt class="col-md-2 col-4">:dom:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
-                                                <dt class="col-md-2 col-4">:path:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_path"></dd>
-                                                <dt class="col-md-2 col-4">/</dt>
-                                                <dd class="col-md-4 col-8">
-                                                    <span data-string="tag_delimiter"></span>
-                                                </dd>
+                                                <dt class="col-3">:Y:</dt>
+                                                <dd class="col-9" data-string="tag_year"></dd>
+                                                <dt class="col-3">:M:</dt>
+                                                <dd class="col-9" data-string="tag_month"></dd>
+                                                <dt class="col-3">:D:</dt>
+                                                <dd class="col-9" data-string="tag_date"></dd>
+                                                <dt class="col-3">:h:</dt>
+                                                <dd class="col-9" data-string="tag_hour"></dd>
+                                                <dt class="col-3">:m:</dt>
+                                                <dd class="col-9" data-string="tag_minute"></dd>
+                                                <dt class="col-3">:s:</dt>
+                                                <dd class="col-9" data-string="tag_second"></dd>
+                                                <dt class="col-3">:dom:</dt>
+                                                <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3">:path:</dt>
+                                                <dd class="col-9" data-string="tag_path"></dd>
+                                                <dt class="col-3">:name:</dt>
+                                                <dd class="col-9" data-string="tag_name"></dd>
+                                                <dt class="col-3">:ext:</dt>
+                                                <dd class="col-9" data-string="tag_ext2"></dd>
+                                                <dt class="col-3">/</dt>
+                                                <dd class="col-9" data-string="tag_delimiter"></dd>
                                             </dl>
                                         </div>
                                     </div>
@@ -235,6 +241,42 @@
                                     <label for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
                                     <input id="dl-multiple-referer" class="form-control">
                                 </div>
+                                <!-- filename -->
+                                <div class="form-group">
+                                    <label for="dl-multiple-filename" data-string="new_download_multiple_filename"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-multiple-filename-tags" aria-expanded="false" aria-controls="dl-multiple-filename-tags"
+                                            data-string="show_filename_tags"></button>
+                                    <input id="dl-multiple-filename" class="form-control">
+                                    <small id="dl-multiple-filename-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-multiple-filename-tags">
+                                        <div class="card-body">
+                                            <h4 class="card-title" data-string="filename_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-3">:Y:</dt>
+                                                <dd class="col-9" data-string="tag_year"></dd>
+                                                <dt class="col-3">:M:</dt>
+                                                <dd class="col-9" data-string="tag_month"></dd>
+                                                <dt class="col-3">:D:</dt>
+                                                <dd class="col-9" data-string="tag_date"></dd>
+                                                <dt class="col-3">:h:</dt>
+                                                <dd class="col-9" data-string="tag_hour"></dd>
+                                                <dt class="col-3">:m:</dt>
+                                                <dd class="col-9" data-string="tag_minute"></dd>
+                                                <dt class="col-3">:s:</dt>
+                                                <dd class="col-9" data-string="tag_second"></dd>
+                                                <dt class="col-3">:dom:</dt>
+                                                <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3">:name:</dt>
+                                                <dd class="col-9" data-string="tag_name"></dd>
+                                                <dt class="col-3">:ext:</dt>
+                                                <dd class="col-9" data-string="tag_ext"></dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
                                 <!-- location -->
                                 <div class="form-group">
                                     <label for="dl-multiple-location" data-string="new_download_multiple_location"></label>
@@ -249,20 +291,28 @@
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
-                                                <dt class="col-md-2 col-4">:y:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-md-2 col-4">:m:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-md-2 col-4">:d:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-md-2 col-4">:dom:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_domain"></dd>
-                                                <dt class="col-md-2 col-4">:path:</dt>
-                                                <dd class="col-md-4 col-8" data-string="tag_path"></dd>
-                                                <dt class="col-md-2 col-4">/</dt>
-                                                <dd class="col-md-4 col-8">
-                                                    <span data-string="tag_delimiter"></span>
-                                                </dd>
+                                                <dt class="col-3">:Y:</dt>
+                                                <dd class="col-9" data-string="tag_year"></dd>
+                                                <dt class="col-3">:M:</dt>
+                                                <dd class="col-9" data-string="tag_month"></dd>
+                                                <dt class="col-3">:D:</dt>
+                                                <dd class="col-9" data-string="tag_date"></dd>
+                                                <dt class="col-3">:h:</dt>
+                                                <dd class="col-9" data-string="tag_hour"></dd>
+                                                <dt class="col-3">:m:</dt>
+                                                <dd class="col-9" data-string="tag_minute"></dd>
+                                                <dt class="col-3">:s:</dt>
+                                                <dd class="col-9" data-string="tag_second"></dd>
+                                                <dt class="col-3">:dom:</dt>
+                                                <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3">:path:</dt>
+                                                <dd class="col-9" data-string="tag_path"></dd>
+                                                <dt class="col-3">:name:</dt>
+                                                <dd class="col-9" data-string="tag_name"></dd>
+                                                <dt class="col-3">:ext:</dt>
+                                                <dd class="col-9" data-string="tag_ext2"></dd>
+                                                <dt class="col-3">/</dt>
+                                                <dd class="col-9" data-string="tag_delimiter"></dd>
                                             </dl>
                                         </div>
                                     </div>
@@ -393,7 +443,7 @@
                         </div>
                         <!-- filter box -->
                         <div id="byFiletype" class="collapse">
-                            <div class="card card-body">
+                            <div class="card card-body d-block">
                                 <div class="container row">
                                     <div class="custom-control custom-checkbox col-lg-4">
                                         <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype1">
@@ -423,7 +473,7 @@
                             </div>
                         </div>
                         <div id="byKeyword" class="collapse">
-                            <div class="card card-body">
+                            <div class="card card-body d-block">
                                 <div class="form-group">
                                     <label for="filter-expression" data-string="source_download_filter_expression"></label>
                                     <input id="filter-expression" class="form-control">
@@ -436,7 +486,7 @@
                         </div>
                         <!-- option box -->
                         <div id="source-download-option" class="collapse">
-                            <div class="card card-body">
+                            <div class="card card-body d-block">
                                 <!-- referer -->
                                 <div class="form-group">
                                     <label for="dl-source-referer" data-string="source_download_option_referer"></label>
@@ -446,6 +496,48 @@
                                     <div class="custom-control custom-checkbox">
                                         <input type="checkbox" class="custom-control-input" id="dl-source-referer-default">
                                         <label class="custom-control-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
+                                    </div>
+                                </div>
+                                <!-- filename -->
+                                <div class="form-group">
+                                    <label for="dl-source-filename" data-string="source_download_option_filename"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
+                                            data-target="#dl-source-filename-tags" aria-expanded="false" aria-controls="dl-source-filename-tags"
+                                            data-string="show_filename_tags"></button>
+                                    <input id="dl-source-filename" class="form-control">
+                                    <small id="dl-source-filename-sample" class="form-text text-muted"></small>
+                                </div>
+                                <div class="form-group">
+                                    <div class="card collapse" id="dl-source-filename-tags">
+                                        <div class="card-body">
+                                        <h4 class="card-title" data-string="filename_tags"></h4>
+                                            <dl class="row">
+                                                <dt class="col-lg-2 col-4">:Y:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-lg-2 col-4">:M:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-lg-2 col-4">:D:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-lg-2 col-4">:h:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
+                                                <dt class="col-lg-2 col-4">:m:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
+                                                <dt class="col-lg-2 col-4">:s:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
+                                                <dt class="col-lg-2 col-4">:dom:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-lg-2 col-4">:refdom:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
+                                                <dt class="col-lg-2 col-4">:tag:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
+                                                <dt class="col-lg-2 col-4">:title:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_title"></dd>
+                                                <dt class="col-lg-2 col-4">:name:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
+                                                <dt class="col-lg-2 col-4">:ext:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_ext"></dd>
+                                            </dl>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- location -->
@@ -462,30 +554,34 @@
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
-                                                <dt class="col-lg-2 col-md-3 col-4">:Y:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:M:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:D:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:h:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_hour"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:m:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_minute"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:s:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_second"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:dom:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_domain"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:path:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_path"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:refdom:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_refdomain"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">:refpath:</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8" data-string="tag_refpath"></dd>
-                                                <dt class="col-lg-2 col-md-3 col-4">/</dt>
-                                                <dd class="col-lg-4 col-md-9 col-8">
-                                                    <span data-string="tag_delimiter"></span>
-                                                </dd>
+                                                <dt class="col-lg-2 col-4">:Y:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
+                                                <dt class="col-lg-2 col-4">:M:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
+                                                <dt class="col-lg-2 col-4">:D:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
+                                                <dt class="col-lg-2 col-4">:h:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
+                                                <dt class="col-lg-2 col-4">:m:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
+                                                <dt class="col-lg-2 col-4">:s:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
+                                                <dt class="col-lg-2 col-4">:dom:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
+                                                <dt class="col-lg-2 col-4">:path:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_path"></dd>
+                                                <dt class="col-lg-2 col-4">:refdom:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
+                                                <dt class="col-lg-2 col-4">:refpath:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_refpath"></dd>
+                                                <dt class="col-lg-2 col-4">:tag:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
+                                                <dt class="col-lg-2 col-4">:name:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
+                                                <dt class="col-lg-2 col-4">:ext:</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_ext2"></dd>
+                                                <dt class="col-lg-2 col-4">/</dt>
+                                                <dd class="col-lg-4 col-8" data-string="tag_delimiter"></dd>
                                             </dl>
                                         </div>
                                     </div>
