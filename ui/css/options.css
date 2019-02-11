@@ -1,5 +1,8 @@
-body,html {
+html {
     font-size: initial;
+}
+body {
+    font-size: 90%;
 }
 h2 {
     margin-bottom: .5em;
