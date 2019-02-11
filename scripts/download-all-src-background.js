@@ -9,7 +9,7 @@ browser.runtime.onStartup.addListener(startup);
 browser.runtime.onInstalled.addListener(install);
 browser.browserAction.onClicked.addListener(onclicked);
 
-const firstrun_url = 'https://www2.filewo.net/wordpress/category/download-all-sources/',
+const firstrun_url = 'https://www2.filewo.net/wordpress/category/products/download-all-sources/',
       origin_url = window.document.URL,
       runCode = `{let urls = {};
 for(let attr of ['src', 'href']) {

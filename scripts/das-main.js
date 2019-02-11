@@ -356,7 +356,7 @@ function updateBadge()
     var downloading = searchQueue({ status : 'downloading' }).length,
         waiting = searchQueue({ status : 'waiting' }).length;
     if (downloading + waiting)
-        browser.browserAction.setBadgeText({ text : downloading + '/' + (downloading + waiting) });
+        browser.browserAction.setBadgeText({ text : (downloading + waiting) });
     else
         browser.browserAction.setBadgeText({ text : '' });
 }
