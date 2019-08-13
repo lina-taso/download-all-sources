@@ -277,7 +277,7 @@
         "message" : "Year (YYYY)"
     },
     "tag_month" : {
-        "message" : "Month (Month)"
+        "message" : "Month (MM)"
     },
     "tag_date" : {
         "message" : "Date (DD)"

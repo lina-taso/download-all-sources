@@ -277,7 +277,7 @@
         "message" : "年 (YYYY)"
     },
     "tag_month" : {
-        "message" : "月 (Month)"
+        "message" : "月 (MM)"
     },
     "tag_date" : {
         "message" : "日 (DD)"
