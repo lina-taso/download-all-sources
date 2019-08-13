@@ -3,6 +3,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>Download All Sources Manager</title>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
@@ -67,14 +68,14 @@
                                 </li>
 
                                 <!-- template -->
-                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-current="">
+                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-current="" tabindex="0">
                                     <div class="row align-items-center">
                                         <div class="item-status   col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
                                             <i class=""></i>
-                                            <i class="item-info-button fas fa-info-circle fa-fw" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
-                                            <i class="item-stop-button far fa-stop-circle fa-fw" data-toggle="modal" data-target="#confirm-dialog" data-dlid=""></i>
-                                            <i class="item-redo-button fas fa-redo fa-fw" data-dlid=""></i>
-                                            <i class="item-delete-button fas fa-trash fa-fw" data-dlid=""></i>
+                                            <i class="item-info-button fas fa-info-circle" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
+                                            <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-dlid=""></i>
+                                            <i class="item-redo-button fas fa-redo" data-dlid=""></i>
+                                            <i class="item-delete-button fas fa-trash" data-dlid=""></i>
                                         </div>
                                         <div class="item-filename col-lg-5 col-md-6 col-10"></div>
                                         <div class="progress      col-lg-2 d-none d-lg-flex px-0">
@@ -119,6 +120,10 @@
                     </div>
                 </div>
             </div>
+            <nav class="navbar navbar-dark bg-dark fixed-bottom">
+                <span class="navbar-text ml-auto" data-string="footer_total_speed"></span>
+                <span id="total-speed" class="navbar-text">-</span>
+            </nav>
         </div>
 
         <!-- new download modal -->
@@ -370,7 +375,7 @@
                                     <input id="detail-status-url" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
                                 </div>
                                 <div class="row">
-                                    <label for="" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_progress"></label>
+                                    <label for="detail-status-progress" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_progress"></label>
                                     <div class="col-lg-9 col-md-8 col-12 d-flex align-items-center">
                                         <div class="progress flex-fill">
                                             <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info" role="progressbar"></div>
@@ -384,6 +389,11 @@
                                 <div class="row">
                                     <label for="detail-status-total" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_total"></label>
                                     <input id="detail-status-total" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-detail" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_detail"></label>
+                                    <div id="detail-status-detail" class="col-lg-9 col-md-8 col-12 d-flex align-items-center">
+                                    </div>
                                 </div>
                             </div>
                             <!-- info -->

@@ -70,6 +70,47 @@
                     <div id="simultaneous-per-server-label" class="col-1">16</div>
                 </div>
             </div>
+            <div class="form-group">
+                <label for="retry-count" data-string="options_retry_count"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="retry-count" type="range" class="custom-range" min="1" max="10" value="4">
+                    </div>
+                    <div id="retry-count-label" class="col-1">4</div>
+                </div>
+            </div>
+
+            <h2 data-string="options_multithread"></h2>
+            <div class="form-group">
+                <p class="form-text text-muted" data-string="options_multithread_description"></p>
+            </div>
+            <div class="form-group">
+                <label for="split-count" data-string="options_split_count"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="split-count" type="range" class="custom-range" min="1" max="10" value="1">
+                    </div>
+                    <div id="split-count-label" class="col-1">1</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="split-size" data-string="options_split_size"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="split-size" type="range" class="custom-range" min="10" max="200" step="10" value="50">
+                    </div>
+                    <div id="split-size-label" class="col-1">50</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="split-ex-size" data-string="options_split_ex_size"></label>
+                <div class="row">
+                    <div class="col-11">
+                        <input id="split-ex-size" type="range" class="custom-range" min="10" max="100" step="10" value="50">
+                    </div>
+                    <div id="split-ex-size-label" class="col-1">50</div>
+                </div>
+            </div>
 
             <h2 data-string="options_new_parameters"></h2>
             <div class="form-group">
@@ -134,34 +175,34 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td class="col-3"><input id="filetype1-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype1-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype1-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype1-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                     <tr>
-                        <td class="col-3"><input id="filetype2-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype2-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype2-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype2-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                     <tr>
-                        <td class="col-3"><input id="filetype3-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype3-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype3-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype3-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                     <tr>
-                        <td class="col-3"><input id="filetype4-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype4-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype4-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype4-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                     <tr>
-                        <td class="col-3"><input id="filetype5-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype5-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype5-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype5-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                     <tr>
-                        <td class="col-3"><input id="filetype6-label" class="form-control"></td>
-                        <td class="col-7"><input id="filetype6-extension" class="form-control"></td>
-                        <td class="col-2 text-center"><button class="btn btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
+                        <td class="col-3 align-middle"><input id="filetype6-label" class="form-control"></td>
+                        <td class="col-7 align-middle"><input id="filetype6-extension" class="form-control"></td>
+                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
                     </tr>
                 </tbody>
             </table>

@@ -32,10 +32,13 @@
         "message" : "Filesize"
     },
     "list_speed" : {
-        "message" : "Speed"
+        "message" : "Ave. Speed"
     },
     "list_remain" : {
         "message" : "Remain"
+    },
+    "footer_total_speed" : {
+        "message" : "Total Speed:"
     },
     "new_download_title" : {
         "message" : "New Download"
@@ -102,6 +105,9 @@
     },
     "download_detail_total" : {
         "message" : "Total size"
+    },
+    "download_detail_detail" : {
+        "message" : "Detailed progress"
     },
     "download_detail_registered" : {
         "message" : "Registered time"
@@ -196,6 +202,24 @@
     },
     "options_simultaneous_server" : {
         "message" : "Max simultaneous download per server"
+    },
+    "options_retry_count" : {
+        "message" : "Download retry count when failed"
+    },
+    "options_multithread" : {
+        "message" : "Multi-thread parameters"
+    },
+    "options_multithread_description" : {
+        "message" : "[WARNING]\nSimultaneous download doesn't consider splitting.\n\"Max simultaneous download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
+    },
+    "options_split_count" : {
+        "message" : "Split count"
+    },
+    "options_split_size" : {
+        "message" : "Split size (MB)"
+    },
+    "options_split_ex_size" : {
+        "message" : "Max file size not to split (MB)"
     },
     "options_new_parameters" : {
         "message" : "New Download parameters"

@@ -17,15 +17,13 @@ $(async () => {
     localization();
 
     // input range
-    $('#simultaneous-whole').on('input', function() {
-        $('#simultaneous-whole-label').text(this.value);
-    });
-    $('#simultaneous-per-server').on('input', function() {
-        $('#simultaneous-per-server-label').text(this.value);
-    });
+    $('#simultaneous-whole, #simultaneous-per-server, #retry-count, #split-count, #split-size, #split-ex-size')
+        .on('input', function() {
+            $('#' + this.id + '-label').text(this.value);
+        });
 
     // initial preference
-    const config = await bg.config.getPref();
+    const config = bg.config.getPref();
     $('input').each(function () {
         const id = $(this).attr('id');
         switch (this.type) {
@@ -37,8 +35,10 @@ $(async () => {
         }
     });
 
-    $('#simultaneous-whole-label').text($('#simultaneous-whole').val());
-    $('#simultaneous-per-server-label').text($('#simultaneous-per-server').val());
+    $('#simultaneous-whole, #simultaneous-per-server, #retry-count, #split-count, #split-size, #split-ex-size')
+        .each(function() {
+            $('#' + this.id + '-label').text(this.value);
+        });
 
     // input event
     $('input').on('input', function() {

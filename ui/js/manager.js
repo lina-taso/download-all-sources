@@ -6,20 +6,22 @@
  */
 
 // background
-var bg;
+let bg;
 
 // constants
 const progressInterval = 2000,
-      pageTitle = 'Download All Source Manager',
+      TILE_SIZE     = 400,
+      PAGE_TITLE    = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
-      allowUrl = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
+      allowUrl      = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
       allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext):))*$/,
       allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext):))*$/,
-      denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/,
-      defaultTitle = 'no-title';
+      denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
+      defaultTitle  = 'no-title';
 
 // valuables
-var source = [],
+let source     = [],
+    prevLoaded = null, prevLoadedTime = null,
     baseurl,
     filter1, filter2, filter3, filter4, filter5, filter6;
 
@@ -91,6 +93,12 @@ $(async () => {
         });
     // in detail modal
     $('#stop-button').on('click', stopDownload);
+    $('#detail-status-detail').append(() => {
+        const box   = [],
+              $tile = $('<div class="detail-tile" data-status="" />');
+        [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
+        return box;
+    });
     // modal
     $('#source-download')
         .on('show.bs.modal', async () => {
@@ -404,7 +412,7 @@ function updateDetail(init)
     $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
     $('#detail-status-url').val(queue.responseUrl);
     if (queue.total) {
-        let progress = parseInt(queue.loaded / queue.total * 100);
+        let progress = parseInt(queue.loaded() / queue.total * 100);
         $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
         $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
     }
@@ -412,20 +420,30 @@ function updateDetail(init)
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-current').val(queue.loaded.toLocaleString('en-US'));
+    $('#detail-status-current').val(queue.loaded().toLocaleString('en-US'));
+
+    // tile
+    queue.detail().forEach((val, index) => {
+        $('#detail-status-detail').children().eq(index).attr('data-status', val || '');
+    });
 }
 
 function updateList()
 {
     const $template = $('#download-item-template');
 
-    for(let i in bg.downloadQueue) {
-        let queue = bg.downloadQueue[i];
-        let $item;
+    let totalLoaded = 0;
+
+    for (let queue of bg.downloadQueue) {
+        let dlid = queue.id,
+            $item;
+
+        // total speed
+        totalLoaded += queue.loaded();
 
         // listed item
-        if ($('#item-' + i).length) {
-            $item = $('#item-' + i);
+        if ($('#item-' + dlid).length) {
+            $item = $('#item-' + dlid);
 
             switch (queue.status) {
             case 'downloading':
@@ -452,7 +470,8 @@ function updateList()
         }
         // new item
         else {
-            $item = $template.clone(true).attr('id', 'item-' + i);
+            $item = $template.clone(true).attr('id', 'item-' + dlid);
+            $item.find('.item-status > [data-dlid]').attr('data-dlid', dlid);
 
             switch (queue.status) {
             case 'downloading':
@@ -477,16 +496,21 @@ function updateList()
             else if (queue.responseFilename) return queue.responseFilename;
             else return queue.originalUrl;
         });
+        // progress
+        const loaded = queue.loaded();
         if (queue.total)
-            $item.find('.item-progress').css('width', parseInt(queue.loaded/queue.total*100) + '%').text(calcByte(queue.loaded) + ' / ' + calcByte(queue.total));
+            $item.find('.item-progress')
+            .css('width', parseInt(loaded/queue.total*100) + '%')
+            .text(calcByte(loaded) + ' / ' + calcByte(queue.total));
         else
-            $item.find('.item-progress').css('width', '100%').text(calcByte(queue.loaded) + ' / ' + 'unknown');
-        $item.find('.item-speed').text(queue.status != 'downloading' ? '-' : calcBps($item.attr('data-current'), queue.loaded));
-        $item.find('.item-remain').text(queue.status != 'downloading' ? '-' : calcRemain($item.attr('data-current'), queue.loaded, queue.total));
-        $item.attr('data-current', queue.loaded);
-
-        // id
-        $item.find('.item-status > [data-dlid]').attr('data-dlid', i);
+            $item.find('.item-progress').css('width', '100%').text(calcByte(loaded) + ' / ' + 'unknown');
+        // speed
+        $item.find('.item-speed').text(
+            queue.status != 'downloading' ? '-' : calcBps(queue.startTime, loaded)
+        );
+        $item.find('.item-remain').text(
+            queue.status != 'downloading' ? '-' : calcRemain(queue.startTime, loaded, queue.total)
+        );
     }
 
     // badge
@@ -495,7 +519,13 @@ function updateList()
     $('#finished-tab > .badge').text($('#finished-list > li.download-item:not(#download-item-template)').length);
 
     // title
-    document.title = $('#downloading-tab > .badge').text() == '0' ? pageTitle : 'DL:' + $('#downloading-tab > .badge').text() + ' ' + pageTitle;
+    document.title = $('#downloading-tab > .badge').text() == '0' ? PAGE_TITLE : 'DL:' + $('#downloading-tab > .badge').text() + ' ' + PAGE_TITLE;
+
+    // total speed
+    if (prevLoaded != null) $('#total-speed').text(calcBps(prevLoadedTime, totalLoaded - prevLoaded));
+    prevLoaded     = totalLoaded;
+    prevLoadedTime = (new Date()).getTime();
+
 
     function calcByte(byte)
     {
@@ -509,19 +539,23 @@ function updateList()
         byte /= 1024;
         return byte.toFixed(1) + ' TB';
     }
-    function calcBps(prev, current)
+    function calcBps(startTime, loaded)
     {
-        if (!prev) return '0 B/s';
-        prev = parseInt(prev);
-        var Bps = (current - prev) / progressInterval * 1000;
+        const term = (new Date()).getTime() - startTime,
+              Bps  = loaded / term * 1000;
         return calcByte(Bps) + '/s';
     }
-    function calcRemain(prev, current, total)
+    function calcRemain(startTime, loaded, total)
     {
-        if (!prev || !total) return 'unknown';
-        prev = parseInt(prev);
-        if (prev == current) return 'stalled';
-        return Math.floor((total - current) / (current - prev) * progressInterval / 1000) + ' s';
+        if (!loaded || !total) return 'unknown';
+
+        const term   = (new Date()).getTime() - startTime,
+              remain = (total - loaded) / loaded * term / 1000;
+
+        // too long (over 30 days)
+        if (remain > 86400 * 30) return 'stalled';
+
+        return Math.floor(remain) + ' s';
     }
     function classStatus(status, reason)
     {
@@ -548,7 +582,7 @@ function updateSourceList()
         if (!allowProtocol.test(list[url].protocol)) continue;
         for (let i=0; i<list[url].tag.length; i++)
             source.push(Object.assign({}, list[url],
-                                      { tag : list[url].tag[i],
+                                      { tag  : list[url].tag[i],
                                         title : list[url].title[i],
                                         order : i }));
     }
