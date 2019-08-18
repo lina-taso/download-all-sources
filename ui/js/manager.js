@@ -34,8 +34,16 @@ $(async () => {
     $('#download-button').on('click', download);
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
     $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
+    $('#finished-delete-button')
+        .on('click', function() {
+            $('#finished-list').children('.download-item').each(function() {
+                bg.deleteQueue(this.id.split('-')[1]);
+                $(this).remove();
+            });
+        });
     // item
-    $('.item-redo-button').on('click', function() { reDownload(this.dataset.dlid); });
+    $('.item-resume-button').on('click', resumeDownload);
+    $('.item-redo-button').on('click', reDownload);
     $('.item-delete-button')
         .on('click', function() {
             bg.deleteQueue(this.dataset.dlid);
@@ -82,7 +90,7 @@ $(async () => {
         .on('show.bs.modal', function(e) {
             const button = e.relatedTarget;
             this.dataset.dlid = button.dataset.dlid;
-            $('#detail-stop-button').attr('data-dlid', button.dataset.dlid);
+            $('#detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button').attr('data-dlid', button.dataset.dlid);
             updateDetail(true);
             $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
         })
@@ -91,8 +99,9 @@ $(async () => {
             $(this).attr('data-status', '');
             clearInterval($(this).attr('data-timer'));
         });
+    $('#detail-resume-button').on('click', resumeDownload);
+    $('#detail-redo-button').on('click', reDownload);
     // in detail modal
-    $('#stop-button').on('click', stopDownload);
     $('#detail-status-detail').append(() => {
         const box   = [],
               $tile = $('<div class="detail-tile" data-status="" />');
@@ -168,8 +177,24 @@ $(async () => {
     // modal
     $('#confirm-dialog')
         .on('show.bs.modal', function(e) {
-            var button = e.relatedTarget;
-            this.dataset.dlid = button.dataset.dlid;
+            const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
+
+            switch (e.relatedTarget.dataset.action) {
+            case 'stop':
+                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
+                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+                    .off('click')
+                    .on('click', stopDownload);
+                break;
+            case 'pause':
+                bg.downloadQueue[dlid].resumeEnabled
+                    ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
+                    : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
+                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
+                    .off('click')
+                    .on('click', pauseDownload);
+                break;
+            }
         })
         .on('shown.bs.modal', function() {
             $(this).find('[data-focus=true]').focus();
@@ -209,7 +234,7 @@ $(async () => {
     // filename validation
     $('#dl-single-filename, #dl-source-filename')
         .on('input', function() {
-            var valid = allowFilename.test(this.value);
+            const valid = allowFilename.test(this.value);
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
@@ -227,9 +252,9 @@ $(async () => {
     // location validation
     $('#dl-single-location, #dl-multiple-location, #dl-source-location')
         .on('input', async function() {
-            var defaultLocation = await bg.config.getPref('download-location'),
-                location = bg.normalizeLocation(defaultLocation + this.value),
-                valid = allowLocation.test(location) && !denyLocation.test(location);
+            const defaultLocation = await bg.config.getPref('download-location'),
+                  location = bg.normalizeLocation(defaultLocation + this.value),
+                  valid = allowLocation.test(location) && !denyLocation.test(location);
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
@@ -371,19 +396,33 @@ async function sourceDownload()
     $('#source-download').modal('hide');
 }
 
-function reDownload(dlid)
+function reDownload()
 {
+    const dlid = this.dataset.dlid;
+
     bg.downloadFile(
         bg.downloadQueue[dlid].originalUrl,
         bg.downloadQueue[dlid].requestHeaders,
         bg.downloadQueue[dlid].location,
         bg.downloadQueue[dlid].filename
     );
+
+    $('#download-detail').modal('hide');
 }
 
 function stopDownload()
 {
     bg.stopDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function pauseDownload()
+{
+    bg.pauseDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function resumeDownload()
+{
+    bg.resumeDownload(this.dataset.dlid);
 }
 
 function updateDetail(init)
@@ -447,6 +486,7 @@ function updateList()
 
             switch (queue.status) {
             case 'downloading':
+            case 'paused':
             case 'downloaded':
                 if (!$('#downloading-list').has($item).length)
                     $item.appendTo($('#downloading-list'));
@@ -475,6 +515,7 @@ function updateList()
 
             switch (queue.status) {
             case 'downloading':
+            case 'paused':
             case 'downloaded':
                 $item.appendTo($('#downloading-list'));
                 break;
@@ -490,7 +531,10 @@ function updateList()
         }
 
         // update status
-        $item.find('.item-status > :eq(0)').attr('class', classStatus(queue.status, queue.reason));
+        $item.attr({
+            'data-status' : queue.status,
+            'data-reason' : queue.reason
+        });
         $item.find('.item-filename').text(() => {
             if (queue.filename) return queue.filename;
             else if (queue.responseFilename) return queue.responseFilename;
@@ -556,19 +600,6 @@ function updateList()
         if (remain > 86400 * 30) return 'stalled';
 
         return Math.floor(remain) + ' s';
-    }
-    function classStatus(status, reason)
-    {
-        switch (status) {
-        case 'downloading': return 'fas fa-play fa-fw';
-        case 'downloaded':  return 'fas fa-arrow-down fa-fw';
-        case 'waiting':     return 'fas fa-stop fa-fw';
-        case 'finished':
-            if (reason == 'complete') return 'fas fa-check fa-fw';
-            else return 'fas fa-times fa-fw';
-        default:
-            return '';
-        }
     }
 }
 

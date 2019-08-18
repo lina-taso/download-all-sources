@@ -68,12 +68,14 @@
                                 </li>
 
                                 <!-- template -->
-                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-current="" tabindex="0">
+                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-status="" data-reason="" tabindex="0">
                                     <div class="row align-items-center">
                                         <div class="item-status   col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
                                             <i class=""></i>
                                             <i class="item-info-button fas fa-info-circle" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
-                                            <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-dlid=""></i>
+                                            <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid=""></i>
+                                            <i class="item-pause-button far fa-pause-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid=""></i>
+                                            <i class="item-resume-button far fa-play-circle" data-toggle="modal" data-dlid=""></i>
                                             <i class="item-redo-button fas fa-redo" data-dlid=""></i>
                                             <i class="item-delete-button fas fa-trash" data-dlid=""></i>
                                         </div>
@@ -108,7 +110,9 @@
                                 <!-- header -->
                                 <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
                                     <div class="row">
-                                        <div class="col-lg-1 col-md-2 col-2"></div>
+                                        <div class="col-lg-1 col-md-2 col-2">
+                                            <i id="finished-delete-button" class="fas fa-trash"></i>
+                                        </div>
                                         <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
                                         <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
                                         <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_speed"></div>
@@ -422,9 +426,13 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button id="detail-stop-button" type="button" class="btn btn-danger mr-auto"
-                                data-toggle="modal" data-target="#confirm-dialog" data-dlid="" data-string="button_stop"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close"></button>
+                        <button id="detail-stop-button" type="button" class="btn btn-danger"
+                                data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid="" data-string="button_stop"></button>
+                        <button id="detail-pause-button" type="button" class="btn btn-warning"
+                                data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid="" data-string="button_pause"></button>
+                        <button id="detail-resume-button" type="button" class="btn btn-info" data-dlid="" data-string="button_resume"></button>
+                        <button id="detail-redo-button" type="button" class="btn btn-light" data-dlid="" data-string="button_redo"></button>
+                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-string="button_close"></button>
                     </div>
                 </div>
             </div>
@@ -660,10 +668,10 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body" data-string="confirm_stop_download"></div>
+                    <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button id="stop-button" type="button" class="btn btn-danger" data-dismiss="modal" data-focus="true" data-string="button_stop">Stop</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_cancel">Cancel</button>
+                        <button type="button" class="modal-action-button btn btn-danger" data-dismiss="modal" data-focus="true"></button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_cancel"></button>
                     </div>
                 </div>
             </div>

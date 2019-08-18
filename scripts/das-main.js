@@ -145,8 +145,7 @@ function createXhr(dlid, index, start, end)
 
     datum.xhr.open('GET', queue.originalUrl);
     datum.xhr.responseType = 'blob';
-    for (let header of queue.requestHeaders)
-        datum.xhr.setRequestHeader(header.name, header.value);
+    queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
     // range
     if (end) datum.xhr.setRequestHeader('Range', 'bytes=' + start + '-' + end);
@@ -168,7 +167,7 @@ function createXhr(dlid, index, start, end)
         datum.xhr    = undefined;
 
         // update download queue
-        downloadPartialCompleted(dlid);
+        partialDownloadCompleted(dlid);
     }
     function onabort()
     {
@@ -182,51 +181,15 @@ function createXhr(dlid, index, start, end)
         DEBUG && console.trace({ dlid : dlid, index : index, message : 'ontimeout' });
 
         datum.status = 'timeout';
-        retry();
+        retryPartialDownload(dlid, index);
+        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onerror()
     {
         DEBUG && console.trace({ dlid : dlid, index : index, message : 'onerror' });
 
         datum.status = 'error';
-        retry();
-    }
-    async function retry()
-    {
-        if (datum.retry >= config.getPref('retry-count')) {
-            datum.xhr = undefined;
-            downloadFailed(dlid, datum.status);
-            return;
-        }
-
-        // update progress
-        datum.status = 'retrying';
-        datum.loaded = 0;
-        // wait
-        await new Promise(resolve => { setTimeout(resolve, RETRY_WAIT); });
-
-        // retry
-        datum.retry++;
-
-        // xhr events
-        datum.xhr.addEventListener('load',     onload);  // completed
-        datum.xhr.addEventListener('abort',    onabort); // manually stop
-        datum.xhr.addEventListener('timeout',  ontimeout);
-        datum.xhr.addEventListener('error',    onerror);
-        datum.xhr.addEventListener('progress', onprogress);
-
-        //datum.xhr.open('GET', queue.originalUrl);
-        datum.xhr.open('GET', queue.responseUrl);
-        datum.xhr.responseType = 'blob';
-        for (let header of queue.requestHeaders)
-            datum.xhr.setRequestHeader(header.name, header.value);
-
-        // range
-        if (datum.rangeEnd) datum.xhr.setRequestHeader('Range', 'bytes=' + datum.rangeStart + '-' + datum.rangeEnd);
-
-        datum.xhr.send();
-        datum.status = 'downloading';
-
+        retryPartialDownload(dlid, index);
         DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onprogress(e) { datum.loaded = e.loaded; }
@@ -278,26 +241,7 @@ function createXhr(dlid, index, start, end)
 
             // 0th
             datum.rangeEnd = segBytes-1;
-            datum.xhr = new XMLHttpRequest();
-            // xhr events
-            datum.xhr.addEventListener('load',     onload);  // completed
-            datum.xhr.addEventListener('abort',    onabort); // manually stop
-            datum.xhr.addEventListener('timeout',  ontimeout);
-            datum.xhr.addEventListener('error',    onerror);
-            datum.xhr.addEventListener('progress', onprogress);
-
-            //datum.xhr.open('GET', queue.originalUrl);
-            datum.xhr.open('GET', queue.responseUrl);
-            datum.xhr.responseType = 'blob';
-            for (let header of queue.requestHeaders)
-                datum.xhr.setRequestHeader(header.name, header.value);
-
-            // range
-            datum.xhr.setRequestHeader('Range', 'bytes=0-' + datum.rangeEnd);
-
-            datum.xhr.send();
-            datum.status = 'downloading';
-
+            restartXhr(dlid, index);
             DEBUG && console.trace({ dlid : dlid, index : index, message : 'download re-started.' });
 
             if (splitCount == 1) return;
@@ -340,11 +284,9 @@ function createXhr(dlid, index, start, end)
             datum.xhr.addEventListener('progress', onprogress);
             datum.xhr.addEventListener('readystatechange', onreadystatechange2);
 
-            //datum.xhr.open('GET', queue.originalUrl);
             datum.xhr.open('GET', queue.responseUrl);
             datum.xhr.responseType = 'blob';
-            for (let header of queue.requestHeaders)
-                datum.xhr.setRequestHeader(header.name, header.value);
+            queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
             // range
             datum.xhr.setRequestHeader('Range', 'bytes=0-' + datum.rangeEnd);
@@ -396,36 +338,137 @@ function createXhr(dlid, index, start, end)
     }
 }
 
+function restartXhr(dlid, index)
+{
+    const queue = downloadQueue[dlid],
+          datum = queue.data[index];
+
+    datum.xhr = new XMLHttpRequest();
+    // xhr events
+    datum.xhr.addEventListener('load',     onload);  // completed
+    datum.xhr.addEventListener('abort',    onabort); // manually stop
+    datum.xhr.addEventListener('timeout',  ontimeout);
+    datum.xhr.addEventListener('error',    onerror);
+    datum.xhr.addEventListener('progress', onprogress);
+
+    datum.xhr.open('GET', queue.responseUrl);
+    datum.xhr.responseType = 'blob';
+    for (let header of queue.requestHeaders)
+        datum.xhr.setRequestHeader(header.name, header.value);
+
+    // range
+    if (datum.rangeEnd) datum.xhr.setRequestHeader('Range', 'bytes=' + datum.rangeStart + '-' + datum.rangeEnd);
+
+    datum.xhr.send();
+    datum.status = 'downloading';
+
+    function onload(e)
+    {
+        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onload' });
+        // update progress
+        datum.status = 'complete';
+        datum.blob   = this.response;
+        datum.loaded = this.response.size;
+        datum.xhr    = undefined;
+
+        // update download queue
+        partialDownloadCompleted(dlid);
+    }
+    function onabort()
+    {
+        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onabort' });
+
+        datum.status = 'abort';
+        datum.xhr    = undefined;
+    }
+    function ontimeout()
+    {
+        DEBUG && console.trace({ dlid : dlid, index : index, message : 'ontimeout' });
+
+        datum.status = 'timeout';
+        retryPartialDownload(dlid, index);
+        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
+    }
+    function onerror()
+    {
+        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onerror' });
+
+        datum.status = 'error';
+        retryPartialDownload(dlid, index);
+        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
+    }
+    function onprogress(e) { datum.loaded = e.loaded; }
+}
+
+async function retryPartialDownload(dlid, index)
+{
+    const queue = downloadQueue[dlid],
+          datum = queue.data[index];
+
+    if (datum.retry >= config.getPref('retry-count')) {
+        datum.xhr = undefined;
+        downloadFailed(dlid, datum.status);
+        return;
+    }
+
+    // update progress
+    datum.status = 'retrying';
+    datum.loaded = 0;
+    // wait
+    await new Promise(resolve => { setTimeout(resolve, RETRY_WAIT); });
+
+    // retry
+    datum.retry++;
+    restartXhr(dlid, index);
+}
+
 function stopDownload(dlid)
 {
     const queue = downloadQueue[dlid];
-    if (queue.status == 'downloading')
-        for (let datum of queue.data) datum.xhr && datum.xhr.abort();
-    downloadCancelled(dlid);
-}
 
-function downloadCancelled(dlid)
-{
-    downloadQueue[dlid].status  = 'finished';
-    downloadQueue[dlid].reason  = 'cancelled';
-    downloadQueue[dlid].endTime = (new Date()).getTime();
+    if (queue.status == 'downloading')
+        // abort all xhr
+        queue.data.forEach(datum => datum.xhr && datum.xhr.abort());
+    queue.data.forEach(datum => datum.blob = undefined);
+
+    queue.status  = 'finished';
+    queue.reason  = 'cancelled';
+    queue.endTime = (new Date()).getTime();
 
     // waiting queue
     checkWaiting();
 }
 
-function pauseQueue(dlid)
+function pauseDownload(dlid)
 {
+    const queue = downloadQueue[dlid];
+    if (queue.status == 'downloading')
+        // abort all xhr
+        queue.data.forEach((datum) => {
+            if (datum.status == 'downloading') {
+                datum.xhr.abort();
+                datum.loaded = 0;
+            }});
+    queue.status  = 'paused';
+
+    // waiting queue
+    checkWaiting();
 }
 
-function resumeQueue(dlid)
+function resumeDownload(dlid)
 {
+    const queue = downloadQueue[dlid];
+    if (queue.status == 'paused')
+        // restart xhr
+        queue.data.forEach((datum, index) => datum.status == 'abort' && restartXhr(dlid, index));
+    queue.status  = 'downloading';
 }
 
 function deleteQueue(dlid)
 {
     const loaded = downloadQueue[dlid].loaded();
     downloadQueue[dlid] = {
+        id     : dlid,
         status : 'deleted',
         loaded : () => loaded
     };
@@ -440,14 +483,14 @@ function searchQueue(query)
     return result;
 }
 
-function downloadPartialCompleted(dlid)
+function partialDownloadCompleted(dlid)
 {
     const queue       = downloadQueue[dlid],
           splitSize   = config.getPref('split-size') * 1024 * 1024,
           segments    = queue.data.length,
           lastSegSize = queue.data[segments-1].rangeEnd;
 
-    DEBUG && console.trace({ dlid : dlid, lastSegSize : lastSegSize, message : 'partial completed.' });
+    DEBUG && console.trace({ dlid : dlid, lastSegSize : lastSegSize, message : 'partially completed.' });
 
     // there is area not started
     if (lastSegSize && queue.total-1 > lastSegSize) {
@@ -522,7 +565,12 @@ async function downloadCompleted(dlid, blob)
 function downloadFailed(dlid, reason)
 {
     const queue = downloadQueue[dlid];
-        for (let datum of queue.data) datum.xhr && datum.xhr.abort();
+
+    // abort all xhr
+    queue.data.forEach(datum => {
+        datum.xhr && datum.xhr.abort();
+        datum.blob = undefined;
+    });
 
     downloadQueue[dlid].status  = 'finished';
     downloadQueue[dlid].reason  = reason || 'unknown error';

@@ -173,7 +173,13 @@
         "message" : "Confirm"
     },
     "confirm_stop_download" : {
-        "message" : "Stop downloading this item?"
+        "message" : "Stop this downloading item?"
+    },
+    "confirm_pause_download_resumable" : {
+        "message" : "Pause this downloading item?\nThe download incomplete part will be lost in divided capacity units, if you pause."
+    },
+    "confirm_pause_download_nonresumable" : {
+        "message" : "Pause this downloading item?\nThe all downloaded part will be lost, because this file can't download from the middle."
     },
     "show_filename_tags" : {
         "message" : "Show tags for filename"
@@ -332,6 +338,15 @@
     },
     "button_stop" : {
         "message" : "Stop"
+    },
+    "button_pause" : {
+        "message" : "Pause"
+    },
+    "button_resume" : {
+        "message" : "Resume"
+    },
+    "button_redo" : {
+        "message" : "Redo"
     },
     "button_cancel" : {
         "message" : "Cancel"

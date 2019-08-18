@@ -19,6 +19,11 @@ html, body {
     white-space: pre-line;
 }
 
+/* list header */
+#finished-delete-button {
+    cursor: pointer;
+}
+
 /* template */
 #download-item-template, #source-item-template {
     display: none;
@@ -48,32 +53,69 @@ html, body {
 .item-status:hover > :hover {
     font-size: 1.25rem;
 }
+.download-item .item-status > :first-child {
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-style: normal;
+    font-variant: normal;
+    font-rendering: auto;
+    line-height: 1;
+}
+.download-item[data-status="downloading"] .item-status > :first-child::before {
+    content: '\f04b';
+}
+.download-item[data-status="paused"] .item-status > :first-child::before {
+    content: '\f04c';
+}
+.download-item[data-status="downloaded"] .item-status > :first-child::before {
+    content: '\f063';
+}
+.download-item[data-status="waiting"] .item-status > :first-child::before {
+    content: '\f04d';
+}
+.download-item[data-status="finished"] .item-status > :first-child::before {
+    content: '\f00d';
+}
+.download-item[data-status="finished"][data-reason="complete"] .item-status > :first-child::before {
+    content: '\f00c';
+}
 .download-item:focus .item-status > :first-child {
     display: none;
 }
-.item-status:hover > :first-child {
+.download-item .item-status:hover > :first-child {
     display: none;
 }
 .download-item:focus .item-status > .item-info-button {
     display: inline;
 }
-.item-status:hover > .item-info-button {
+.download-item .item-status:hover > .item-info-button {
     display: inline;
 }
 #downloading-list .download-item:focus .item-status > .item-stop-button,
 #waiting-list .download-item:focus .item-status > .item-stop-button {
     display: inline;
 }
-#downloading-list .item-status:hover > .item-stop-button,
-#waiting-list .item-status:hover > .item-stop-button {
+#downloading-list .download-item .item-status:hover > .item-stop-button,
+#waiting-list .download-item .item-status:hover > .item-stop-button {
+    display: inline;
+}
+#downloading-list .download-item[data-status="downloading"]:focus .item-status > .item-pause-button {
+    display: inline;
+}
+#downloading-list .download-item[data-status="downloading"] .item-status:hover > .item-pause-button {
+    display: inline;
+}
+#downloading-list .download-item[data-status="paused"]:focus .item-status > .item-resume-button {
+    display: inline;
+}
+#downloading-list .download-item[data-status="paused"] .item-status:hover > .item-resume-button {
     display: inline;
 }
 #finished-list .download-item:focus .item-status > .item-redo-button,
 #finished-list .download-item:focus .item-status > .item-delete-button {
     display: inline;
 }
-#finished-list .item-status:hover > .item-redo-button,
-#finished-list .item-status:hover > .item-delete-button {
+#finished-list .download-item .item-status:hover > .item-redo-button,
+#finished-list .download-item .item-status:hover > .item-delete-button {
     display: inline;
 }
 
@@ -82,11 +124,26 @@ html, body {
     animation: progress-bar-stripes 1s linear infinite;
 }
 
+/* confirm modal */
+#confirm-dialog .modal-body {
+    white-space: pre-wrap;
+}
+
 /* download-detail modal */
 #download-detail[data-status="downloading"] #detail-status-progress {
     animation: progress-bar-stripes 1s linear infinite;
 }
-#download-detail[data-status="finished"] #detail-stop-button {
+#download-detail[data-status="finished"] #detail-stop-button,
+#download-detail[data-status="finished"] #detail-pause-button,
+#download-detail[data-status="finished"] #detail-resume-button {
+    display: none;
+}
+#download-detail[data-status="downloading"] #detail-resume-button,
+#download-detail[data-status="downloading"] #detail-redo-button {
+    display: none;
+}
+#download-detail[data-status="paused"] #detail-pause-button,
+#download-detail[data-status="paused"] #detail-redo-button {
     display: none;
 }
 #detail-status-detail {

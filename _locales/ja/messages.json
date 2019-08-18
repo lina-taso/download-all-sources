@@ -175,6 +175,12 @@
     "confirm_stop_download" : {
         "message" : "このダウンロードを停止しますか？"
     },
+    "confirm_pause_download_resumable" : {
+        "message" : "このダウンロードを中断しますか？\n中断すると、ダウンロードを分割した容量単位でダウンロード未完了の部分が失われます。"
+    },
+    "confirm_pause_download_nonresumable" : {
+        "message" : "このダウンロードを中断しますか？\nこのファイルは中断すると途中から再開できないため、ダウンロード完了部分が全て失われます。"
+    },
     "show_filename_tags" : {
         "message" : "ファイル名タグを表示"
     },
@@ -329,6 +335,15 @@
     },
     "button_stop" : {
         "message" : "停止"
+    },
+    "button_pause" : {
+        "message" : "中断"
+    },
+    "button_resume" : {
+        "message" : "再開"
+    },
+    "button_redo" : {
+        "message" : "やり直し"
     },
     "button_cancel" : {
         "message" : "キャンセル"
