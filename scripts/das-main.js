@@ -523,6 +523,8 @@ function partialDownloadCompleted(dlid)
 
 async function downloadCompleted(dlid, blob)
 {
+    DEBUG && console.trace({ dlid : dlid, message : 'download completed.' });
+
     // filename
     let filename;
     // specified filename
@@ -564,6 +566,8 @@ async function downloadCompleted(dlid, blob)
 
 function downloadFailed(dlid, reason)
 {
+    DEBUG && console.trace({ dlid : dlid, message : 'download failed.' });
+
     const queue = downloadQueue[dlid];
 
     // abort all xhr
