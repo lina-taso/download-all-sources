@@ -143,7 +143,7 @@ function createXhr(dlid, index, start, end)
         // readystatechange
         datum.xhr.addEventListener('readystatechange', onreadystatechange);
 
-    datum.xhr.open('GET', queue.originalUrl);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl);
     datum.xhr.responseType = 'blob';
     queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -153,13 +153,22 @@ function createXhr(dlid, index, start, end)
     datum.xhr.send();
     datum.status = 'downloading';
 
-    DEBUG && console.trace({ dlid : dlid, index : index, message : 'download started.' });
+    DEBUG && console.log({ dlid : dlid, index : index, message : 'download started.' });
 
     return datum;
 
     function onload(e)
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onload' });
+        // check downloaded size
+        if (datum.rangeEnd && datum.rangeEnd - datum.rangeStart + 1 != this.response.size) {
+            DEBUG && console.log({ dlid : dlid, index : index, rangestart : datum.rangeStart, rangeend : datum.rangeEnd, loaded : datum.loaded, message : 'onload, size mismatch' });
+
+            datum.status = 'size mismatch';
+            retryPartialDownload(dlid, index);
+            return;
+        }
+
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
         // update progress
         datum.status = 'complete';
         datum.blob   = this.response;
@@ -171,26 +180,24 @@ function createXhr(dlid, index, start, end)
     }
     function onabort()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onabort' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onabort' });
 
         datum.status = 'abort';
         datum.xhr    = undefined;
     }
     function ontimeout()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'ontimeout' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'ontimeout' });
 
         datum.status = 'timeout';
         retryPartialDownload(dlid, index);
-        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onerror()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onerror' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onerror' });
 
         datum.status = 'error';
         retryPartialDownload(dlid, index);
-        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onprogress(e) { datum.loaded = e.loaded; }
     // for first xhr
@@ -198,7 +205,7 @@ function createXhr(dlid, index, start, end)
     {
         if (this.readyState != 2) return;
         this.removeEventListener('readystatechange', onreadystatechange);
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'readystate 2' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'readystate 2' });
 
         // update download queue (url & filename)
         let url = new URL(this.responseURL);
@@ -233,7 +240,7 @@ function createXhr(dlid, index, start, end)
             queue.resumeEnabled = true;
             this.abort();
 
-            DEBUG && console.trace({ dlid : dlid, index : index, message : 'resumable. initial download aborted.' });
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'resumable. initial download aborted.' });
 
             // start multi-thread download
             const segBytes= queue.total >= splitSize * splitCount
@@ -242,7 +249,7 @@ function createXhr(dlid, index, start, end)
             // 0th
             datum.rangeEnd = segBytes-1;
             restartXhr(dlid, index);
-            DEBUG && console.trace({ dlid : dlid, index : index, message : 'download re-started.' });
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'download re-started.' });
 
             if (splitCount == 1) return;
             // 1st...N-1th
@@ -267,7 +274,7 @@ function createXhr(dlid, index, start, end)
             queue.resumeEnabled = true;
             this.abort();
 
-            DEBUG && console.trace({ dlid : dlid, index : index, message : 'resumable? initial download aborted.' });
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'resumable? initial download aborted.' });
 
             // start multi-thread download
             const segBytes= queue.total >= splitSize * splitCount
@@ -294,17 +301,17 @@ function createXhr(dlid, index, start, end)
             datum.xhr.send();
             datum.status = 'downloading';
 
-            DEBUG && console.trace({ dlid : dlid, index : index, message : '2nd download started.' });
+            DEBUG && console.log({ dlid : dlid, index : index, message : '2nd download started.' });
 
             function onreadystatechange2()
             {
                 if (this.readyState != 2) return;
                 this.removeEventListener('readystatechange', onreadystatechange2);
-                DEBUG && console.trace({ dlid : dlid, index : index, message : '2nd readystate 2' });
+                DEBUG && console.log({ dlid : dlid, index : index, message : '2nd readystate 2' });
 
                 if (this.getResponseHeader('accept-ranges') == 'bytes') { // certainly range requestable
 
-                    DEBUG && console.trace({ dlid : dlid, index : index, message : 'certainly resumable.' });
+                    DEBUG && console.log({ dlid : dlid, index : index, message : 'certainly resumable.' });
 
                     // total size (content-range: bytes 0-123456/123457)
                     queue.total = parseInt(this.getResponseHeader('content-range').split('/')[1]);
@@ -327,14 +334,14 @@ function createXhr(dlid, index, start, end)
 
                 // not resumable -> continue download
                 else
-                    DEBUG && console.trace({ dlid : dlid, index : index, message : 'not resumable. 2nd download continued.' });
+                    DEBUG && console.log({ dlid : dlid, index : index, message : 'not resumable. 2nd download continued.' });
 
             }
         } // resumable ?
 
         // non resumable -> continue download
         else
-            DEBUG && console.trace({ dlid : dlid, index : index, message : 'not resumable. initial download continued.' });
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'not resumable. initial download continued.' });
     }
 }
 
@@ -364,7 +371,16 @@ function restartXhr(dlid, index)
 
     function onload(e)
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onload' });
+        // check downloaded size
+        if (datum.rangeEnd && datum.rangeEnd - datum.rangeStart + 1 != this.response.size) {
+            DEBUG && console.log({ dlid : dlid, index : index, rangestart : datum.rangeStart, rangeend : datum.rangeEnd, loaded : datum.loaded, message : 'onload, size mismatch' });
+
+            datum.status = 'size mismatch';
+            retryPartialDownload(dlid, index);
+            return;
+        }
+
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
         // update progress
         datum.status = 'complete';
         datum.blob   = this.response;
@@ -376,26 +392,24 @@ function restartXhr(dlid, index)
     }
     function onabort()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onabort' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onabort' });
 
         datum.status = 'abort';
         datum.xhr    = undefined;
     }
     function ontimeout()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'ontimeout' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'ontimeout' });
 
         datum.status = 'timeout';
         retryPartialDownload(dlid, index);
-        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onerror()
     {
-        DEBUG && console.trace({ dlid : dlid, index : index, message : 'onerror' });
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onerror' });
 
         datum.status = 'error';
         retryPartialDownload(dlid, index);
-        DEBUG && console.trace({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download started.' });
     }
     function onprogress(e) { datum.loaded = e.loaded; }
 }
@@ -406,10 +420,14 @@ async function retryPartialDownload(dlid, index)
           datum = queue.data[index];
 
     if (datum.retry >= config.getPref('retry-count')) {
+        DEBUG && console.log({ dlid : dlid, index : index, retry : datum.retry, message : 'give up retrying download' });
+
         datum.xhr = undefined;
         downloadFailed(dlid, datum.status);
         return;
     }
+
+    DEBUG && console.log({ dlid : dlid, index : index, retry : datum.retry, message : 'retry download waiting...' });
 
     // update progress
     datum.status = 'retrying';
@@ -490,7 +508,7 @@ function partialDownloadCompleted(dlid)
           segments    = queue.data.length,
           lastSegSize = queue.data[segments-1].rangeEnd;
 
-    DEBUG && console.trace({ dlid : dlid, lastSegSize : lastSegSize, message : 'partially completed.' });
+    DEBUG && console.log({ dlid : dlid, lastSegSize : lastSegSize, message : 'partially completed.' });
 
     // there is area not started
     if (lastSegSize && queue.total-1 > lastSegSize) {
@@ -523,7 +541,7 @@ function partialDownloadCompleted(dlid)
 
 async function downloadCompleted(dlid, blob)
 {
-    DEBUG && console.trace({ dlid : dlid, message : 'download completed.' });
+    DEBUG && console.log({ dlid : dlid, message : 'download completed.' });
 
     // filename
     let filename;
@@ -566,7 +584,7 @@ async function downloadCompleted(dlid, blob)
 
 function downloadFailed(dlid, reason)
 {
-    DEBUG && console.trace({ dlid : dlid, message : 'download failed.' });
+    DEBUG && console.log({ dlid : dlid, message : 'download failed.' });
 
     const queue = downloadQueue[dlid];
 
