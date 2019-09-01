@@ -111,7 +111,6 @@ $(async () => {
     // modal
     $('#source-download')
         .on('show.bs.modal', async () => {
-            updateSourceList();
             // only once
             $('#source-all').on('input', function() {
                 if (this.checked)
@@ -277,8 +276,15 @@ $(async () => {
     case '#finished':
         $('[href="'+document.location.hash+'"]').tab('show');
         break;
+    case '#new':
+        $('#new-download').modal('show');
+        $('#dl-single-url').val(bg.lastSource.link);
+        $('#dl-single-referer').val(bg.lastSource.baseurl);
+        bg.lastSource = {};
+        break;
     case '#source':
         $('#source-download').modal('show');
+        updateSourceList();
         break;
     default:
     };

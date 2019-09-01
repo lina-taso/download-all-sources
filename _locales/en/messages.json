@@ -9,8 +9,17 @@
         "message" : "Download all links and sources in a page."
     },
 
+    "browser_action" : {
+        "message" : "Open Manager (Download All Sources)"
+    },
     "menus_download" : {
-        "message" : "&Download All Sources..."
+        "message" : "&Download all sources..."
+    },
+    "menus_link_download" : {
+        "message" : "&Download this link..."
+    },
+    "menus_selection_download" : {
+        "message" : "&Download selected links..."
     },
 
     //

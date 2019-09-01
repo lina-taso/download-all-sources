@@ -9,8 +9,17 @@
         "message" : "ページ中の全てのリンク、ソースをダウンロードします。"
     },
 
+    "browser_action" : {
+        "message" : "マネージャーを開く (Download All Sources)"
+    },
     "menus_download" : {
-        "message" : "&Download All Sources..."
+        "message" : "&Download all sources..."
+    },
+    "menus_link_download" : {
+        "message" : "&Download this link..."
+    },
+    "menus_selection_download" : {
+        "message" : "&Download selected links..."
     },
 
     //

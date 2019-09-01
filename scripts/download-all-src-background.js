@@ -21,6 +21,17 @@ for(let attr of ['src', 'href']) {
     urls[url].title.push(ele.title);
   })
 }
+urls};`,
+      runCode2 = `{let urls = {};
+for(let attr of ['src', 'href']) {
+  window.getSelection().getRangeAt(0).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
+    let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+    let url = urlobj.toString();
+    if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
+    urls[url].tag.push(ele.tagName.toLowerCase());
+    urls[url].title.push(ele.title);
+  })
+}
 urls};`;
 
 
@@ -73,9 +84,25 @@ browser.webRequest.onSendHeaders.addListener(function(details) {
 }, { urls : ["<all_urls>"] }, ["requestHeaders"]);
 
 
+// all sources
 browser.contextMenus.create({
     id : 'download-all-src-showlist',
-    title : browser.i18n.getMessage('menus_download')
+    title : browser.i18n.getMessage('menus_download'),
+    contexts : ['page', 'browser_action']
+});
+
+// link
+browser.contextMenus.create({
+    id : 'download-all-src-dllink',
+    title : browser.i18n.getMessage('menus_link_download'),
+    contexts : ['link']
+});
+
+// selection
+browser.contextMenus.create({
+    id : 'download-all-src-dlselect',
+    title : browser.i18n.getMessage('menus_selection_download'),
+    contexts : ['selection']
 });
 
 var lastSource = {};
@@ -87,6 +114,33 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
             code : runCode
         }))[0];
         lastSource = { list : list, baseurl : '' };
+
+        // base url
+        lastSource.baseurl = tab.url;
+        browser.tabs.create({
+            active : true,
+            url : 'ui/manager.html#source',
+            openerTabId : tab.id,
+            index : tab.index + 1
+        });
+        break;
+
+        case 'download-all-src-dllink':
+        lastSource = { link : info.linkUrl, baseurl : tab.url };
+        browser.tabs.create({
+            active : true,
+            url : 'ui/manager.html#new',
+            openerTabId : tab.id,
+            index : tab.index + 1
+        });
+        break;
+
+        case 'download-all-src-dlselect':
+        let list2 = (await browser.tabs.executeScript(tab.id, {
+            frameId : info.frameId,
+            code : runCode2
+        }))[0];
+        lastSource = { list : list2, baseurl : '' };
 
         // base url
         lastSource.baseurl = tab.url;
