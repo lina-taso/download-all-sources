@@ -23,14 +23,17 @@ for(let attr of ['src', 'href']) {
 }
 urls};`,
       runCode2 = `{let urls = {};
+let selection = window.getSelection();
 for(let attr of ['src', 'href']) {
-  window.getSelection().getRangeAt(0).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
-    let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
-    let url = urlobj.toString();
-    if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
-    urls[url].tag.push(ele.tagName.toLowerCase());
-    urls[url].title.push(ele.title);
-  })
+  for(let i=0; i<selection.rangeCount; i++) {
+    selection.getRangeAt(i).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
+      let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+      let url = urlobj.toString();
+      if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
+      urls[url].tag.push(ele.tagName.toLowerCase());
+      urls[url].title.push(ele.title);
+    })
+  }
 }
 urls};`;
 
