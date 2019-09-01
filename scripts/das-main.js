@@ -690,11 +690,11 @@ function checkWaiting()
     for (let q of waiting) {
         if ((searchQueue({ status : 'downloading' })).length >= config.getPref('simultaneous-whole')) return;
         else if ((searchQueue({ status : 'downloading', originalDomain : q.originalDomain })).length
-                 >= config.getPref('simultaneous-per-server')) return;
+                 >= config.getPref('simultaneous-per-server')) continue;
         // run
         else {
             downloadQueue[q.id].status = 'downloading',
-            downloadQueue[q.id].xhr.send();
+            downloadQueue[q.id].data.push(createXhr(q.id, 0));
             downloadQueue[q.id].startTime = (new Date()).getTime();
         }
     }
