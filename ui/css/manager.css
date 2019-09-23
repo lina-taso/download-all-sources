@@ -133,18 +133,22 @@ html, body {
 #download-detail[data-status="downloading"] #detail-status-progress {
     animation: progress-bar-stripes 1s linear infinite;
 }
-#download-detail[data-status="finished"] #detail-stop-button,
-#download-detail[data-status="finished"] #detail-pause-button,
-#download-detail[data-status="finished"] #detail-resume-button {
+#detail-stop-button,
+#detail-pause-button,
+#detail-resume-button,
+#detail-redo-button {
     display: none;
 }
-#download-detail[data-status="downloading"] #detail-resume-button,
-#download-detail[data-status="downloading"] #detail-redo-button {
-    display: none;
+#download-detail[data-status="finished"] #detail-redo-button {
+    display: block;
 }
-#download-detail[data-status="paused"] #detail-pause-button,
-#download-detail[data-status="paused"] #detail-redo-button {
-    display: none;
+#download-detail[data-status="downloading"] #detail-stop-button,
+#download-detail[data-status="downloading"] #detail-pause-button {
+    display: block;
+}
+#download-detail[data-status="paused"] #detail-stop-button,
+#download-detail[data-status="paused"] #detail-resume-button {
+    display: block;
 }
 #detail-status-detail {
     flex-wrap: wrap;
