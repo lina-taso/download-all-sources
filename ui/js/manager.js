@@ -214,6 +214,26 @@ $(async () => {
                     .off('click')
                     .on('click', pauseDownload);
                 break;
+            case 'stop-downloading':
+                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
+                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+                    .off('click')
+                    .on('click', () => {
+                        $('#downloading-list').children('.download-item:not(#download-item-template)').each(function() {
+                            bg.stopDownload(this.id.split('-')[1]);
+                        });
+                    });
+                break;
+            case 'stop-waiting':
+                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
+                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+                    .off('click')
+                    .on('click', () => {
+                        $('#waiting-list').children('.download-item').each(function() {
+                            bg.stopDownload(this.id.split('-')[1]);
+                        });
+                    });
+                break;
             }
         })
         .on('shown.bs.modal', function() {

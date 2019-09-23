@@ -199,6 +199,12 @@
     "confirm_pause_download_nonresumable" : {
         "message" : "このダウンロードを中断しますか？\nこのファイルは中断すると途中から再開できないため、ダウンロード完了部分が全て失われます。"
     },
+    "confirm_stop_downloading" : {
+        "message" : "ダウンロード中のアイテムを全て停止しますか？"
+    },
+    "confirm_stop_waiting" : {
+        "message" : "DL待ちのアイテムを全てキャンセルしますか？"
+    },
     "show_filename_tags" : {
         "message" : "ファイル名タグを表示"
     },

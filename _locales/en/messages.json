@@ -199,6 +199,12 @@
     "confirm_pause_download_nonresumable" : {
         "message" : "Pause this downloading item?\nThe all downloaded part will be lost, because this file can't download from the middle."
     },
+    "confirm_stop_downloading" : {
+        "message" : "Stop all downloading items?"
+    },
+    "confirm_stop_waiting" : {
+        "message" : "Cancel all waiting items?"
+    },
     "show_filename_tags" : {
         "message" : "Show tags for filename"
     },
