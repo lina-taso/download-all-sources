@@ -625,8 +625,7 @@ function updateSourceList()
         for (let i=0; i<list[url].tag.length; i++)
             source.push(Object.assign({}, list[url],
                                       { tag  : list[url].tag[i],
-                                        title : list[url].title[i],
-                                        order : i }));
+                                        title : list[url].title[i] }));
     }
 
     bg.lastSource = {};
@@ -637,10 +636,10 @@ function outputSourceList()
     const $template = $('#source-item-template');
     // run all filter
     const list = sortSourceList(
-        filterSourceList(
-            filterTagnameSourceList(
+        filterDuplicateSourceList(
+            filterSourceList(
                 filterTypeSourceList(
-                    filterDuplicateSourceList()))));
+                    filterTagnameSourceList()))));
 
     // all checkbox uncheck
     $('#source-all').prop('checked', false);
@@ -774,9 +773,24 @@ function filterTypeSourceList(filteredSource)
 function filterDuplicateSourceList(filteredSource)
 {
     const list = filteredSource != null ? filteredSource : Array.from(source),
-          hide = $('#filter-dup').prop('checked');
+          hide = $('#filter-dup').prop('checked'),
+          appeared = [];
 
-    return hide ? list.filter(ele => ele.order == 0) : list;
+    var filtered;
+
+    if (hide) {
+        filtered = list.filter(a => {
+            if (!appeared.includes(a.url)) {
+                appeared.push(a.url);
+                return true;
+            }
+            else return false;
+        });
+    }
+    else
+        filtered = list;
+
+    return filtered;
 }
 
 function checkActiveFilter()
