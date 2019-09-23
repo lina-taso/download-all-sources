@@ -348,12 +348,17 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <!-- status tab -->
                         <div class="nav nav-tabs mb-3" role="tablist">
+                            <!-- status tab -->
                             <button class="nav-link nav-item active" id="status-tab" href="#status"
                                     data-toggle="tab" role="tab" aria-controls="status" aria-selected="true" data-string="download_detail_status"></button>
                             <button class="nav-link nav-item" id="info-tab" href="#info"
                                     data-toggle="tab" role="tab" aria-controls="info" aria-selected="false" data-string="download_detail_info"></button>
+                            <!-- next/prev button -->
+                            <div class="btn-group ml-auto" role="group">
+                                <button id="detail-prev-button" type="button" class="btn btn-outline-secondary mb-2"><i class="fas fa-angle-up"></i></button>
+                                <button id="detail-next-button" type="button" class="btn btn-outline-secondary mb-2"><i class="fas fa-angle-down"></i></button>
+                            </div>
                         </div>
                         <div class="tab-content">
                             <!-- status -->

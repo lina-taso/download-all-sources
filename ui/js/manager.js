@@ -89,8 +89,10 @@ $(async () => {
     $('#download-detail')
         .on('show.bs.modal', function(e) {
             const button = e.relatedTarget;
-            this.dataset.dlid = button.dataset.dlid;
-            $('#detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button').attr('data-dlid', button.dataset.dlid);
+            // update dlid
+            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button')
+                .attr('data-dlid', button.dataset.dlid);
+            // update detail
             updateDetail(true);
             $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
         })
@@ -99,9 +101,25 @@ $(async () => {
             $(this).attr('data-status', '');
             clearInterval($(this).attr('data-timer'));
         });
+    // in detail modal
     $('#detail-resume-button').on('click', resumeDownload);
     $('#detail-redo-button').on('click', reDownload);
-    // in detail modal
+    $('#detail-next-button, #detail-prev-button').on('click', function() {
+        let $target;
+
+        if (this.id == 'detail-next-button')
+            $target = $('#item-' + this.dataset.dlid).next();
+        else
+            $target = $('#item-' + this.dataset.dlid).prev();
+
+        if ($target.length != 0) {
+            // update dlid
+            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button')
+                .attr('data-dlid', $target.attr('id').split('-')[1]);
+            // update detail
+            updateDetail(true);
+        }
+    });
     $('#detail-status-detail').append(() => {
         const box   = [],
               $tile = $('<div class="detail-tile" data-status="" />');
