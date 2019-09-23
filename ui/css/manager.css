@@ -172,17 +172,20 @@ html, body {
 #source-download-button2::after {
     content: ' (' attr(data-count) ')';
 }
+button[data-target="#byTagname"]::after,
 button[data-target="#byFiletype"]::after,
 button[data-target="#byKeyword"]::after,
 button[data-target="#source-download-option"]::after {
     font-family: "Font Awesome 5 Free"; font-weight: 900;
     padding-left: .5em;
 }
+button[data-target="#byTagname"][aria-expanded="false"]::after,
 button[data-target="#byFiletype"][aria-expanded="false"]::after,
 button[data-target="#byKeyword"][aria-expanded="false"]::after,
 button[data-target="#source-download-option"][aria-expanded="false"]::after {
     content: "\f0d7";
 }
+button[data-target="#byTagname"][aria-expanded="true"]::after,
 button[data-target="#byFiletype"][aria-expanded="true"]::after,
 button[data-target="#byKeyword"][aria-expanded="true"]::after,
 button[data-target="#source-download-option"][aria-expanded="true"]::after {

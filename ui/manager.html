@@ -452,6 +452,8 @@
                         <!-- filter button -->
                         <div class="d-flex horizontal-button-list">
                             <button type="button" class="btn btn-secondary" data-toggle="collapse"
+                                    data-target="#byTagname" aria-expanded="false" aria-controls="byTagname" data-string="source_download_filter_tagname"></button>
+                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
                                     data-target="#byFiletype" aria-expanded="false" aria-controls="byFiletype" data-string="source_download_filter_filetype"></button>
                             <button type="button" class="btn btn-secondary" data-toggle="collapse"
                                     data-target="#byKeyword" aria-expanded="false" aria-controls="byKeyword" data-string="source_download_filter_keyword"></button>
@@ -460,6 +462,14 @@
                             <button type="button" class="btn btn-warning ml-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
                         </div>
                         <!-- filter box -->
+                        <div id="byTagname" class="collapse">
+                            <div class="card card-body d-block">
+                                <div class="form-group">
+                                    <label for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
+                                    <input id="filter-tagnamelist" class="form-control">
+                                </div>
+                            </div>
+                        </div>
                         <div id="byFiletype" class="collapse">
                             <div class="card card-body d-block">
                                 <div class="container-fluid row">

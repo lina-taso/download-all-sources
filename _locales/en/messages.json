@@ -136,6 +136,9 @@
     "source_download_title" : {
         "message" : "Source Download"
     },
+    "source_download_filter_tagname" : {
+        "message" : "Filter by tagname"
+    },
     "source_download_filter_filetype" : {
         "message" : "Filter by filetype"
     },
@@ -144,6 +147,9 @@
     },
     "source_download_option" : {
         "message" : "Download option"
+    },
+    "source_download_filter_tagnamelist" : {
+        "message" : "Tagname list (comma separated list)"
     },
     "source_download_filter_expression" : {
         "message" : "Filter expression"
@@ -250,6 +256,9 @@
     },
     "options_source_parameters" : {
         "message" : "Source Download parameters"
+    },
+    "options_source_remember_tagname" : {
+        "message" : "Remember last filter by tagname"
     },
     "options_source_remember_filetype" : {
         "message" : "Remember last filter by filetype"

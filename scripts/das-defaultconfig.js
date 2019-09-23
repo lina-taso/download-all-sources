@@ -12,6 +12,8 @@ var defaultconfig = {
     'new-filename-value' : '',
     'remember-new-location' : false,
     'new-location-value' : '',
+    'remember-source-tagname' : false,
+    'source-tagname-value' : '',
     'remember-source-filetype' : false,
     'source-filetype-value' : [],
     'remember-source-keyword' : false,

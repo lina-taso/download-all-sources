@@ -136,6 +136,9 @@
     "source_download_title" : {
         "message" : "ソースダウンロード"
     },
+    "source_download_filter_tagname" : {
+        "message" : "タグフィルタ"
+    },
     "source_download_filter_filetype" : {
         "message" : "ファイル種別フィルタ"
     },
@@ -144,6 +147,9 @@
     },
     "source_download_option" : {
         "message" : "オプション"
+    },
+    "source_download_filter_tagnamelist" : {
+        "message" : "タグ（カンマ区切りで複数指定可）"
     },
     "source_download_filter_expression" : {
         "message" : "フィルタ文字列"
@@ -250,6 +256,9 @@
     },
     "options_source_parameters" : {
         "message" : "ソースダウンロードの設定"
+    },
+    "options_source_remember_tagname" : {
+        "message" : "前回のタグフィルタを記憶する"
     },
     "options_source_remember_filetype" : {
         "message" : "前回のファイル種別フィルタを記憶する"

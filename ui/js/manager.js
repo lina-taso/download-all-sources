@@ -62,7 +62,7 @@ $(async () => {
             outputSourceList();
         });
     // filter
-    $('#byFiletype input, #byKeyword input, #filter-dup').on('input', function() {
+    $('#byTagname input, #byFiletype input, #byKeyword input, #filter-dup').on('input', function() {
         checkActiveFilter();
         outputSourceList();
     });
@@ -145,6 +145,9 @@ $(async () => {
             filter4 = new RegExp('^' + config['filetype4-extension'] + '$'),
             filter5 = new RegExp('^' + config['filetype5-extension'] + '$'),
             filter6 = new RegExp('^' + config['filetype6-extension'] + '$');
+            // initial source-tagname
+            if (config['remember-source-tagname'])
+                $('#filter-tagnamelist').val(config['source-tagname-value']);
             // initial source-filetype
             if (config['remember-source-filetype'])
                 config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
@@ -379,6 +382,8 @@ async function sourceDownload()
     });
 
     // config save
+    if (config['remember-source-tagname'])
+        bg.config.setPref('source-tagname-value', $('#filter-tagnamelist').val());
     if (config['remember-source-filetype']) bg.config.setPref('source-filetype-value', (() => {
         let result = [];
         $('.filter-type-checkbox:checked').each(function() { result.push(this.id.replace(/^filter-/, '')); });
@@ -631,7 +636,11 @@ function outputSourceList()
 {
     const $template = $('#source-item-template');
     // run all filter
-    const list = sortSourceList(filterSourceList(filterTypeSourceList(filterDuplicateSourceList())));
+    const list = sortSourceList(
+        filterSourceList(
+            filterTagnameSourceList(
+                filterTypeSourceList(
+                    filterDuplicateSourceList()))));
 
     // all checkbox uncheck
     $('#source-all').prop('checked', false);
@@ -706,6 +715,26 @@ function filterSourceList(filteredSource)
     return filtered;
 }
 
+function filterTagnameSourceList(filteredSource)
+{
+    const list = filteredSource || source;
+
+    var filtered;
+
+    if ($('#filter-tagnamelist').val()) {
+        const tagnamelist = $('#filter-tagnamelist').val().trim().split(/\s*,\s*/);
+
+        filtered = list.filter((a) => {
+            if (tagnamelist.includes(a.tag)) return true;
+            else return false;
+        });
+    }
+    else
+        filtered = list;
+
+    return filtered;
+}
+
 function filterTypeSourceList(filteredSource)
 {
     const list = filteredSource || source;
@@ -741,6 +770,7 @@ function filterDuplicateSourceList(filteredSource)
 
 function checkActiveFilter()
 {
+    $('button[data-target="#byTagname"]').toggleClass('disabled', $('#filter-tagnamelist').val().length == 0);
     $('button[data-target="#byFiletype"]').toggleClass('disabled', $('#byFiletype input:checked').length == 0);
     $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
 }
