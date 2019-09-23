@@ -383,7 +383,7 @@ async function sourceDownload()
 
     // config save
     if (config['remember-source-tagname'])
-        bg.config.setPref('source-tagname-value', $('#filter-tagnamelist').val());
+        bg.config.setPref('source-tagname-value', $('#filter-tagnamelist').val().trim());
     if (config['remember-source-filetype']) bg.config.setPref('source-filetype-value', (() => {
         let result = [];
         $('.filter-type-checkbox:checked').each(function() { result.push(this.id.replace(/^filter-/, '')); });
@@ -721,7 +721,7 @@ function filterTagnameSourceList(filteredSource)
 
     var filtered;
 
-    if ($('#filter-tagnamelist').val()) {
+    if ($('#filter-tagnamelist').val().trim()) {
         const tagnamelist = $('#filter-tagnamelist').val().trim().split(/\s*,\s*/);
 
         filtered = list.filter((a) => {
@@ -770,7 +770,7 @@ function filterDuplicateSourceList(filteredSource)
 
 function checkActiveFilter()
 {
-    $('button[data-target="#byTagname"]').toggleClass('disabled', $('#filter-tagnamelist').val().length == 0);
+    $('button[data-target="#byTagname"]').toggleClass('disabled', $('#filter-tagnamelist').val().trim().length == 0);
     $('button[data-target="#byFiletype"]').toggleClass('disabled', $('#byFiletype input:checked').length == 0);
     $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
 }
