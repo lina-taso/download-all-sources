@@ -670,7 +670,7 @@ function outputSourceList()
 
 function sortSourceList(filteredSource)
 {
-    const list = filteredSource || Array.from(source),
+    const list = filteredSource != null ? filteredSource : Array.from(source),
           $sort = $('#sort-url, #sort-filetype, #sort-tag').filter('[data-order!=""]');
 
     if ($sort.length) {
@@ -691,7 +691,7 @@ function filterSourceList(filteredSource)
 {
     const $filterExpression = $('#filter-expression'),
           $filterRegex = $('#filter-regex'),
-          list = filteredSource || source,
+          list = filteredSource != null ? filteredSource : Array.from(source),
           regexFlag = $filterRegex.prop('checked');
 
     var filtered;
@@ -718,7 +718,7 @@ function filterSourceList(filteredSource)
 function filterTagnameSourceList(filteredSource)
 {
     const $tagnamelist = $('#filter-tagnamelist'),
-          list = filteredSource || source;
+          list = filteredSource != null ? filteredSource : Array.from(source);
 
     var filtered;
 
@@ -738,13 +738,17 @@ function filterTagnameSourceList(filteredSource)
             $tagnamelist.toggleClass('is-invalid', true);
         }
     }
+    else {
+        $tagnamelist.toggleClass('is-invalid', false);
+        filtered = list;
+    }
 
     return filtered;
 }
 
 function filterTypeSourceList(filteredSource)
 {
-    const list = filteredSource || source;
+    const list = filteredSource != null ? filteredSource : Array.from(source);
 
     var filtered;
 
@@ -769,7 +773,7 @@ function filterTypeSourceList(filteredSource)
 
 function filterDuplicateSourceList(filteredSource)
 {
-    const list = filteredSource || source,
+    const list = filteredSource != null ? filteredSource : Array.from(source),
           hide = $('#filter-dup').prop('checked');
 
     return hide ? list.filter(ele => ele.order == 0) : list;
