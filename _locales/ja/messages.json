@@ -91,6 +91,9 @@
     "download_detail_info" : {
         "message" : "情報"
     },
+    "download_detail_dlid" : {
+        "message" : "ダウンロードID"
+    },
     "download_detail_status2" : {
         "message" : "状態"
     },

@@ -461,6 +461,7 @@ function updateDetail(init)
 
     // init
     if (init) {
+        $('#detail-status-dlid').val(dlid);
         $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
         $('#detail-info-url').val(queue.originalUrl);
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
