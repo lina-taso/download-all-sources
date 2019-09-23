@@ -149,7 +149,7 @@
         "message" : "オプション"
     },
     "source_download_filter_tagnamelist" : {
-        "message" : "タグ（カンマ区切りで複数指定可）"
+        "message" : "タグ（|（パイプ）区切りで複数指定可）"
     },
     "source_download_filter_expression" : {
         "message" : "フィルタ文字列"

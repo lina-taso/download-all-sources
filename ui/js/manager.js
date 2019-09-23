@@ -717,20 +717,27 @@ function filterSourceList(filteredSource)
 
 function filterTagnameSourceList(filteredSource)
 {
-    const list = filteredSource || source;
+    const $tagnamelist = $('#filter-tagnamelist'),
+          list = filteredSource || source;
 
     var filtered;
 
-    if ($('#filter-tagnamelist').val().trim()) {
-        const tagnamelist = $('#filter-tagnamelist').val().trim().split(/\s*,\s*/);
-
-        filtered = list.filter((a) => {
-            if (tagnamelist.includes(a.tag)) return true;
-            else return false;
-        });
+    if ($tagnamelist.val().trim() != '') {
+        if (/^[a-zA-Z|]*$/.test($tagnamelist.val().trim())) {
+            try {
+                let re = new RegExp('^' + $tagnamelist.val().trim() + '$');
+                $tagnamelist.toggleClass('is-invalid', false);
+                filtered = list.filter((a) => { return re.test(a.tag); });
+            }
+            catch (e) {
+                // regular expression error
+                $tagnamelist.toggleClass('is-invalid', true);
+            }
+        }
+        else {
+            $tagnamelist.toggleClass('is-invalid', true);
+        }
     }
-    else
-        filtered = list;
 
     return filtered;
 }
@@ -751,7 +758,7 @@ function filterTypeSourceList(filteredSource)
             if ($('#filter-filetype4').prop('checked') && filter4.test(a.filetype)) return true;
             if ($('#filter-filetype5').prop('checked') && filter5.test(a.filetype)) return true;
             if ($('#filter-filetype6').prop('checked') && filter6.test(a.filetype)) return true;
-            else return false;
+            return false;
         });
     }
     else

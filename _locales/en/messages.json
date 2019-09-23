@@ -149,7 +149,7 @@
         "message" : "Download option"
     },
     "source_download_filter_tagnamelist" : {
-        "message" : "Tagname list (comma separated list)"
+        "message" : "Tagname list (| (pipe) separated list)"
     },
     "source_download_filter_expression" : {
         "message" : "Filter expression"
