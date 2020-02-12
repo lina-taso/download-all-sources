@@ -502,7 +502,7 @@ function resumeDownload(dlid)
 
 function deleteQueue(dlid)
 {
-    const loaded = downloadQueue[dlid].loaded().loaded;
+    const loaded = downloadQueue[dlid].loaded();
     downloadQueue[dlid] = {
         id     : dlid,
         status : 'deleted',
