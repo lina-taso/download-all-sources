@@ -41,10 +41,16 @@
         "message" : "ファイルサイズ"
     },
     "list_speed" : {
-        "message" : "平均速度"
+        "message" : "速度"
     },
     "list_remain" : {
         "message" : "残り時間"
+    },
+    "list_avespeed" : {
+        "message" : "平均速度"
+    },
+    "list_elapsed" : {
+        "message" : "経過時間"
     },
     "footer_total_speed" : {
         "message" : "合計速度:"

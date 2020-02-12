@@ -41,10 +41,16 @@
         "message" : "Filesize"
     },
     "list_speed" : {
-        "message" : "Ave. Speed"
+        "message" : "Speed"
     },
     "list_remain" : {
         "message" : "Remain"
+    },
+    "list_avespeed" : {
+        "message" : "Ave. Speed"
+    },
+    "list_elapsed" : {
+        "message" : "Elapsed"
     },
     "footer_total_speed" : {
         "message" : "Total Speed:"

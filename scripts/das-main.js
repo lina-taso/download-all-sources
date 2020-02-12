@@ -79,7 +79,23 @@ async function downloadFile(url, requestHeaders, location, filename)
         responseFilename : '',
         requestHeaders : JSON.parse(JSON.stringify(requestHeaders)),
         total          : 0, // if 0, download is not started or total size is unknown
-        loaded         : () => downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0),
+        loaded         : () => {
+            const loaded     = downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0);
+            const prevLoaded = downloadQueue[dlid].prevLoaded,
+                  prevTime   = downloadQueue[dlid].prevTime,
+                  nowTime    = (new Date()).getTime();
+
+            // prev is old
+            if (nowTime - prevTime > 2000) {
+                downloadQueue[dlid].prevLoaded = loaded;
+                downloadQueue[dlid].prevTime   = nowTime;
+                downloadQueue[dlid].Bps        = (loaded - prevLoaded) / (nowTime - prevTime) * 1000;
+            }
+            return { now : loaded, nowTime : nowTime,  prev : prevLoaded, prevTime : prevTime, Bps : downloadQueue[dlid].Bps };
+        },
+        prevLoaded     : 0,
+        prevTime       : null,
+        Bps            : 0,
         detail         : () => {
             const queue  = downloadQueue[dlid];
 
@@ -105,8 +121,10 @@ async function downloadFile(url, requestHeaders, location, filename)
 
     // run
     if (status == 'downloading') {
+        let now = (new Date()).getTime();
         downloadQueue[dlid].data.push(createXhr(dlid, 0));
-        downloadQueue[dlid].startTime = (new Date()).getTime();
+        downloadQueue[dlid].startTime = now;
+        downloadQueue[dlid].prevTime  = now;
     }
 
     // update badge
@@ -484,7 +502,7 @@ function resumeDownload(dlid)
 
 function deleteQueue(dlid)
 {
-    const loaded = downloadQueue[dlid].loaded();
+    const loaded = downloadQueue[dlid].loaded().loaded;
     downloadQueue[dlid] = {
         id     : dlid,
         status : 'deleted',
@@ -693,9 +711,11 @@ function checkWaiting()
                  >= config.getPref('simultaneous-per-server')) continue;
         // run
         else {
+            let now = (new Date()).getTime();
             downloadQueue[q.id].status = 'downloading',
             downloadQueue[q.id].data.push(createXhr(q.id, 0));
-            downloadQueue[q.id].startTime = (new Date()).getTime();
+            downloadQueue[q.id].startTime = now;
+            downloadQueue[q.id].prevTime  = now;
         }
     }
 }

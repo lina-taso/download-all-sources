@@ -310,6 +310,12 @@ $(async () => {
             else $('#' + this.id + '-sample').text('');
         });
 
+    // tag insertion
+    $('.tags')
+        .on('click', 'dt > a[href="#"]', function(e) {
+            $(e.delegateTarget).prev().children('input')[0].value += this.text;
+        });
+
     // hash anchor (auto tab showing)
     switch (document.location.hash) {
     case '#downloading':
@@ -476,8 +482,9 @@ function resumeDownload()
 
 function updateDetail(init)
 {
-    const dlid = $('#download-detail').attr('data-dlid'),
-          queue = bg.downloadQueue[dlid];
+    const dlid      = $('#download-detail').attr('data-dlid'),
+          queue     = bg.downloadQueue[dlid],
+          loadedObj = queue.loaded();
 
     // init
     if (init) {
@@ -501,7 +508,7 @@ function updateDetail(init)
     $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
     $('#detail-status-url').val(queue.responseUrl);
     if (queue.total) {
-        let progress = parseInt(queue.loaded() / queue.total * 100);
+        let progress = parseInt(loadedObj.now / queue.total * 100);
         $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
         $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
     }
@@ -509,7 +516,7 @@ function updateDetail(init)
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-current').val(queue.loaded().toLocaleString('en-US'));
+    $('#detail-status-current').val(loadedObj.now.toLocaleString('en-US'));
 
     // tile
     queue.detail().forEach((val, index) => {
@@ -528,7 +535,8 @@ function updateList()
             $item;
 
         // total speed
-        totalLoaded += queue.loaded();
+        const loadedObj = queue.loaded();
+        totalLoaded += parseInt(loadedObj.now / 1000);
 
         // listed item
         if ($('#item-' + dlid).length) {
@@ -591,20 +599,26 @@ function updateList()
             else return queue.originalUrl;
         });
         // progress
-        const loaded = queue.loaded();
         if (queue.total)
             $item.find('.item-progress')
-            .css('width', parseInt(loaded/queue.total*100) + '%')
-            .text(calcByte(loaded) + ' / ' + calcByte(queue.total));
+            .css('width', parseInt(loadedObj.now / queue.total*100) + '%')
+            .text(calcByte(loadedObj.now) + ' / ' + calcByte(queue.total));
         else
-            $item.find('.item-progress').css('width', '100%').text(calcByte(loaded) + ' / ' + 'unknown');
+            $item.find('.item-progress').css('width', '100%').text(calcByte(loadedObj.now) + ' / ' + 'unknown');
         // speed
-        $item.find('.item-speed').text(
-            queue.status != 'downloading' ? '-' : calcBps(queue.startTime, loaded)
-        );
-        $item.find('.item-remain').text(
-            queue.status != 'downloading' ? '-' : calcRemain(queue.startTime, loaded, queue.total)
-        );
+        switch (queue.status) {
+        case 'downloading':
+            $item.find('.item-speed').text(calcByte(loadedObj.Bps) + '/s');
+            $item.find('.item-remain').text(calcRemain(loadedObj, queue.total));
+            break;
+        case 'finished':
+            $item.find('.item-speed').text(calcBps({ now : queue.loaded().now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
+            $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
+            break;
+        default:
+            $item.find('.item-speed').text('-');
+            $item.find('.item-remain').text('-');
+        }
     }
 
     // badge
@@ -616,9 +630,10 @@ function updateList()
     document.title = $('#downloading-tab > .badge').text() == '0' ? PAGE_TITLE : 'DL:' + $('#downloading-tab > .badge').text() + ' ' + PAGE_TITLE;
 
     // total speed
-    if (prevLoaded != null) $('#total-speed').text(calcBps(prevLoadedTime, totalLoaded - prevLoaded));
+    const now = (new Date()).getTime();
+    if (prevLoaded != null) $('#total-speed').text(calcKBps({ now : totalLoaded, nowTime : now, prev : prevLoaded, prevTime : prevLoadedTime }));
     prevLoaded     = totalLoaded;
-    prevLoadedTime = (new Date()).getTime();
+    prevLoadedTime = now;
 
 
     function calcByte(byte)
@@ -633,18 +648,23 @@ function updateList()
         byte /= 1024;
         return byte.toFixed(1) + ' TB';
     }
-    function calcBps(startTime, loaded)
+    function calcBps(loadedObj)
     {
-        const term = (new Date()).getTime() - startTime,
-              Bps  = loaded / term * 1000;
+        const term = loadedObj.nowTime - loadedObj.prevTime,
+              Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
         return calcByte(Bps) + '/s';
     }
-    function calcRemain(startTime, loaded, total)
+    function calcKBps(loadedObj)
     {
-        if (!loaded || !total) return 'unknown';
+        const term = loadedObj.nowTime - loadedObj.prevTime,
+              Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
+        return calcByte(Bps * 1024) + '/s';
+    }
+    function calcRemain(loadedObj, total)
+    {
+        if (!loadedObj.now || !total) return 'unknown';
 
-        const term   = (new Date()).getTime() - startTime,
-              remain = (total - loaded) / loaded * term / 1000;
+        const remain = (total - loadedObj.now) / loadedObj.Bps;
 
         // too long (over 30 days)
         if (remain > 86400 * 30) return 'stalled';
