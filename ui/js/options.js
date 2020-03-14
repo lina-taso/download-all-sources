@@ -100,6 +100,13 @@ $(async () => {
             document.getElementById(ext).classList.remove('is-invalid');
         });
 
+    // tag insertion
+    $('.tags')
+        .on('click', 'dt > a[href="#"]', function(e) {
+            $(e.delegateTarget).prev().children('input')[0].value += this.text;
+            $(e.delegateTarget).prev().children('input').eq(0).trigger('input');
+        });
+
     // initial location sample
     $('#download-location')[0].dispatchEvent(new Event('input'));
 });

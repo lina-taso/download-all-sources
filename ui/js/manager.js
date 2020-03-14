@@ -320,6 +320,7 @@ $(async () => {
     $('.tags')
         .on('click', 'dt > a[href="#"]', function(e) {
             $(e.delegateTarget).prev().children('input')[0].value += this.text;
+            $(e.delegateTarget).prev().children('input').eq(0).trigger('input');
         });
 
     // hash anchor (auto tab showing)
