@@ -41,6 +41,10 @@ $(async () => {
                 $(this).remove();
             });
         });
+    // all tooltip enabled
+    $('[data-toggle=tooltip]').tooltip({ title : function() {
+        return browser.i18n.getMessage(this.dataset.titlestring);
+    }});
     // item
     $('.item-resume-button').on('click', resumeDownload);
     $('.item-redo-button').on('click', reDownload);
@@ -66,6 +70,8 @@ $(async () => {
         checkActiveFilter();
         outputSourceList();
     });
+    // checkbox validation
+    $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
 
     // modal
     $('#new-download')
@@ -360,7 +366,9 @@ async function download()
             bg.replaceTags( // filename
                 $('#dl-single-filename').val(),
                 targetUrl, null, null, null, ':name:', ':ext:'
-            )
+            ),
+            { disableResuming    : $('#dl-single-option1').is(':checked'),
+              ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
         );
 
         // config save
@@ -384,7 +392,9 @@ async function download()
                 bg.replaceTags( // filename
                     $('#dl-multiple-filename').val(),
                     url, null, null, null, ':name:', ':ext:'
-                )
+                ),
+                { disableResuming    : $('#dl-single-option1').is(':checked'),
+                  ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
             );
         });
 
@@ -421,7 +431,9 @@ async function sourceDownload()
             bg.replaceTags( // filename
                 $('#dl-source-filename').val(),
                 targetUrl, baseurl, tag, title, ':name:', ':ext:'
-            )
+            ),
+            { disableResuming    : $('#dl-single-option1').is(':checked'),
+              ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
         );
     });
 
@@ -857,6 +869,19 @@ function checkActiveFilter()
     $('button[data-target="#byTagname"]').toggleClass('disabled', $('#filter-tagnamelist').val().trim().length == 0);
     $('button[data-target="#byFiletype"]').toggleClass('disabled', $('#byFiletype input:checked').length == 0);
     $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
+}
+
+function checkDownloadOptions()
+{
+    $('#dl-single-option1').is(':checked')
+        ? $('#dl-single-option2').prop({ disabled : true, checked : false })
+        : $('#dl-single-option2').prop({ disabled : false });
+    $('#dl-multiple-option1').is(':checked')
+        ? $('#dl-multiple-option2').prop({ disabled : true, checked : false })
+        : $('#dl-multiple-option2').prop({ disabled : false });
+    $('#dl-source-option1').is(':checked')
+        ? $('#dl-source-option2').prop({ disabled : true, checked : false })
+        : $('#dl-source-option2').prop({ disabled : false });
 }
 
 async function localization()

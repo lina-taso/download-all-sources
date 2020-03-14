@@ -14,6 +14,9 @@ html, body {
     height: initial;
     font-size: initial;
 }
+.pointer {
+    cursor: pointer;
+}
 /* localization */
 [data-string] {
     white-space: pre-line;

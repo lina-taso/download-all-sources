@@ -48,7 +48,7 @@ var config = {
 
 
 // download file
-async function downloadFile(url, requestHeaders, location, filename)
+async function downloadFile(url, requestHeaders, location, filename, option)
 {
     const dlid = lastid++;
 
@@ -70,15 +70,18 @@ async function downloadFile(url, requestHeaders, location, filename)
         status         : status,
         reason         : '',
         data           : [],
+        option         : option || {},
         resumeEnabled  : false,
         originalUrl    : url,
         originalDomain : domain,
-        location       : location, // if location is specified, last character must be '/'|'\\'
+        // if location is specified, last character must be '/'|'\\'
+        location       : location,
         filename       : filename,
         responseUrl    : '',
         responseFilename : '',
         requestHeaders : JSON.parse(JSON.stringify(requestHeaders)),
-        total          : 0, // if 0, download is not started or total size is unknown
+        // if total is 0, download is not started or total size is unknown
+        total          : 0,
         loaded         : () => {
             const loaded     = downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0);
             const prevLoaded = downloadQueue[dlid].prevLoaded,
@@ -119,7 +122,7 @@ async function downloadFile(url, requestHeaders, location, filename)
         }
     };
 
-    // run
+    // start downloading
     if (status == 'downloading') {
         let now = (new Date()).getTime();
         downloadQueue[dlid].data.push(createXhr(dlid, 0));
@@ -146,7 +149,8 @@ function createXhr(dlid, index, start, end)
         rangeStart : start || 0,
         rangeEnd   : end || null,
         loaded     : 0,
-        retry      : 0
+        retry      : 0,
+        retrytimer : null
     };
 
     // xhr events
@@ -251,8 +255,13 @@ function createXhr(dlid, index, start, end)
         // total size
         queue.total = parseInt(this.getResponseHeader('content-length')) || 0;
 
+        // manually disable resuming
+        if (queue.option.disableResuming) {
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'manually disable resuming. initial download continued.' });
+        }
+
         // resumable
-        if (queue.total > splitExSize // large file
+        else if (queue.total > splitExSize // large file
             && this.getResponseHeader('accept-ranges') == 'bytes') { // range requestable
 
             queue.resumeEnabled = true;
@@ -394,19 +403,24 @@ function restartXhr(dlid, index)
             DEBUG && console.log({ dlid : dlid, index : index, rangestart : datum.rangeStart, rangeend : datum.rangeEnd, loaded : datum.loaded, message : 'onload, size mismatch' });
 
             datum.status = 'size mismatch';
+            datum.blob   = this.response;
+            datum.loaded = this.response.size;
+            datum.xhr    = undefined;
+
             retryPartialDownload(dlid, index);
-            return;
         }
+        else {
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
 
-        DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
-        // update progress
-        datum.status = 'complete';
-        datum.blob   = this.response;
-        datum.loaded = this.response.size;
-        datum.xhr    = undefined;
+            // update progress
+            datum.status = 'complete';
+            datum.blob   = this.response;
+            datum.loaded = this.response.size;
+            datum.xhr    = undefined;
 
-        // update download queue
-        partialDownloadCompleted(dlid);
+            // update download queue
+            partialDownloadCompleted(dlid);
+        }
     }
     function onabort()
     {
@@ -440,8 +454,12 @@ async function retryPartialDownload(dlid, index)
     if (datum.retry >= config.getPref('retry-count')) {
         DEBUG && console.log({ dlid : dlid, index : index, retry : datum.retry, message : 'give up retrying download' });
 
-        datum.xhr = undefined;
-        downloadFailed(dlid, datum.status);
+        // [ignore size mismatch] wait another partial downloads
+        if (datum.status == 'size mismatch' && queue.option.ignoreSizemismatch)
+            downloadFailed2(dlid, datum.status);
+        // stop all partial downloads
+        else
+            downloadFailed(dlid, datum.status);
         return;
     }
 
@@ -451,7 +469,8 @@ async function retryPartialDownload(dlid, index)
     datum.status = 'retrying';
     datum.loaded = 0;
     // wait
-    await new Promise(resolve => { setTimeout(resolve, RETRY_WAIT); });
+    await new Promise(resolve => { datum.retrytimer = setTimeout(resolve, RETRY_WAIT + (index == 0 ? 1000 : 0)); });
+    datum.retrytimer = null;
 
     // retry
     datum.retry++;
@@ -464,7 +483,17 @@ function stopDownload(dlid)
 
     if (queue.status == 'downloading')
         // abort all xhr
-        queue.data.forEach(datum => datum.xhr && datum.xhr.abort());
+        queue.data.forEach(datum => {
+            switch (datum.status) {
+            case 'downloading':
+                datum.xhr && datum.xhr.abort();
+                break;
+            case 'retrying':
+                clearTimeout(datum.retrytimer);
+                datum.status = 'abort';
+                break;
+            }
+        });
     queue.data.forEach(datum => datum.blob = undefined);
 
     queue.status  = 'finished';
@@ -481,10 +510,18 @@ function pauseDownload(dlid)
     if (queue.status == 'downloading')
         // abort all xhr
         queue.data.forEach((datum) => {
-            if (datum.status == 'downloading') {
-                datum.xhr.abort();
+            switch (datum.status) {
+            case 'downloading':
+                datum.xhr && datum.xhr.abort();
                 datum.loaded = 0;
-            }});
+                break;
+            case 'retrying':
+                clearTimeout(datum.retrytimer);
+                datum.status = 'abort';
+                datum.loaded = 0;
+                break;
+            }
+        });
     queue.status  = 'paused';
 
     // waiting queue
@@ -528,53 +565,69 @@ function partialDownloadCompleted(dlid)
 
     DEBUG && console.log({ dlid : dlid, lastSegSize : lastSegSize, message : 'partially completed.' });
 
-    // there is area not started
-    if (lastSegSize && queue.total-1 > lastSegSize) {
-        // start next download segment
-        if (queue.total >= lastSegSize + splitSize)
-            queue.data.push(
-                createXhr(dlid, segments, lastSegSize+1, lastSegSize+splitSize)
-            );
-        // start last download segment
-        else
-            queue.data.push(
-                createXhr(dlid, segments, lastSegSize+1, queue.total-1)
-            );
+    // download failed (reason is entered) but waiting the download that has already started
+    if (queue.reason) {
+        // check other running downloads
+        if (queue.data.filter(datum => datum.status == 'downloading' || datum.status == 'retrying').length > 0) return;
 
-        return;
+        // all downloads finished
+        // merge blobs
+        const blob = new Blob(queue.data.map(datum => { return datum.blob === undefined ? new Blob() : datum.blob; }));
+        queue.data.forEach(datum => datum.blob = undefined);
+        // complete
+        downloadCompleted(dlid, blob);
     }
 
-    // check other running downloads
-    if (queue.data.filter(datum => datum.status != 'complete').length > 0) return;
+    else {
+        // there is area not started
+        if (lastSegSize && queue.total-1 > lastSegSize) {
+            // start next download segment
+            if (queue.total >= lastSegSize + splitSize)
+                queue.data.push(
+                    createXhr(dlid, segments, lastSegSize+1, lastSegSize+splitSize)
+                );
+            // start last download segment
+            else
+                queue.data.push(
+                    createXhr(dlid, segments, lastSegSize+1, queue.total-1)
+                );
+            return;
+        }
 
-    // all downloads finished
-    // total size
-    if (!queue.total) queue.total = queue.data[0].loaded;
-    // merge blobs
-    const blob = new Blob(queue.data.map(datum => datum.blob));
-    queue.data.forEach(datum => datum.blob = undefined);
-    // complete
-    downloadCompleted(dlid, blob);
+        // check other running downloads
+        if (queue.data.filter(datum => datum.status != 'complete').length > 0) return;
+
+        // all downloads finished
+        // total size (if unknown file size)
+        if (!queue.total) queue.total = queue.data[0].loaded;
+        // merge blobs
+        const blob = new Blob(queue.data.map(datum => datum.blob));
+        queue.data.forEach(datum => datum.blob = undefined);
+        // complete
+        downloadCompleted(dlid, blob);
+    }
 }
 
 async function downloadCompleted(dlid, blob)
 {
     DEBUG && console.log({ dlid : dlid, message : 'download completed.' });
 
+    const queue = downloadQueue[dlid];
+
     // filename
     let filename;
     // specified filename
-    if (downloadQueue[dlid].filename)
-        filename = downloadQueue[dlid].location + downloadQueue[dlid].filename;
+    if (queue.filename)
+        filename = queue.location + queue.filename;
     // url's leafname
-    else if (downloadQueue[dlid].responseFilename)
-        filename = downloadQueue[dlid].location + downloadQueue[dlid].responseFilename;
+    else if (queue.responseFilename)
+        filename = queue.location + queue.responseFilename;
     // noname
     else {
         if (blob.type == 'text/html')
-            filename = downloadQueue[dlid].location + DEFAULT_FILENAME + '.html';
+            filename = queue.location + DEFAULT_FILENAME + '.html';
         else
-            filename = downloadQueue[dlid].location + DEFAULT_FILENAME;
+            filename = queue.location + DEFAULT_FILENAME;
     }
 
     // random wait
@@ -589,14 +642,15 @@ async function downloadCompleted(dlid, blob)
     });
 
     // update queue
-    downloadQueue[dlid].status = 'downloaded';
+    queue.status = 'downloaded';
 
     fxDownloadQueue[itemid] = {
         objurl   : objurl,
         blob     : blob,
         dlid     : dlid,
         filename : filename,
-        retry    : false
+        retry    : false,
+        reason   : queue.reason
     };
 }
 
@@ -607,17 +661,68 @@ function downloadFailed(dlid, reason)
     const queue = downloadQueue[dlid];
 
     // abort all xhr
-    queue.data.forEach(datum => {
-        datum.xhr && datum.xhr.abort();
-        datum.blob = undefined;
+    queue.data.forEach((datum) => {
+        switch (datum.status) {
+        case 'downloading':
+            datum.xhr && datum.xhr.abort();
+            break;
+        case 'retrying':
+            clearTimeout(datum.retrytimer);
+            datum.status = 'abort';
+            break;
+        }
     });
 
-    downloadQueue[dlid].status  = 'finished';
-    downloadQueue[dlid].reason  = reason || 'unknown error';
-    downloadQueue[dlid].endTime = (new Date()).getTime();
+    queue.status  = 'finished';
+    queue.reason  = reason || 'unknown error';
+    queue.endTime = (new Date()).getTime();
 
     // waiting queue
     checkWaiting();
+}
+
+function downloadFailed2(dlid, reason)
+{
+    DEBUG && console.log({ dlid : dlid, message : 'download failed but waiting other partial download completed.' });
+
+    const queue = downloadQueue[dlid];
+    queue.reason = reason;
+
+    let found = false;
+    queue.data.forEach(datum => {
+        if (!found && datum.status == reason) {
+            found = true;
+            queue.reason = reason;
+            return;
+        }
+        else {
+            // stop all xhr after the first size mismatch download
+            switch (datum.status) {
+            case 'downloading':
+                // wait incomplete downloads
+                if (!found) return;
+
+                datum.xhr && datum.xhr.abort();
+                datum.loaded = 0;
+                break;
+            case 'retrying':
+                // wait incomplete downloads
+                if (!found) return;
+
+                clearTimeout(datum.retrytimer);
+                datum.status = 'abort';
+                datum.loaded = 0;
+                break;
+            default:
+                datum.status = 'abort';
+                datum.loaded = 0;
+                datum.blob   = undefined;
+                break;
+            }
+        }
+    });
+
+    partialDownloadCompleted(dlid);
 }
 
 async function fxDownloadChanged(item)
@@ -636,7 +741,7 @@ async function fxDownloadChanged(item)
         fxqueue.blob = undefined;
         // update queue
         queue.status  = 'finished';
-        queue.reason  = item.state.current;
+        queue.reason  = queue.reason || item.state.current;
         queue.endTime = (new Date()).getTime();
 
         // clear from fx download list

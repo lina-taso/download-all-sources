@@ -76,6 +76,21 @@
     "new_download_single_location" : {
         "message" : "ディレクトリ [任意]"
     },
+    "new_download_single_option" : {
+        "message" : "オプション"
+    },
+    "new_download_single_option1" : {
+        "message" : "マルチスレッド無効"
+    },
+    "new_download_single_option1_description" : {
+        "message" : "ファイルを分割せずにダウンロードします。ファイルのダウンロードに失敗する場合、チェックを入れてみてください。"
+    },
+    "new_download_single_option2" : {
+        "message" : "size mismatchエラーを無視"
+    },
+    "new_download_single_option2_description" : {
+        "message" : "size mismatchが理由でダウンロードに失敗しても途中までのファイルが必要な場合に、チェックを入れてください。"
+    },
     "new_download_multiple_url" : {
         "message" : "ダウンロードURL (1行ずつ)"
     },
@@ -87,6 +102,21 @@
     },
     "new_download_multiple_location" : {
         "message" : "ディレクトリ [任意]"
+    },
+    "new_download_multiple_option" : {
+        "message" : "オプション"
+    },
+    "new_download_multiple_option1" : {
+        "message" : "マルチスレッド無効"
+    },
+    "new_download_multiple_option1_description" : {
+        "message" : "ファイルを分割せずにダウンロードします。ファイルのダウンロードに失敗する場合、チェックを入れてみてください。"
+    },
+    "new_download_multiple_option2" : {
+        "message" : "size mismatchエラーを無視"
+    },
+    "new_download_multiple_option2_description" : {
+        "message" : "size mismatchが理由でダウンロードに失敗しても途中までのファイルが必要な場合に、チェックを入れてください。"
     },
     "download_detail_title" : {
         "message" : "ダウンロード詳細"
@@ -177,6 +207,21 @@
     },
     "source_download_option_location" : {
         "message" : "ディレクトリ [任意]"
+    },
+    "source_download_option_option" : {
+        "message" : "オプション"
+    },
+    "source_download_option_option1" : {
+        "message" : "マルチスレッド無効"
+    },
+    "source_download_option_option1_description" : {
+        "message" : "ファイルを分割せずにダウンロードします。ファイルのダウンロードに失敗する場合、チェックを入れてみてください。"
+    },
+    "source_download_option_option2" : {
+        "message" : "size mismatchエラーを無視"
+    },
+    "source_download_option_option2_description" : {
+        "message" : "size mismatchが理由でダウンロードに失敗しても途中までのファイルが必要な場合に、チェックを入れてください。"
     },
     "source_download_filter_dup" : {
         "message" : "重複するURLを非表示にする"

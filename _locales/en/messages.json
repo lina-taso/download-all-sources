@@ -76,6 +76,21 @@
     "new_download_single_location" : {
         "message" : "Download Location [Optional]"
     },
+    "new_download_single_option" : {
+        "message" : "Options"
+    },
+    "new_download_single_option1" : {
+        "message" : "Disable multi-thread download"
+    },
+    "new_download_single_option1_description" : {
+        "message" : "This makes files not splitted in downloading. Check this option if download fails."
+    },
+    "new_download_single_option2" : {
+        "message" : "Ignore size mismatch errors"
+    },
+    "new_download_single_option2_description" : {
+        "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
+    },
     "new_download_multiple_url" : {
         "message" : "Download URLs (per line)"
     },
@@ -87,6 +102,21 @@
     },
     "new_download_multiple_location" : {
         "message" : "Download Location [Optional]"
+    },
+    "new_download_multiple_option" : {
+        "message" : "Options"
+    },
+    "new_download_multiple_option1" : {
+        "message" : "Disable multi-thread download"
+    },
+    "new_download_multiple_option1_description" : {
+        "message" : "This makes files not splitted in downloading. Check this option if download fails."
+    },
+    "new_download_multiple_option2" : {
+        "message" : "Ignore size mismatch errors"
+    },
+    "new_download_multiple_option2_description" : {
+        "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
     "download_detail_title" : {
         "message" : "Download Detail"
@@ -177,6 +207,21 @@
     },
     "source_download_option_location" : {
         "message" : "Download Location [Optional]"
+    },
+    "source_download_option_option" : {
+        "message" : "Options"
+    },
+    "source_download_option_option1" : {
+        "message" : "Disable multi-thread download"
+    },
+    "source_download_option_option1_description" : {
+        "message" : "This makes files not splitted in downloading. Check this option if download fails."
+    },
+    "source_download_option_option2" : {
+        "message" : "Ignore size mismatch errors"
+    },
+    "source_download_option_option2_description" : {
+        "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
     "source_download_filter_dup" : {
         "message" : "Hide duplicate URLs"
