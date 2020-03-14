@@ -314,6 +314,12 @@
     "options_new_remember_location" : {
         "message" : "前回のディレクトリを記憶する"
     },
+    "options_new_remember_option1" : {
+        "message" : "前回のマルチスレッド無効オプションを記憶する"
+    },
+    "options_new_remember_option2" : {
+        "message" : "前回のsize mismatchエラーを無視オプションを記憶する"
+    },
     "options_source_parameters" : {
         "message" : "ソースダウンロードの設定"
     },
@@ -334,6 +340,12 @@
     },
     "options_source_remember_location" : {
         "message" : "前回のディレクトリを記憶する"
+    },
+    "options_source_remember_option1" : {
+        "message" : "前回のマルチスレッド無効オプションを記憶する"
+    },
+    "options_source_remember_option2" : {
+        "message" : "前回のsize mismatchエラーを無視オプションを記憶する"
     },
     "options_filetype_parameters" : {
         "message" : "フィルタ拡張子の定義"

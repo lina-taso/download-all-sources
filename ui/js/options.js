@@ -108,7 +108,7 @@ $(async () => {
         });
 
     // initial location sample
-    $('#download-location')[0].dispatchEvent(new Event('input'));
+    $('#download-location').trigger('input');
 });
 
 function localization()

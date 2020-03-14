@@ -314,6 +314,12 @@
     "options_new_remember_location" : {
         "message" : "Remember last download location"
     },
+    "options_new_remember_option1" : {
+        "message" : "Remember last choice of Disable multi-thread download option"
+    },
+    "options_new_remember_option2" : {
+        "message" : "Remember last choice of Ignore size mismatch errors option"
+    },
     "options_source_parameters" : {
         "message" : "Source Download parameters"
     },
@@ -334,6 +340,12 @@
     },
     "options_source_remember_location" : {
         "message" : "Remember last download location"
+    },
+    "options_source_remember_option1" : {
+        "message" : "Remember last choice of Disable multi-thread download option"
+    },
+    "options_source_remember_option2" : {
+        "message" : "Remember last choice of Ignore size mismatch errors option"
     },
     "options_filetype_parameters" : {
         "message" : "Filetype definitions for Filter"

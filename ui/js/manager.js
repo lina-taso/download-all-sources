@@ -83,12 +83,10 @@ $(async () => {
                 $('#dl-single-referer, #dl-multiple-referer').val(config['new-referer-value']);
             // initial filename
             if (config['remember-new-filename'])
-                $('#dl-single-filename').val(config['new-filename-value']);
+                $('#dl-single-filename, #dl-multiple-filename').val(config['new-filename-value']).trigger('input');
             // initial location
             if (config['remember-new-location'])
-                $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']);
-            // initial location sample
-            $('#dl-single-location, #dl-multiple-location').each(function() { this.dispatchEvent(new Event('input')); });
+                $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']).trigger('input');
         })
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
     // modal
@@ -189,13 +187,10 @@ $(async () => {
             }
             // initial source-filename
             if (config['remember-source-filename'])
-                $('#dl-source-filename').val(config['source-filename-value']);
+                $('#dl-source-filename').val(config['source-filename-value']).trigger('input');
             // initial source-location
             if (config['remember-source-location'])
-                $('#dl-source-location').val(config['source-location-value']);
-            // initial location sample
-            $('#dl-source-filename')[0].dispatchEvent(new Event('input'));
-            $('#dl-source-location')[0].dispatchEvent(new Event('input'));
+                $('#dl-source-location').val(config['source-location-value']).trigger('input');
             // tab color
             checkActiveFilter();
             outputSourceList(source);
@@ -376,6 +371,8 @@ async function download()
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
         if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').val());
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').val());
         break;
 
     case 'multiple':
@@ -403,6 +400,8 @@ async function download()
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
         if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-multiple-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').val());
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').val());
         break;
     }
 
@@ -460,6 +459,8 @@ async function sourceDownload()
         }
     }
     if (config['remember-source-location']) bg.config.setPref('source-location-value', $('#dl-source-location').val());
+    if (config['remember-source-option1']) bg.config.setPref('source-option1-value', $('#dl-source-option1').val());
+    if (config['remember-source-option2']) bg.config.setPref('source-option2-value', $('#dl-source-option2').val());
 
     $('#source-download').modal('hide');
 }
