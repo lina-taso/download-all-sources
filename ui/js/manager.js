@@ -31,10 +31,18 @@ $(async () => {
     localization();
     updateList();
     setInterval(updateList, progressInterval);
+    // miscellanies events
     $('#dl-single-url').on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); });
+    $('.openlink-button').on('click', function() { this.dataset.link && browser.tabs.create({ url : this.dataset.link }); });
+    // all tooltip enabled
+    $('[data-toggle=tooltip]').tooltip({ title : function() {
+        return browser.i18n.getMessage(this.dataset.titlestring);
+    }});
+    // download buttons
     $('#download-button').on('click', download);
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
     $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
+    // finished list
     $('#finished-delete-button')
         .on('click', function() {
             $('#finished-list').children('.download-item').each(function() {
@@ -42,10 +50,6 @@ $(async () => {
                 $(this).remove();
             });
         });
-    // all tooltip enabled
-    $('[data-toggle=tooltip]').tooltip({ title : function() {
-        return browser.i18n.getMessage(this.dataset.titlestring);
-    }});
     // item
     $('.item-resume-button').on('click', resumeDownload);
     $('.item-redo-button').on('click', reDownload);
@@ -518,8 +522,10 @@ function updateDetail(init)
         $('#detail-status-dlid').val(dlid);
         $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
         $('#detail-info-url').val(queue.originalUrl);
+        $('#detail-info-url-open').attr('data-link', queue.originalUrl);
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
-        $('#detail-info-referer').val(referer ? referer.value : '(none)');
+        $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
+        $('#detail-info-referer-open').attr('data-link', referer.value);
         $('#detail-info-filename').val(() => {
             if (queue.filename) return queue.filename;
             else if (queue.responseFilename) return queue.responseFilename + ' (auto)';
@@ -536,6 +542,7 @@ function updateDetail(init)
     $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
     $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
     $('#detail-status-url').val(queue.responseUrl);
+    $('#detail-status-url-open').attr('data-link', queue.responseUrl);
     if (queue.total) {
         let progress = parseInt(loadedObj.now / queue.total * 100);
         $('#detail-status-progress').css('width', progress + '%').text(progress + '%');

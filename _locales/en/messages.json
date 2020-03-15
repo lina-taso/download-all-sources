@@ -148,6 +148,9 @@
     "download_detail_final_url" : {
         "message" : "Final URL"
     },
+    "download_detail_final_url_description" : {
+        "message" : "Click to open the URL"
+    },
     "download_detail_progress" : {
         "message" : "Progress"
     },
@@ -166,8 +169,14 @@
     "download_detail_url" : {
         "message" : "Download URL"
     },
+    "download_detail_url_description" : {
+        "message" : "Click to open the URL"
+    },
     "download_detail_referer" : {
         "message" : "Referer"
+    },
+    "download_detail_referer_description" : {
+        "message" : "Click to open the URL"
     },
     "download_detail_filename" : {
         "message" : "Filename"
