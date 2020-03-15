@@ -67,6 +67,9 @@
     "new_download_single_url" : {
         "message" : "ダウンロードURL"
     },
+    "new_download_single_url_description" : {
+        "message" : "Enterキーを押すとダウンロードが始まります"
+    },
     "new_download_single_referer" : {
         "message" : "リファラ [任意]"
     },

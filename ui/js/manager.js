@@ -31,6 +31,7 @@ $(async () => {
     localization();
     updateList();
     setInterval(updateList, progressInterval);
+    $('#dl-single-url').on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); });
     $('#download-button').on('click', download);
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
     $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });

@@ -67,6 +67,9 @@
     "new_download_single_url" : {
         "message" : "Download URL"
     },
+    "new_download_single_url_description" : {
+        "message" : "Press Enter key to start download"
+    },
     "new_download_single_referer" : {
         "message" : "Referer [Optional]"
     },
