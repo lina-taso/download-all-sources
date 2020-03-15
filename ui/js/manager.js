@@ -490,7 +490,8 @@ function reDownload()
         bg.downloadQueue[dlid].originalUrl,
         bg.downloadQueue[dlid].requestHeaders,
         bg.downloadQueue[dlid].location,
-        bg.downloadQueue[dlid].filename
+        bg.downloadQueue[dlid].filename,
+        bg.downloadQueue[dlid].option
     );
 
     $('#download-detail').modal('hide');
