@@ -172,6 +172,15 @@
     "download_detail_location" : {
         "message" : "ディレクトリ"
     },
+    "download_detail_option" : {
+        "message" : "オプション"
+    },
+    "download_detail_option1" : {
+        "message" : "マルチスレッド無効"
+    },
+    "download_detail_option2" : {
+        "message" : "size mismatchエラーを無視"
+    },
     "source_download_title" : {
         "message" : "ソースダウンロード"
     },

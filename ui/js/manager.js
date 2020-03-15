@@ -87,6 +87,12 @@ $(async () => {
             // initial location
             if (config['remember-new-location'])
                 $('#dl-single-location, #dl-multiple-location').val(config['new-location-value']).trigger('input');
+            // initial option1
+            if (config['remember-new-option1'])
+                $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['new-option1-value']).trigger('input');
+            // initial option2
+            if (config['remember-new-option2'])
+                $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['new-option2-value']).trigger('input');
         })
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
     // modal
@@ -112,9 +118,9 @@ $(async () => {
         let $target;
 
         if (this.id == 'detail-next-button')
-            $target = $('#item-' + this.dataset.dlid).next();
+            $target = $('#item-' + this.dataset.dlid).next('.download-item.list-group-item');
         else
-            $target = $('#item-' + this.dataset.dlid).prev();
+            $target = $('#item-' + this.dataset.dlid).prev('.download-item.list-group-item');
 
         if ($target.length != 0) {
             // update dlid
@@ -191,6 +197,12 @@ $(async () => {
             // initial source-location
             if (config['remember-source-location'])
                 $('#dl-source-location').val(config['source-location-value']).trigger('input');
+            // initial option1
+            if (config['remember-source-option1'])
+                $('#dl-source-option1').prop('checked', config['source-option1-value']).trigger('input');
+            // initial option2
+            if (config['remember-source-option2'])
+                $('#dl-source-option2').prop('checked', config['source-option2-value']).trigger('input');
             // tab color
             checkActiveFilter();
             outputSourceList(source);
@@ -371,8 +383,8 @@ async function download()
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
         if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
-        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').val());
-        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').prop('checked'));
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').prop('checked'));
         break;
 
     case 'multiple':
@@ -391,8 +403,8 @@ async function download()
                     $('#dl-multiple-filename').val(),
                     url, null, null, null, ':name:', ':ext:'
                 ),
-                { disableResuming    : $('#dl-single-option1').is(':checked'),
-                  ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
+                { disableResuming    : $('#dl-multiple-option1').is(':checked'),
+                  ignoreSizemismatch : $('#dl-multiple-option2').is(':checked') }
             );
         });
 
@@ -400,8 +412,8 @@ async function download()
         if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
         if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-multiple-filename').val());
         if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
-        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').val());
-        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-multiple-option1').prop('checked'));
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-multiple-option2').prop('checked'));
         break;
     }
 
@@ -432,8 +444,8 @@ async function sourceDownload()
                 $('#dl-source-filename').val(),
                 targetUrl, baseurl, tag, title, ':name:', ':ext:'
             ),
-            { disableResuming    : $('#dl-single-option1').is(':checked'),
-              ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
+            { disableResuming    : $('#dl-source-option1').is(':checked'),
+              ignoreSizemismatch : $('#dl-source-option2').is(':checked') }
         );
     });
 
@@ -449,7 +461,6 @@ async function sourceDownload()
         bg.config.setPref('source-keyword-value', $('#filter-expression').val());
         bg.config.setPref('source-regex-value', $('#filter-regex').prop('checked'));
     }
-    if (config['remember-source-filename']) bg.config.setPref('source-filename-value', $('#dl-source-filename').val());
     if (config['remember-source-referer']) {
         if ($('#dl-source-referer-default').prop('checked'))
             bg.config.setPref('source-referer-default-value', true);
@@ -458,9 +469,10 @@ async function sourceDownload()
             bg.config.setPref('source-referer-value', $('#dl-source-referer').val());
         }
     }
+    if (config['remember-source-filename']) bg.config.setPref('source-filename-value', $('#dl-source-filename').val());
     if (config['remember-source-location']) bg.config.setPref('source-location-value', $('#dl-source-location').val());
-    if (config['remember-source-option1']) bg.config.setPref('source-option1-value', $('#dl-source-option1').val());
-    if (config['remember-source-option2']) bg.config.setPref('source-option2-value', $('#dl-source-option2').val());
+    if (config['remember-source-option1']) bg.config.setPref('source-option1-value', $('#dl-source-option1').prop('checked'));
+    if (config['remember-source-option2']) bg.config.setPref('source-option2-value', $('#dl-source-option2').prop('checked'));
 
     $('#source-download').modal('hide');
 }
@@ -513,6 +525,8 @@ function updateDetail(init)
             else return '';
         });
         $('#detail-info-location').val(queue.location || '(Default download directory)');
+        $('#detail-info-option1').prop('checked', queue.option.disableResuming);
+        $('#detail-info-option2').prop('checked', queue.option.ignoreSizemismatch);
     }
 
     $('#download-detail').attr('data-status', queue.status);

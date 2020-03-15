@@ -70,7 +70,7 @@ async function downloadFile(url, requestHeaders, location, filename, option)
         status         : status,
         reason         : '',
         data           : [],
-        option         : option || {},
+        option         : JSON.parse(JSON.stringify(option)),
         resumeEnabled  : false,
         originalUrl    : url,
         originalDomain : domain,

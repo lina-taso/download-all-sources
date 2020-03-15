@@ -172,6 +172,15 @@
     "download_detail_location" : {
         "message" : "Location"
     },
+    "download_detail_option" : {
+        "message" : "Options"
+    },
+    "download_detail_option1" : {
+        "message" : "Disable multi-thread download"
+    },
+    "download_detail_option2" : {
+        "message" : "Ignore size mismatch errors"
+    },
     "source_download_title" : {
         "message" : "Source Download"
     },
