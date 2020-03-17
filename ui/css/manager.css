@@ -148,11 +148,11 @@ html, body {
 #detail-stop-button,
 #detail-pause-button,
 #detail-resume-button,
-#detail-redo-button {
+#detail-redo-button-group {
     display: none;
 }
-#download-detail[data-status="finished"] #detail-redo-button {
-    display: block;
+#download-detail[data-status="finished"] #detail-redo-button-group {
+    display: flex;
 }
 #download-detail[data-status="downloading"] #detail-stop-button,
 #download-detail[data-status="downloading"] #detail-pause-button {

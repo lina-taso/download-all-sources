@@ -73,6 +73,9 @@
     "new_download_single_referer" : {
         "message" : "リファラ [任意]"
     },
+    "new_download_single_referer_default" : {
+        "message" : "デフォルトのリファラ"
+    },
     "new_download_single_filename" : {
         "message" : "ファイル名 [任意]"
     },
@@ -455,6 +458,9 @@
     },
     "button_redo" : {
         "message" : "やり直し"
+    },
+    "button_redo_manual" : {
+        "message" : "設定変更してやり直し"
     },
     "button_cancel" : {
         "message" : "キャンセル"

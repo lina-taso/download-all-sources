@@ -73,6 +73,9 @@
     "new_download_single_referer" : {
         "message" : "Referer [Optional]"
     },
+    "new_download_single_referer_default" : {
+        "message" : "Use default referer"
+    },
     "new_download_single_filename" : {
         "message" : "Filename [Optional]"
     },
@@ -224,7 +227,7 @@
         "message" : "Referer [Optional]"
     },
     "source_download_option_referer_default" : {
-        "message" : "Set default referer"
+        "message" : "Use default referer"
     },
     "source_download_option_location" : {
         "message" : "Download Location [Optional]"
@@ -458,6 +461,9 @@
     },
     "button_redo" : {
         "message" : "Redo"
+    },
+    "button_redo_manual" : {
+        "message" : "Change parameters and Redo"
     },
     "button_cancel" : {
         "message" : "Cancel"

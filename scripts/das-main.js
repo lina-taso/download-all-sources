@@ -48,7 +48,7 @@ var config = {
 
 
 // download file
-async function downloadFile(url, requestHeaders, location, filename, option)
+async function downloadFile(url, requestHeaders, locs, filename, option)
 {
     const dlid = lastid++;
 
@@ -75,7 +75,8 @@ async function downloadFile(url, requestHeaders, location, filename, option)
         originalUrl    : url,
         originalDomain : domain,
         // if location is specified, last character must be '/'|'\\'
-        location       : location,
+        location       : locs.location,
+        originalLocation : locs.originalLocation,
         filename       : filename,
         responseUrl    : '',
         responseFilename : '',
