@@ -154,6 +154,9 @@
     "download_detail_final_url_description" : {
         "message" : "クリックしてURLを開く"
     },
+    "download_detail_mime" : {
+        "message" : "Content-Type"
+    },
     "download_detail_progress" : {
         "message" : "進捗"
     },

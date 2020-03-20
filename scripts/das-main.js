@@ -80,6 +80,7 @@ async function downloadFile(url, requestHeaders, locs, filename, option)
         filename       : filename,
         responseUrl    : '',
         responseFilename : '',
+        contentType    : '',
         requestHeaders : JSON.parse(JSON.stringify(requestHeaders)),
         // if total is 0, download is not started or total size is unknown
         total          : 0,
@@ -255,6 +256,8 @@ function createXhr(dlid, index, start, end)
         }
         // total size
         queue.total = parseInt(this.getResponseHeader('content-length')) || 0;
+        // content type
+        queue.contentType = this.getResponseHeader('content-type');
 
         // manually disable resuming
         if (queue.option.disableResuming) {
