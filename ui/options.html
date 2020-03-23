@@ -46,6 +46,10 @@
                             <dd class="col-9" data-string="tag_name"></dd>
                             <dt class="col-3"><a href="#">:ext:</a></dt>
                             <dd class="col-9" data-string="tag_ext2"></dd>
+                            <dt class="col-3"><a href="#">:mime:</a></dt>
+                            <dd class="col-9" data-string="tag_mime"></dd>
+                            <dt class="col-3"><a href="#">:mext:</a></dt>
+                            <dd class="col-9" data-string="tag_mext2"></dd>
                             <dt class="col-3">/</dt>
                             <dd class="col-9" data-string="tag_delimiter"></dd>
                         </dl>
@@ -197,47 +201,56 @@
             </div>
 
             <h2 data-string="options_filetype_parameters"></h2>
-            <table class="table table-bordered">
-                <thead>
-                    <tr>
-                        <th class="col-3"><label data-string="options_filetype_filetype"></label></th>
-                        <th class="col-7"><label data-string="options_filetype_ext"></label></th>
-                        <th class="col-2"><label data-string="options_filetype_reset"></label></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype1-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype1-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype2-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype2-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype3-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype3-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype4-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype4-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype5-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype5-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                    <tr>
-                        <td class="col-3 align-middle"><input id="filetype6-label" class="form-control"></td>
-                        <td class="col-7 align-middle"><input id="filetype6-extension" class="form-control"></td>
-                        <td class="col-2 align-middle text-center"><button class="btn btn-sm btn-outline-danger px-2 filetype-reset" data-string="options_filetype_reset"></button></td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="container-fluid">
+                <div class="row">
+                    <label class="font-weight-bold col-3" data-string="options_filetype_filetype"></label>
+                    <label class="font-weight-bold col mx-2" data-string="options_filetype_ext"></label>
+                    <label class="font-weight-bold col-2" data-string="options_filetype_reset"></label>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype1-label" class="form-control col-3"></input>
+                    <input id="filetype1-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype2-label" class="form-control col-3"></input>
+                    <input id="filetype2-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype3-label" class="form-control col-3"></input>
+                    <input id="filetype3-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype4-label" class="form-control col-3"></input>
+                    <input id="filetype4-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype5-label" class="form-control col-3"></input>
+                    <input id="filetype5-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+                <div class="row form-group">
+                    <input id="filetype6-label" class="form-control col-3"></input>
+                    <input id="filetype6-extension" class="form-control col mx-2"></input>
+                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                </div>
+            </div>
+
+            <h2 data-string="options_mime_mappings"></h2>
+            <button id="mime-reset" class="btn btn-sm btn-outline-danger mb-3" data-string="options_mime_reset"></button>
+            <div class="container-fluid">
+                <div class="row">
+                    <label class="font-weight-bold col" data-string="options_mime_mime"></label>
+                    <label class="font-weight-bold col-2 mime-ext" data-string="options_mime_extension"></label>
+                </div>
+                <div class="row form-group mime-mapping d-none">
+                    <input class="form-control col mime-mapping-box mime-mime"></input>
+                    <input class="form-control col-2 ml-2 mime-mapping-box mime-ext"></input>
+                </div>
+            </div>
         </div>
     </body>
 </html>

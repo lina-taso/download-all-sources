@@ -155,7 +155,7 @@
         "message" : "Click to open the URL"
     },
     "download_detail_mime" : {
-        "message" : "Content-Type"
+        "message" : "MIME Type"
     },
     "download_detail_progress" : {
         "message" : "Progress"
@@ -300,7 +300,7 @@
         "message" : "Default Location (sub directory)"
     },
     "options_location_description" : {
-        "message" : "Base location is Firefox's default download directory.\nYou can change it in Firefox's preferences page (about:preferences)."
+        "message" : "The location above is the relative path from Firefox's default download directory.\nYou can change the download directory in Firefox's preferences page (about:preferences)."
     },
     "options_general" : {
         "message" : "General parameters"
@@ -386,6 +386,18 @@
     "options_filetype_reset" : {
         "message" : "Reset"
     },
+    "options_mime_mappings" : {
+        "message" : "Mappings of the MIME Type and the extension"
+    },
+    "options_mime_reset" : {
+        "message" : "Reset all mappings to default"
+    },
+    "options_mime_mime" : {
+        "message" : "MIME Type"
+    },
+    "options_mime_extension" : {
+        "message" : "Extension"
+    },
 
     //
     // Common
@@ -430,7 +442,7 @@
         "message" : "The name of HTML tag that has link URL"
     },
     "tag_title" : {
-        "message" : "The title value of the HTML tag that has link URL *replace to 'no-title' when empty"
+        "message" : "The title value of the HTML tag that has link URL\n* Replace to 'no-title' when empty"
     },
     "tag_name" : {
         "message" : "Filename of final URL without extension (filename.ext -> filename)"
@@ -439,7 +451,16 @@
         "message" : "File extension of final URL starting with a dot (.ext)"
     },
     "tag_ext2" : {
-        "message" : "File extension of final URL (ext) *replace to 'no-ext' when empty"
+        "message" : "File extension of final URL (ext)\n* Replace to 'no-ext' when empty"
+    },
+    "tag_mime" : {
+        "message" : "MIME Type in the Content-Type response header (sample/mime-type)"
+    },
+    "tag_mext" : {
+        "message" : "Extension corresponding to MIME Type (.mext)\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
+    },
+    "tag_mext2" : {
+        "message" : "Extension corresponding to MIME Type (.mext)\n* Replace to 'no-ext' when no mapping defined\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
     },
     "tag_string" : {
         "message" : "Default referer root path"

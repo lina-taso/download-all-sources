@@ -14,8 +14,8 @@ const progressInterval = 2000,
       PAGE_TITLE    = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
       allowUrl      = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
-      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext):))*$/,
-      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext):))*$/,
+      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
+      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
       denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
       defaultTitle  = 'no-title';
 
@@ -304,15 +304,16 @@ $(async () => {
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
-                bg.replaceTags(
-                    this.value,
-                    'http://www.example.com/path/name/',
-                    this.id == 'dl-source-filename' ? baseurl : '',
-                    'tag',
-                    'title',
-                    'filename',
-                    '.ext'
-                ));
+                bg.replaceTags({
+                    path       : this.value,
+                    targetUrl  : 'http://www.example.com/path/name/',
+                    refererUrl : this.id == 'dl-source-filename' ? baseurl : '',
+                    tag        : 'tag',
+                    title      : 'title',
+                    name       : 'filename',
+                    ext        : 'ext',
+                    mime       : 'sample/mime-type'
+                }, true));
             else $('#' + this.id + '-sample').text('');
         });
     // location validation
@@ -324,15 +325,16 @@ $(async () => {
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
-                bg.replaceTags(
-                    location,
-                    'http://www.example.com/path/name/',
-                    this.id == 'dl-source-location' ? baseurl : '',
-                    'tag',
-                    'title',
-                    'filename',
-                    'ext'
-                ));
+                bg.replaceTags({
+                    path       : location,
+                    targetUrl  : 'http://www.example.com/path/name/',
+                    refererUrl : this.id == 'dl-source-location' ? baseurl : '',
+                    tag        : 'tag',
+                    title      : 'title',
+                    name       : 'filename',
+                    ext        : 'ext',
+                    mime       : 'sample/mime-type'
+                }));
             else $('#' + this.id + '-sample').text('');
         });
 
@@ -399,15 +401,17 @@ async function download()
             targetUrl,
             [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
             { location :
-              bg.replaceTags( // location
-                  bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
-                  targetUrl, null, null, null, ':name:', ':ext:'
-              ),
+              bg.replaceTags({ // location
+                  path      : bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
+                  targetUrl : targetUrl
+              }),
               originalLocation : $('#dl-single-location').val() },
-            bg.replaceTags( // filename
-                $('#dl-single-filename').val(),
-                targetUrl, null, null, null, ':name:', ':ext:'
-            ),
+            { filename :
+              bg.replaceTags({ // filename
+                  path      : $('#dl-single-filename').val(),
+                  targetUrl : targetUrl
+              }, true),
+              originalFilename : $('#dl-single-filename').val() },
             { disableResuming    : $('#dl-single-option1').is(':checked'),
               ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
         );
@@ -436,15 +440,17 @@ async function download()
                 url,
                 [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
                 { location :
-                  bg.replaceTags( // location
-                      bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
-                      url, null, null, null, ':name:', ':ext:'
-                  ),
+                  bg.replaceTags({ // location
+                      path      : bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
+                      targetUrl : url
+                  }),
                   originalLocation : $('#dl-multiple-location').val() },
-                bg.replaceTags( // filename
-                    $('#dl-multiple-filename').val(),
-                    url, null, null, null, ':name:', ':ext:'
-                ),
+                { filename :
+                  bg.replaceTags({ // filename
+                      path      : $('#dl-multiple-filename').val(),
+                      targetUrl : url
+                  }, true),
+                  originalFilename : $('#dl-multiple-filename').val() },
                 { disableResuming    : $('#dl-multiple-option1').is(':checked'),
                   ignoreSizemismatch : $('#dl-multiple-option2').is(':checked') }
             );
@@ -479,15 +485,22 @@ async function sourceDownload()
             targetUrl,
             [{ name : 'X-DAS-Referer', value : $('#dl-source-referer').val() }],
             { location :
-              bg.replaceTags( // location
-                  bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
-                  targetUrl, baseurl, tag, null, ':name:', ':ext:'
-              ),
+              bg.replaceTags({ // location
+                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
+                  targetUrl  : targetUrl,
+                  refererUrl : baseurl,
+                  tag        : tag
+              }),
               originalLocation : $('#dl-source-location').val() },
-            bg.replaceTags( // filename
-                $('#dl-source-filename').val(),
-                targetUrl, baseurl, tag, title, ':name:', ':ext:'
-            ),
+            { filename :
+              bg.replaceTags({ // filename
+                  path       : $('#dl-source-filename').val(),
+                  targetUrl  : targetUrl,
+                  refererUrl : baseurl,
+                  tag        : tag,
+                  title      : title
+              }, true),
+              originalFilename : $('#dl-source-filename').val() },
             { disableResuming    : $('#dl-source-option1').is(':checked'),
               ignoreSizemismatch : $('#dl-source-option2').is(':checked') }
         );
@@ -531,7 +544,8 @@ function reDownload()
         queue.requestHeaders,
         { location         : queue.location,
           originalLocation : queue.originalLocation },
-        queue.filename,
+        { filename         : queue.filename,
+          originalFilename : queue.originalFilename },
         queue.option
     );
 
@@ -552,7 +566,7 @@ function reDownloadManual()
         const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#dl-single-referer').val(referer.value).trigger('input');
         $('#dl-single-location').val(queue.originalLocation).trigger('input');
-        $('#dl-single-filename').val(queue.filename).trigger('input');
+        $('#dl-single-filename').val(queue.originalFilename).trigger('input');
         $('#dl-single-option1').prop('checked', queue.option.disableResuming).trigger('input');
         $('#dl-single-option2').prop('checked', queue.option.ignoreSizemismatch).trigger('input');
 
@@ -591,9 +605,8 @@ function updateDetail(init)
         $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
         $('#detail-info-referer-open').attr('data-link', referer.value);
         $('#detail-info-filename').val(() => {
-            if (queue.filename) return queue.filename;
-            else if (queue.responseFilename) return queue.responseFilename + ' (auto)';
-            else return '';
+            if (queue.autoFilename) return queue.autoFilename + ' (auto)';
+            return queue.filename || queue.responseFilename || '';
         });
         $('#detail-info-location').val(queue.location || '(Default download directory)');
         $('#detail-info-option1').prop('checked', queue.option.disableResuming);
@@ -694,11 +707,7 @@ function updateList()
             'data-status' : queue.status,
             'data-reason' : queue.reason
         });
-        $item.find('.item-filename').text(() => {
-            if (queue.filename) return queue.filename;
-            else if (queue.responseFilename) return queue.responseFilename;
-            else return queue.originalUrl;
-        });
+        $item.find('.item-filename').text(queue.autoFilename || queue.filename || queue.responseFilename || queue.originalUrl);
         // progress
         if (queue.total)
             $item.find('.item-progress')

@@ -8,8 +8,10 @@
 // background
 var bg;
 
-const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext):))*$/,
-      denyLocation = /(^\/)|(\.\/|\.\.\/|\/\/)/;
+const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
+      denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
+      allowMimetype = /^\S+$/,
+      allowExtension= /^([A-Za-z0-9]+|[A-Za-z0-9]+(\.[A-Za-z0-9]+)+)$/;
 
 
 $(async () => {
@@ -26,6 +28,7 @@ $(async () => {
     const config = bg.config.getPref();
     $('input').each(function () {
         const id = $(this).attr('id');
+        if (!id) return;
         switch (this.type) {
         case 'checkbox':
             this.checked = config[id];
@@ -34,6 +37,15 @@ $(async () => {
             this.value = config[id];
         }
     });
+    // initial mime mapipngs
+    const $mapTemplate = $('.row.mime-mapping.d-none');
+    for (let key of Object.keys(config['mime-mappings'])) {
+        let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
+        $target.children('.mime-mime').val(key);
+        $target.children('.mime-ext').val(config['mime-mappings'][key]);
+    }
+    // empty box
+    $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
 
     $('#simultaneous-whole, #simultaneous-per-server, #retry-count, #split-count, #split-size, #split-ex-size')
         .each(function() {
@@ -56,21 +68,59 @@ $(async () => {
             bg.config.setPref(this.id, Number(this.value));
             break;
         default:
+            // location
             if (this.id == 'download-location') {
                 const location = bg.normalizeLocation(this.value),
-                      valid = allowLocation.test(location) && !denyLocation.test(location);
+                      valid    = allowLocation.test(location) && !denyLocation.test(location);
                 $(this).toggleClass('is-invalid', !valid);
                 // sample and save pref
                 if (valid) {
-                    $('#download-location-sample').text(bg.replaceTags(
-                        location,
-                        'http://www.example.com/path/name/',
-                        null, null, null, 'filename', 'ext'
-                    ));
+                    $('#download-location-sample').text(bg.replaceTags({
+                        path      : location,
+                        targetUrl : 'http://www.example.com/path/name/',
+                        name      : 'filename',
+                        ext       : 'ext',
+                        mime      : 'sample/mime-type'
+                    }));
                     bg.config.setPref(this.id, location || null);
                 }
                 else {
                     $('#download-location-sample').text('');
+                }
+            }
+            // mime
+            else if (this.classList.contains('mime-mapping-box')) {
+                const $mimebox = $(this).parent().children('.mime-mime'),
+                      $extbox  = $(this).parent().children('.mime-ext'),
+                      entered  = $mimebox.val() != '' || $extbox.val() != '';
+
+                // if last is not empty, add new line
+                if ($(this).parent().is(':last-of-type') && entered) {
+                    const $mapTemplate = $('.row.mime-mapping.d-none');
+                    // clone with events
+                    $mapTemplate.clone(true).removeClass('d-none').appendTo($mapTemplate.parent());
+                }
+                // validation
+                if (entered) {
+                    const mimevalid = allowMimetype.test($mimebox.val()),
+                          extvalid  = allowExtension.test($extbox.val());
+                    $mimebox.toggleClass('is-invalid', !mimevalid);
+                    $extbox.toggleClass('is-invalid', !extvalid);
+
+                    if (!mimevalid || !extvalid) return;
+                }
+                else {
+                    $mimebox.toggleClass('is-invalid', false);
+                    $extbox.toggleClass('is-invalid', false);
+                }
+                // save pref
+                if (!$('.mime-mapping').find('.is-invalid').length) {
+                    const mappings = {};
+                    $('.mime-mapping').each(function() {
+                        if($(this).children('.mime-mime').val() == '') return;
+                        mappings[$(this).children('.mime-mime').val().toLowerCase()] = $(this).children('.mime-ext').val();
+                    });
+                    bg.config.setPref('mime-mappings', mappings);
                 }
             }
             else if (this.id.startsWith('filetype') && this.id.endsWith('-extension')) {
@@ -88,16 +138,39 @@ $(async () => {
     // reset button
     $('.filetype-reset')
         .on('click', async function() {
-            const i = $('.filetype-reset').index(this) + 1,
+            const i     = $('.filetype-reset').index(this) + 1,
                   label = 'filetype' + i + '-label',
-                  ext = 'filetype' + i + '-extension';
+                  ext   = 'filetype' + i + '-extension';
+
             // reset
             await Promise.all([bg.config.setPref(label, null),
                                bg.config.setPref(ext, null)]);
+
+            await bg.config.update();
             // reload
-            document.getElementById(label).value = await bg.config.getPref(label);
-            document.getElementById(ext).value = await bg.config.getPref(ext);
+            document.getElementById(label).value = bg.config.getPref(label);
+            document.getElementById(ext).value   = bg.config.getPref(ext);
             document.getElementById(ext).classList.remove('is-invalid');
+        });
+    // reset button
+    $('#mime-reset')
+        .on('click', async function() {
+            // reset
+            await bg.config.setPref('mime-mappings', null);
+            await bg.config.update();
+
+            const config = await bg.config.getPref();
+            // clear all boxes
+            $('.row.mime-mapping:not(.d-none)').remove();
+
+            // initial mime mappings
+            for (let key of Object.keys(config['mime-mappings'])) {
+                let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
+                $target.children('.mime-mime').val(key);
+                $target.children('.mime-ext').val(config['mime-mappings'][key]);
+            }
+            // empty box
+            $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
         });
 
     // tag insertion

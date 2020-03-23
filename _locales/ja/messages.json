@@ -155,7 +155,7 @@
         "message" : "クリックしてURLを開く"
     },
     "download_detail_mime" : {
-        "message" : "Content-Type"
+        "message" : "MIMEタイプ"
     },
     "download_detail_progress" : {
         "message" : "進捗"
@@ -300,7 +300,7 @@
         "message" : "デフォルトディレクトリ (サブディレクトリ)"
     },
     "options_location_description" : {
-        "message" : "基点となるダウンロードディレクトリは、Firefoxのデフォルトの保存先です。\nFirefoxの設定ページ (about:preferences) でデフォルトの保存先を変更できます。"
+        "message" : "ダウンロードディレクトリは、Firefoxのデフォルト保存先からの相対パスです。\nFirefoxの設定ページ (about:preferences) でデフォルトの保存先を変更できます。"
     },
     "options_general" : {
         "message" : "一般的な設定"
@@ -386,6 +386,18 @@
     "options_filetype_reset" : {
         "message" : "リセット"
     },
+    "options_mime_mappings" : {
+        "message" : "MIMEタイプと拡張子の対応付け"
+    },
+    "options_mime_reset" : {
+        "message" : "全てのマッピングを初期値にリセット"
+    },
+    "options_mime_mime" : {
+        "message" : "MIMEタイプ"
+    },
+    "options_mime_extension" : {
+        "message" : "拡張子"
+    },
 
     //
     // Common
@@ -430,7 +442,7 @@
         "message" : "リンクURLを持っているHTMLタグ名"
     },
     "tag_title" : {
-        "message" : "リンクURLを持っているHTMLタグのタイトル値 *空の時は'no-title'に置き換えます"
+        "message" : "リンクURLを持っているHTMLタグのタイトル値\n* 空の時は'no-title'に置き換えます"
     },
     "tag_name" : {
         "message" : "拡張子を除いたファイル名 (filename.ext -> filename)"
@@ -439,7 +451,16 @@
         "message" : "ドットから始まる最終URLのファイル拡張子 (.ext)"
     },
     "tag_ext2" : {
-        "message" : "最終URLのファイル拡張子 (ext) *空の時は'no-ext'に置き換えます"
+        "message" : "最終URLのファイル拡張子 (ext)\n* 空の時は'no-ext'に置き換えます"
+    },
+    "tag_mime" : {
+        "message" : "Content-Typeレスポンスヘッダーに記載されたMIMEタイプ (sample/mime-type)"
+    },
+    "tag_mext" : {
+        "message" : "MIMEタイプに対応する拡張子 (.mext)\n* MIMEタイプと拡張子のマッピングはアドオン設定画面で編集できます"
+    },
+    "tag_mext2" : {
+        "message" : "MIMEタイプに対応する拡張子 (mext)\n* MIMEタイプと拡張子のマッピングはアドオン設定画面で編集できます\n* マッピングが定義されていない時は'no-ext'に置き換えます"
     },
     "tag_delimiter" : {
         "message" : "ディレクトリ区切り\nWindowsを利用中なら'\\'も'/'も利用可能"

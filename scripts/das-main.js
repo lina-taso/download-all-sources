@@ -11,6 +11,7 @@ browser.storage.onChanged.addListener(configChanged);
 let DEBUG;
 const DEFAULT_FILENAME  = 'download',
       DEFAULT_EXTENSION = 'no-ext',
+      DEFAULT_MIME      = { 'sample/mime-type' : 'mext' },
       RETRY_WAIT        = 5000,
       TILE_SIZE         = 400;
 
@@ -48,7 +49,7 @@ var config = {
 
 
 // download file
-async function downloadFile(url, requestHeaders, locs, filename, option)
+async function downloadFile(url, requestHeaders, locs, names, option)
 {
     const dlid = lastid++;
 
@@ -77,7 +78,9 @@ async function downloadFile(url, requestHeaders, locs, filename, option)
         // if location is specified, last character must be '/'|'\\'
         location       : locs.location,
         originalLocation : locs.originalLocation,
-        filename       : filename,
+        filename       : names.filename,
+        originalFilename : names.originalFilename,
+        autoFilename   : '',
         responseUrl    : '',
         responseFilename : '',
         contentType    : '',
@@ -188,11 +191,48 @@ function createXhr(dlid, index, start, end)
             DEBUG && console.log({ dlid : dlid, index : index, rangestart : datum.rangeStart, rangeend : datum.rangeEnd, loaded : datum.loaded, message : 'onload, size mismatch' });
 
             datum.status = 'size mismatch';
+            datum.blob   = this.response;
+            datum.loaded = this.response.size;
+            datum.xhr    = undefined;
             retryPartialDownload(dlid, index);
             return;
         }
 
         DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
+
+        // download has been finished before firing onreadystatechange
+        if (!queue.responseUrl) {
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'onload2' });
+
+            // update download queue (url & filename)
+            let url = new URL(this.responseURL);
+            queue.responseUrl = url;
+            queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
+            // content type
+            queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
+
+            // split filename and extension
+            const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
+            // replace tags for location
+            if (queue.location) {
+                queue.location = replaceTags({
+                    path : queue.location,
+                    name : filename[0],
+                    ext  : filename[1] || DEFAULT_EXTENSION,
+                    mime : queue.contentType
+                });
+            }
+            // replace tags for filename
+            if (queue.filename) {
+                queue.filename = replaceTags({
+                    path : queue.filename,
+                    name : filename[0],
+                    ext  : filename[1], // filename extension starting with a period
+                    mime : queue.contentType
+                }, true);
+            }
+        }
+
         // update progress
         datum.status = 'complete';
         datum.blob   = this.response;
@@ -232,32 +272,34 @@ function createXhr(dlid, index, start, end)
         DEBUG && console.log({ dlid : dlid, index : index, message : 'readystate 2' });
 
         // update download queue (url & filename)
-        let url = new URL(this.responseURL);
+        const url = new URL(this.responseURL);
         queue.responseUrl = url;
         queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
+        // content type
+        queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
 
         // split filename and extension
-        let filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
+        const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
         // replace tags for location
         if (queue.location) {
-            queue.location = replaceTags(
-                queue.location, null, null, null, null,
-                filename[0],
-                filename[1] || DEFAULT_EXTENSION
-            );
+            queue.location = replaceTags({
+                path : queue.location,
+                name : filename[0],
+                ext  : filename[1] || DEFAULT_EXTENSION,
+                mime : queue.contentType
+            });
         }
         // replace tags for filename
         if (queue.filename) {
-            queue.filename = replaceTags(
-                queue.filename, null, null, null, null,
-                filename[0],
-                filename[1] ? '.' + filename[1] : ''
-            );
+            queue.filename = replaceTags({
+                path : queue.filename,
+                name : filename[0],
+                ext  : filename[1], // filename extension starting with a period
+                mime : queue.contentType
+            }, true);
         }
         // total size
         queue.total = parseInt(this.getResponseHeader('content-length')) || 0;
-        // content type
-        queue.contentType = this.getResponseHeader('content-type');
 
         // manually disable resuming
         if (queue.option.disableResuming) {
@@ -389,7 +431,7 @@ function restartXhr(dlid, index)
     datum.xhr.addEventListener('error',    onerror);
     datum.xhr.addEventListener('progress', onprogress);
 
-    datum.xhr.open('GET', queue.responseUrl);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl);
     datum.xhr.responseType = 'blob';
     for (let header of queue.requestHeaders)
         datum.xhr.setRequestHeader(header.name, header.value);
@@ -410,21 +452,53 @@ function restartXhr(dlid, index)
             datum.blob   = this.response;
             datum.loaded = this.response.size;
             datum.xhr    = undefined;
-
             retryPartialDownload(dlid, index);
+            return;
         }
-        else {
-            DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
 
-            // update progress
-            datum.status = 'complete';
-            datum.blob   = this.response;
-            datum.loaded = this.response.size;
-            datum.xhr    = undefined;
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'onload' });
 
-            // update download queue
-            partialDownloadCompleted(dlid);
+        // download has been finished before firing onreadystatechange
+        if (!queue.responseUrl) {
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'onload2' });
+
+            // update download queue (url & filename)
+            const url = new URL(this.responseURL);
+            queue.responseUrl = url;
+            queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
+            // content type
+            queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
+
+            // split filename and extension
+            const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
+            // replace tags for location
+            if (queue.location) {
+                queue.location = replaceTags({
+                    path : queue.location,
+                    name : filename[0],
+                    ext  : filename[1] || DEFAULT_EXTENSION,
+                    mime : queue.contentType
+                });
+            }
+            // replace tags for filename
+            if (queue.filename) {
+                queue.filename = replaceTags({
+                    path : queue.filename,
+                    name : filename[0],
+                    ext  : filename[1], // filename extension starting with a period
+                    mime : queue.contentType
+                }, true);
+            }
         }
+
+        // update progress
+        datum.status = 'complete';
+        datum.blob   = this.response;
+        datum.loaded = this.response.size;
+        datum.xhr    = undefined;
+
+        // update download queue
+        partialDownloadCompleted(dlid);
     }
     function onabort()
     {
@@ -621,17 +695,27 @@ async function downloadCompleted(dlid, blob)
     // filename
     let filename;
     // specified filename
-    if (queue.filename)
-        filename = queue.location + queue.filename;
+    if (queue.filename) {
+        // starting with period
+        if (/^\./.test(queue.filename))
+            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + queue.filename);
+        else
+            filename = queue.location + queue.filename;
+    }
     // url's leafname
-    else if (queue.responseFilename)
-        filename = queue.location + queue.responseFilename;
+    else if (queue.responseFilename) {
+        // starting with period
+        if (/^\./.test(queue.responseFilename))
+            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + queue.responseFilename);
+        else
+            filename = queue.location + queue.responseFilename;
+    }
     // noname
     else {
         if (blob.type == 'text/html')
-            filename = queue.location + DEFAULT_FILENAME + '.html';
+            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + '.html');
         else
-            filename = queue.location + DEFAULT_FILENAME;
+            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME);
     }
 
     // random wait
@@ -845,25 +929,36 @@ function normalizeLocation(loc)
     return loc.replace(/\\/g, '/').replace(/([^/])$/, '$1/');
 }
 
-function replaceTags(path, targetUrl, refererUrl, tag, title, name, ext)
+function replaceTags(param, forfile)
 {
+// TODO when a tag is undefined, the tag text will be disappeared.
     const replaceMap = {
-        ':Y:' :       () => (new Date()).getFullYear(),
-        ':M:' :       () => ((new Date()).getMonth() + 1).toString().padStart(2, '0'),
-        ':D:' :       () => (new Date()).getDate().toString().padStart(2, '0'),
-        ':h:' :       () => (new Date()).getHours().toString().padStart(2, '0'),
-        ':m:' :       () => (new Date()).getMinutes().toString().padStart(2, '0'),
-        ':s:' :       () => (new Date()).getSeconds().toString().padStart(2, '0'),
-        ':dom:' :     () => (new URL(targetUrl)).hostname,
-        ':path:' :    () => { const path = (/^\/(.*\/)*/.exec((new URL(targetUrl)).pathname))[1];
+        ':Y:'       : () => (new Date()).getFullYear(),
+        ':M:'       : () => ((new Date()).getMonth() + 1).toString().padStart(2, '0'),
+        ':D:'       : () => (new Date()).getDate().toString().padStart(2, '0'),
+        ':h:'       : () => (new Date()).getHours().toString().padStart(2, '0'),
+        ':m:'       : () => (new Date()).getMinutes().toString().padStart(2, '0'),
+        ':s:'       : () => (new Date()).getSeconds().toString().padStart(2, '0'),
+        ':dom:'     : () => (new URL(param.targetUrl || null)).hostname,
+        ':path:'    : () => { const path = (/^\/(.*\/)*/.exec((new URL(param.targetUrl || null)).pathname))[1];
                               return path ? path.slice(0, -1) : ''; },
-        ':refdom:' :  () => (new URL(refererUrl)).hostname,
-        ':refpath:' : () => { const path = (/^\/(.*\/)*/.exec((new URL(refererUrl)).pathname))[1];
+        ':refdom:'  : () => (new URL(param.refererUrl || null)).hostname,
+        ':refpath:' : () => { const path = (/^\/(.*\/)*/.exec((new URL(param.refererUrl || null)).pathname))[1];
                               return path ? path.slice(0, -1) : ''; },
-        ':tag:' :     () => tag,
-        ':title:' :   () => title.replace(/[/\\:,;*?"<>|]/g, '_'),
-        ':name:' :    () => name,
-        ':ext:' :     () => ext
+        ':tag:'     : () => param.tag === undefined ? ':tag:' : param.tag || '',
+        ':title:'   : () => param.title.replace(/[/\\:,;*?"<>|]/g, '_'),
+        ':name:'    : () => param.name === undefined ? ':name:' : param.name || '',
+        ':ext:'     : () => param.ext === undefined ? ':ext:' :
+            forfile ? param.ext ? '.' + param.ext : '' : param.ext || '',
+        ':mime:'    : () => param.mime === undefined ? ':mime:' : param.mime || '',
+        ':mext:'    : () => param.mime === undefined ? ':mext:' : mime2ext(param.mime || '', forfile) || DEFAULT_EXTENSION
     };
-    return path.replace(/(:.+?:)/g, (tag) => replaceMap[tag]()).replace(/\/\//g, '/');
+    return param.path.replace(/(:.+?:)/g, (tag) => replaceMap[tag]()).replace(/\/\//g, '/');
+}
+
+function mime2ext(mime, forfile)
+{
+    const mimeMap = Object.assign({}, config.getPref('mime-mappings'), DEFAULT_MIME),
+          ext     = mimeMap[mime];
+    return forfile ? ext ? '.' + ext : '' : ext || '';
 }
