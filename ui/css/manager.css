@@ -44,6 +44,7 @@ html, body {
 /* sample */
 #dl-single-filename-sample::before,
 #dl-single-location-sample::before,
+#dl-multiple-filename-sample::before,
 #dl-multiple-location-sample::before,
 #dl-source-filename-sample::before,
 #dl-source-location-sample::before {

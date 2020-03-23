@@ -14,8 +14,12 @@ const progressInterval = 2000,
       PAGE_TITLE    = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
       allowUrl      = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
-      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
-      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
+      // not include tag, title
+      allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
+      allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
+      // include tag, title for source download
+      allowFilenameS= /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
+      allowLocationS= /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
       denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
       defaultTitle  = 'no-title';
 
@@ -80,7 +84,7 @@ $(async () => {
     // modal
     $('#new-download')
         .on('show.bs.modal', async function() {
-            // from new button
+            // default-referer from new button
             if (!baseurl) {
                 $('#dl-single-referer-default').prop('checked', false).trigger('input');
                 $('#dl-single-referer-default-group').css('display', 'none');
@@ -105,16 +109,16 @@ $(async () => {
     $('#dl-single-url').on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); });
     $('#dl-single-referer-default').on('input', function() {
         if (this.checked)
-            $('#dl-single-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid');
+            $('#dl-single-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
         else
-            $('#dl-single-referer').val('').prop('readonly', false);
+            $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
     });
     // modal
     $('#download-detail')
         .on('show.bs.modal', function(e) {
             const button = e.relatedTarget;
             // update dlid
-            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button-group')
+            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
                 .attr('data-dlid', button.dataset.dlid);
             // update detail
             updateDetail(true);
@@ -139,7 +143,7 @@ $(async () => {
 
         if ($target.length != 0) {
             // update dlid
-            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button-group')
+            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
                 .attr('data-dlid', $target.attr('id').split('-')[1]);
             // update detail
             updateDetail(true);
@@ -176,9 +180,9 @@ $(async () => {
             // default-referer
             $('#dl-source-referer-default').on('input', function() {
                 if (this.checked)
-                    $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid');
+                    $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
                 else
-                    $('#dl-source-referer').val('').prop('readonly', false);
+                    $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
             });
             // initial value
             const config = await bg.config.getPref();
@@ -267,7 +271,7 @@ $(async () => {
         });
 
     // url validation
-    $('#dl-single-url, #dl-single-referer, #dl-multiple-referer, #dl-source-referer')
+    $('#dl-single-url')
         .on('input', function() {
             if (!this.value) {
                 $(this).toggleClass('is-invalid', false);
@@ -297,17 +301,50 @@ $(async () => {
                 $(this).toggleClass('is-invalid', true);
             }
         });
-    // filename validation
-    $('#dl-single-filename, #dl-source-filename')
+    // referer validation
+    $('#dl-single-url, #dl-single-referer, #dl-multiple-referer, #dl-source-referer')
         .on('input', function() {
-            const valid = allowFilename.test(this.value);
+            const $filename = $('#' + this.id.replace('referer', 'filename')),
+                  $location = $('#' + this.id.replace('referer', 'location'));
+
+            if (!this.value) {
+                const valid = !/:refdom:/.test($filename.val()) || !/:refdom:|:refpath:/.test($location.val());
+                $(this).toggleClass('is-invalid', !valid);
+                $filename.trigger('input'), $location.trigger('input');
+                return;
+            }
+            try {
+                new URL(this.value);
+                $(this).toggleClass('is-invalid', false);
+                $filename.trigger('input'), $location.trigger('input');
+            }
+            catch (e) {
+                const valid = !(
+                    /:refdom:/.test($filename.val()) && $filename.addClass('is-invalid') ||
+                    /:refdom:|:refpath:/.test($location.val()) && $location.addClass('is-invalid'));
+                $(this).toggleClass('is-invalid', !valid);
+            }
+        });
+    // filename validation
+    $('#dl-single-filename, #dl-multiple-filename, #dl-source-filename')
+        .on('input', function() {
+            const $referer     = $('#' + this.id.replace('filename', 'referer')),
+                  allowPattern = this.id != 'dl-source-filename' ? allowFilename : allowFilenameS,
+                  valid        =
+                  // referer tag is not included, referer is valid if empty
+                  ( !/:refdom:/.test(this.value) && ($referer.val() || !$referer.val() && $referer.removeClass('is-invalid')) ||
+                    // referer tag is included, referer is invalid if empty
+                    !$referer.val() && !$referer.addClass('is-invalid') || $referer.val() && !$referer.hasClass('is-invalid') ) &&
+                  // pattern validation
+                  allowPattern.test(this.value);
+
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
                 bg.replaceTags({
                     path       : this.value,
                     targetUrl  : 'http://www.example.com/path/name/',
-                    refererUrl : this.id == 'dl-source-filename' ? baseurl : '',
+                    refererUrl : $referer.val(),
                     tag        : 'tag',
                     title      : 'title',
                     name       : 'filename',
@@ -320,15 +357,24 @@ $(async () => {
     $('#dl-single-location, #dl-multiple-location, #dl-source-location')
         .on('input', async function() {
             const defaultLocation = await bg.config.getPref('download-location'),
-                  location = bg.normalizeLocation(defaultLocation + this.value),
-                  valid = allowLocation.test(location) && !denyLocation.test(location);
+                  location        = bg.normalizeLocation(defaultLocation + this.value),
+                  $referer        = $('#' + this.id.replace('location', 'referer')),
+                  allowPattern    = this.id != 'dl-source-location' ? allowLocation : allowLocationS,
+                  valid           =
+                  // referer tag is not included, referer is valid if empty
+                  ( !/:refdom:|:refpath:/.test(this.value) && ($referer.val() || !$referer.val() && $referer.removeClass('is-invalid')) ||
+                    // referer tag is included, referer is invalid if empty
+                    !$referer.val() && !$referer.addClass('is-invalid') || $referer.val() && !$referer.hasClass('is-invalid') ) &&
+                  // pattern validation
+                  allowPattern.test(location) && !denyLocation.test(location);
+
             $(this).toggleClass('is-invalid', !valid);
             // sample
             if (valid) $('#' + this.id + '-sample').text(
                 bg.replaceTags({
                     path       : location,
                     targetUrl  : 'http://www.example.com/path/name/',
-                    refererUrl : this.id == 'dl-source-location' ? baseurl : '',
+                    refererUrl : $referer.val(),
                     tag        : 'tag',
                     title      : 'title',
                     name       : 'filename',
@@ -536,7 +582,7 @@ async function sourceDownload()
 
 function reDownload()
 {
-    const dlid  = this.parentNode.dataset.dlid,
+    const dlid  = this.dataset.dlid,
           queue = bg.downloadQueue[dlid];
 
     bg.downloadFile(
@@ -554,7 +600,7 @@ function reDownload()
 
 function reDownloadManual()
 {
-    const dlid  = this.parentNode.parentNode.dataset.dlid,
+    const dlid  = this.dataset.dlid,
           queue = bg.downloadQueue[dlid];
 
     $('#download-detail').modal('hide');

@@ -201,6 +201,8 @@
                                                 <dd class="col-9" data-string="tag_second"></dd>
                                                 <dt class="col-3"><a href="#">:dom:</a></dt>
                                                 <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                <dd class="col-9" data-string="tag_refdomain"></dd>
                                                 <dt class="col-3"><a href="#">:name:</a></dt>
                                                 <dd class="col-9" data-string="tag_name"></dd>
                                                 <dt class="col-3"><a href="#">:ext:</a></dt>
@@ -241,6 +243,10 @@
                                                 <dd class="col-9" data-string="tag_domain"></dd>
                                                 <dt class="col-3"><a href="#">:path:</a></dt>
                                                 <dd class="col-9" data-string="tag_path"></dd>
+                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                <dt class="col-3"><a href="#">:refpath:</a></dt>
+                                                <dd class="col-9" data-string="tag_refpath"></dd>
                                                 <dt class="col-3"><a href="#">:name:</a></dt>
                                                 <dd class="col-9" data-string="tag_name"></dd>
                                                 <dt class="col-3"><a href="#">:ext:</a></dt>
@@ -310,6 +316,8 @@
                                                 <dd class="col-9" data-string="tag_second"></dd>
                                                 <dt class="col-3"><a href="#">:dom:</a></dt>
                                                 <dd class="col-9" data-string="tag_domain"></dd>
+                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                <dd class="col-9" data-string="tag_refdomain"></dd>
                                                 <dt class="col-3"><a href="#">:name:</a></dt>
                                                 <dd class="col-9" data-string="tag_name"></dd>
                                                 <dt class="col-3"><a href="#">:ext:</a></dt>
@@ -350,6 +358,10 @@
                                                 <dd class="col-9" data-string="tag_domain"></dd>
                                                 <dt class="col-3"><a href="#">:path:</a></dt>
                                                 <dd class="col-9" data-string="tag_path"></dd>
+                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                <dt class="col-3"><a href="#">:refpath:</a></dt>
+                                                <dd class="col-9" data-string="tag_refpath"></dd>
                                                 <dt class="col-3"><a href="#">:name:</a></dt>
                                                 <dd class="col-9" data-string="tag_name"></dd>
                                                 <dt class="col-3"><a href="#">:ext:</a></dt>
@@ -518,13 +530,13 @@
                         <button id="detail-pause-button" type="button" class="btn btn-warning"
                                 data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid="" data-string="button_pause"></button>
                         <button id="detail-resume-button" type="button" class="btn btn-info" data-dlid="" data-string="button_resume"></button>
-                        <div id="detail-redo-button-group" class="btn-group" data-dlid="">
-                            <button id="detail-redo-button" type="button" class="btn btn-light" data-string="button_redo"></button>
+                        <div id="detail-redo-button-group" class="btn-group">
+                            <button id="detail-redo-button" type="button" class="btn btn-light" data-string="button_redo" data-dlid=""></button>
                             <button id="detali-redo-button-ref" type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                 <span class="sr-only"></span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="detail-redo-button-ref" style="min-width: max-content;">
-                                <a id="detail-redo-button-manual" class="dropdown-item" href="#" data-string="button_redo_manual"></a>
+                                <a id="detail-redo-button-manual" class="dropdown-item" href="#" data-string="button_redo_manual" data-dlid=""></a>
                             </div>
                         </div>
                         <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-string="button_close"></button>

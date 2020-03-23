@@ -433,10 +433,10 @@
         "message" : "URL root path (/path/to/file -> path/to)"
     },
     "tag_refdomain" : {
-        "message" : "Default referer domain"
+        "message" : "Referer domain"
     },
     "tag_refpath" : {
-        "message" : "Default referer root path"
+        "message" : "Referer root path"
     },
     "tag_tag" : {
         "message" : "The name of HTML tag that has link URL"

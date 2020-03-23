@@ -433,10 +433,10 @@
         "message" : "ダウンロードURLのルートパス (/path/to/file -> path/to)"
     },
     "tag_refdomain" : {
-        "message" : "デフォルトリファラのドメイン名"
+        "message" : "リファラのドメイン名"
     },
     "tag_refpath" : {
-        "message" : "デフォルトリファラのルートパス"
+        "message" : "リファラのルートパス"
     },
     "tag_tag" : {
         "message" : "リンクURLを持っているHTMLタグ名"
