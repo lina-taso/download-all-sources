@@ -240,7 +240,14 @@
             </div>
 
             <h2 data-string="options_mime_mappings"></h2>
-            <button id="mime-reset" class="btn btn-sm btn-outline-danger mb-3" data-string="options_mime_reset"></button>
+            <div class="row mb-3">
+                <div class="col mr-auto">
+                    <button id="mime-reset" class="d-inline-block btn btn-sm btn-outline-danger" data-string="options_mime_reset"></button>
+                </div>
+                <div class="col">
+                    <input class="mime-filter d-inline-block form-control" placeholder="Filter..."></input>
+                </div>
+            </div>
             <div class="container-fluid">
                 <div class="row">
                     <label class="font-weight-bold col" data-string="options_mime_mime"></label>

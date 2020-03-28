@@ -88,6 +88,18 @@ $(async () => {
                     $('#download-location-sample').text('');
                 }
             }
+            // mime filter
+            else if (this.classList.contains('mime-filter')) {
+                const $mimes = $('.row.mime-mapping:not(.d-none)'),
+                      word   = this.value;
+
+                $mimes.each((i, row) => {
+                    const $mime = $(row).children('.mime-mime'),
+                          $ext  = $(row).children('.mime-ext');
+
+                    $(row).css('display', ($mime.val().includes(word) || $ext.val().includes(word)) ? '' : 'none');
+                });
+            }
             // mime
             else if (this.classList.contains('mime-mapping-box')) {
                 const $mimebox = $(this).parent().children('.mime-mime'),
@@ -152,6 +164,7 @@ $(async () => {
             document.getElementById(ext).value   = bg.config.getPref(ext);
             document.getElementById(ext).classList.remove('is-invalid');
         });
+
     // reset button
     $('#mime-reset')
         .on('click', async function() {
