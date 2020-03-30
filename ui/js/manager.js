@@ -302,7 +302,7 @@ $(async () => {
             }
         });
     // referer validation
-    $('#dl-single-url, #dl-single-referer, #dl-multiple-referer, #dl-source-referer')
+    $('#dl-single-referer, #dl-multiple-referer, #dl-source-referer')
         .on('input', function() {
             const $filename = $('#' + this.id.replace('referer', 'filename')),
                   $location = $('#' + this.id.replace('referer', 'location'));
