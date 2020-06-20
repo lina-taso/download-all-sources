@@ -726,12 +726,11 @@ function updateList()
                     $item.appendTo($('#waiting-list'));
                 break;
             case 'finished':
+                $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
                 if ($('#finished-list').has($item).length)
                     continue;
-                else {
+                else
                     $item.appendTo($('#finished-list'));
-                    $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
-                }
                 break;
             case 'deleted':
                 $item.remove();
