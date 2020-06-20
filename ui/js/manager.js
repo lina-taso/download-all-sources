@@ -728,8 +728,10 @@ function updateList()
             case 'finished':
                 if ($('#finished-list').has($item).length)
                     continue;
-                else
+                else {
                     $item.appendTo($('#finished-list'));
+                    $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
+                }
                 break;
             case 'deleted':
                 $item.remove();
@@ -740,7 +742,6 @@ function updateList()
         else {
             $item = $template.clone(true).attr('id', 'item-' + dlid);
             $item.find('.item-status > [data-dlid]').attr('data-dlid', dlid);
-            $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
 
             switch (queue.status) {
             case 'downloading':
