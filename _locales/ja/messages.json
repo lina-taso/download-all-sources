@@ -55,6 +55,9 @@
     "footer_total_speed" : {
         "message" : "合計速度:"
     },
+    "footer_speed_calc" : {
+        "message" : "計算中..."
+    },
     "new_download_title" : {
         "message" : "新しいダウンロード"
     },

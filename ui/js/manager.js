@@ -798,7 +798,9 @@ function updateList()
 
     // total speed
     const now = (new Date()).getTime();
-    if (prevLoaded != null) $('#total-speed').text(calcKBps({ now : totalLoaded, nowTime : now, prev : prevLoaded, prevTime : prevLoadedTime }));
+    if (prevLoaded > totalLoaded) $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
+    else if (prevLoaded != null)  $('#total-speed').text(calcKBps({ now : totalLoaded, nowTime : now, prev : prevLoaded, prevTime : prevLoadedTime }));
+    else                          $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
     prevLoaded     = totalLoaded;
     prevLoadedTime = now;
 

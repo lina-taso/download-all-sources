@@ -55,6 +55,9 @@
     "footer_total_speed" : {
         "message" : "Total Speed:"
     },
+    "footer_speed_calc" : {
+        "message" : "Calculating..."
+    },
     "new_download_title" : {
         "message" : "New Download"
     },
