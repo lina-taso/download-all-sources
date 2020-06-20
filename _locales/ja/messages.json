@@ -133,6 +133,12 @@
     "download_detail_info" : {
         "message" : "情報"
     },
+    "download_detail_previtem_description" : {
+        "message" : "前のアイテム"
+    },
+    "download_detail_nextitem_description" : {
+        "message" : "次のアイテム"
+    },
     "download_detail_dlid" : {
         "message" : "ダウンロードID"
     },
@@ -187,8 +193,14 @@
     "download_detail_filename" : {
         "message" : "ファイル名"
     },
+    "download_detail_filename_description" : {
+        "message" : "クリックしてファイルを開く"
+    },
     "download_detail_location" : {
         "message" : "ディレクトリ"
+    },
+    "download_detail_location_description" : {
+        "message" : "クリックしてディレクトリを開く"
     },
     "download_detail_option" : {
         "message" : "オプション"
@@ -314,11 +326,17 @@
     "options_retry_count" : {
         "message" : "ダウンロード失敗時のリトライ回数"
     },
+    "options_enable_openfile" : {
+        "message" : "このアドオンからダウンロードしたファイルやその場所を開けるようにする"
+    },
+    "options_enable_openfile_description" : {
+        "message" : "[注]\nこのオプションを有効にすると、ダウンロードしたアイテムがFirefoxの履歴から削除されなくなります。"
+    },
     "options_multithread" : {
         "message" : "マルチスレッドダウンロードの設定"
     },
     "options_multithread_description" : {
-        "message" : "[注意]\n同時ダウンロード数は分割を考慮しません。\n\"サーバ毎の最大同時ダウンロード数×分割数\"が、1サーバに対する最大セッション数になります。\nセッションを張りすぎないよう値を調整して下さい。"
+        "message" : "[注]\n同時ダウンロード数は分割を考慮しません。\n\"サーバ毎の最大同時ダウンロード数×分割数\"が、1サーバに対する最大セッション数になります。\nセッションを張りすぎないよう値を調整して下さい。"
     },
     "options_split_count" : {
         "message" : "分割数"

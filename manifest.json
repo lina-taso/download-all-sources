@@ -7,11 +7,11 @@
         "url" : "https://www2.filewo.net/"
     },
     "description" : "__MSG_extensionDescription__",
-    "version" : "0.2.0.1",
+    "version" : "0.2.1",
     "applications" : {
         "gecko" : {
             "id" : "download-all-src@filewo.net",
-            "strict_min_version" : "63.0"
+            "strict_min_version" : "68.0"
         }
     },
 
@@ -49,6 +49,7 @@
         "webRequestBlocking",
         "<all_urls>",
         "downloads",
+        "downloads.open",
         "tabs",
         "contextMenus",
         "storage"

@@ -6,6 +6,7 @@
  */
 
 browser.downloads.onChanged.addListener(fxDownloadChanged);
+browser.downloads.onErased.addListener(fxDownloadErased);
 browser.storage.onChanged.addListener(configChanged);
 
 let DEBUG;
@@ -65,6 +66,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
     // queuing
     downloadQueue[dlid] = {
         id             : dlid,
+        fxid           : null,
         regTime        : (new Date()).getTime(),
         startTime      : null,
         endTime        : null,
@@ -618,6 +620,12 @@ function resumeDownload(dlid)
 function deleteQueue(dlid)
 {
     const loaded = downloadQueue[dlid].loaded();
+
+    // fxdownloadqueue
+    if (downloadQueue[dlid].fxid) {
+        browser.downloads.erase({ id : downloadQueue[dlid].fxid });
+    }
+
     downloadQueue[dlid] = {
         id     : dlid,
         status : 'deleted',
@@ -832,10 +840,12 @@ async function fxDownloadChanged(item)
         queue.reason  = queue.reason || item.state.current;
         queue.endTime = (new Date()).getTime();
 
-        // clear from fx download list
-        await browser.downloads.erase({ id : item.id });
-        // queue
-        delete fxDownloadQueue[item.id];
+        if (config.getPref('enable-openfile'))
+            queue.fxid    = item.id;
+        else {
+            // clear from fx download list
+            await browser.downloads.erase({ id : item.id });
+        }
 
         // waiting queue
         checkWaiting();
@@ -855,8 +865,6 @@ async function fxDownloadChanged(item)
 
             // clear from fx download list
             await browser.downloads.erase({ id : item.id });
-            // queue
-            delete fxDownloadQueue[item.id];
 
             // waiting queue
             checkWaiting();
@@ -878,10 +886,21 @@ async function fxDownloadChanged(item)
             };
             // clear from fx download list
             await browser.downloads.erase({ id : item.id });
-            // queue
-            delete fxDownloadQueue[item.id];
         }
     }
+}
+
+async function fxDownloadErased(itemid)
+{
+    if (!fxDownloadQueue[itemid]) return;
+
+    const fxqueue = fxDownloadQueue[itemid],
+          dlid    = fxqueue.dlid,
+          queue   = downloadQueue[dlid];
+
+    // update queue
+    queue.fxid = null;
+    delete fxDownloadQueue[itemid];
 }
 
 async function configChanged(changes, area)

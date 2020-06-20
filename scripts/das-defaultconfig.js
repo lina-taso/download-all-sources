@@ -3,6 +3,7 @@ var defaultconfig = {
     'simultaneous-whole' : 16,
     'simultaneous-per-server' : 16,
     'retry-count' : 4,
+    'enable-openfile' : false,
     'split-count' : 1,
     'split-size' : 50,
     'split-ex-size' : 50,

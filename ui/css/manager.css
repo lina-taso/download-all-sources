@@ -52,12 +52,19 @@ html, body {
 }
 
 /* item-status */
+.item-status {
+    flex-grow: 1;
+}
+.item-status:hover,
+.download-item:focus .item-status {
+    width: max-content;
+    padding-right: 1em;
+    position: absolute;
+    z-index: 100;
+}
 .item-status > * {
     width: 1.25rem;
     text-align: center;
-}
-.item-status > :not(:last-child) {
-    margin-right: .25rem;
 }
 .item-status > :not(:first-child) {
     display: none;
@@ -67,6 +74,7 @@ html, body {
     font-size: 1.25rem;
 }
 .download-item .item-status > :first-child {
+    display: inline-block;
     font-family: "Font Awesome 5 Free"; font-weight: 900;
     font-style: normal;
     font-variant: normal;
@@ -98,38 +106,42 @@ html, body {
     display: none;
 }
 .download-item:focus .item-status > .item-info-button {
-    display: inline;
+    display: inline-block;
 }
 .download-item .item-status:hover > .item-info-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item:focus .item-status > .item-stop-button,
 #waiting-list .download-item:focus .item-status > .item-stop-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item .item-status:hover > .item-stop-button,
 #waiting-list .download-item .item-status:hover > .item-stop-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item[data-status="downloading"]:focus .item-status > .item-pause-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item[data-status="downloading"] .item-status:hover > .item-pause-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item[data-status="paused"]:focus .item-status > .item-resume-button {
-    display: inline;
+    display: inline-block;
 }
 #downloading-list .download-item[data-status="paused"] .item-status:hover > .item-resume-button {
-    display: inline;
+    display: inline-block;
 }
 #finished-list .download-item:focus .item-status > .item-redo-button,
-#finished-list .download-item:focus .item-status > .item-delete-button {
-    display: inline;
+#finished-list .download-item:focus .item-status > .item-delete-button,
+#finished-list .download-item:focus .item-status > .item-openfile-button[data-fxid],
+#finished-list .download-item:focus .item-status > .item-openfolder-button[data-fxid] {
+    display: inline-block;
 }
 #finished-list .download-item .item-status:hover > .item-redo-button,
-#finished-list .download-item .item-status:hover > .item-delete-button {
-    display: inline;
+#finished-list .download-item .item-status:hover > .item-delete-button,
+#finished-list .download-item .item-status:hover > .item-openfile-button[data-fxid],
+#finished-list .download-item .item-status:hover > .item-openfolder-button[data-fxid] {
+    display: inline-block;
 }
 
 /* progress */
@@ -179,6 +191,14 @@ html, body {
 }
 #detail-status-detail .detail-tile[data-status="unknown"] {
     background: linear-gradient(to bottom right, #ffd030, #ffc107);
+}
+#detail-info-filename-open,
+#detail-info-location-open {
+    display: none;
+}
+#detail-info-filename-open[data-fxid],
+#detail-info-location-open[data-fxid] {
+    display: inline-block;
 }
 
 /* source-download modal */

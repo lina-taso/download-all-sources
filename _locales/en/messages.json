@@ -133,6 +133,12 @@
     "download_detail_info" : {
         "message" : "Info"
     },
+    "download_detail_previtem_description" : {
+        "message" : "Prev item"
+    },
+    "download_detail_nextitem_description" : {
+        "message" : "Next item"
+    },
     "download_detail_dlid" : {
         "message" : "Download ID"
     },
@@ -187,8 +193,14 @@
     "download_detail_filename" : {
         "message" : "Filename"
     },
+    "download_detail_filename_description" : {
+        "message" : "Click to open the file"
+    },
     "download_detail_location" : {
         "message" : "Location"
+    },
+    "download_detail_location_description" : {
+        "message" : "Click to open the location"
     },
     "download_detail_option" : {
         "message" : "Options"
@@ -314,11 +326,17 @@
     "options_retry_count" : {
         "message" : "Download retry count when failed"
     },
+    "options_enable_openfile" : {
+        "message" : "Enable to open downloaded file or downloaded location from this addon"
+    },
+    "options_enable_openfile_description" : {
+        "message" : "[NOTE]\nIf this option is enabled, this addon will not erase items from the Firefox's download history."
+    },
     "options_multithread" : {
         "message" : "Multi-thread parameters"
     },
     "options_multithread_description" : {
-        "message" : "[WARNING]\nSimultaneous download doesn't consider splitting.\n\"Max simultaneous download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
+        "message" : "[NOTE]\nSimultaneous download doesn't consider splitting.\n\"Max simultaneous download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
     },
     "options_split_count" : {
         "message" : "Split count"

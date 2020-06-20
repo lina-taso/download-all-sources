@@ -37,6 +37,8 @@ $(async () => {
     setInterval(updateList, progressInterval);
     // miscellanies events
     $('.openlink-button').on('click', function() { this.dataset.link && browser.tabs.create({ url : this.dataset.link }); });
+    $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
+    $('.openfolder-button, .item-openfolder-button').on('click', async function() { this.dataset.fxid && browser.downloads.show( parseInt(this.dataset.fxid)); });
     // all tooltip enabled
     $('[data-toggle=tooltip]').tooltip({ title : function() {
         return browser.i18n.getMessage(this.dataset.titlestring);
@@ -48,7 +50,7 @@ $(async () => {
     // finished list
     $('#finished-delete-button')
         .on('click', function() {
-            $('#finished-list').children('.download-item').each(function() {
+            $('#finished-list').children('.download-item:not(#download-item-template)').each(function() {
                 bg.deleteQueue(this.id.split('-')[1]);
                 $(this).remove();
             });
@@ -137,9 +139,9 @@ $(async () => {
         let $target;
 
         if (this.id == 'detail-next-button')
-            $target = $('#item-' + this.dataset.dlid).next('.download-item.list-group-item');
+            $target = $('#item-' + this.dataset.dlid).next('.download-item.list-group-item:not(#download-item-template)');
         else
-            $target = $('#item-' + this.dataset.dlid).prev('.download-item.list-group-item');
+            $target = $('#item-' + this.dataset.dlid).prev('.download-item.list-group-item:not(#download-item-template)');
 
         if ($target.length != 0) {
             // update dlid
@@ -259,7 +261,7 @@ $(async () => {
                 $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
                     .off('click')
                     .on('click', () => {
-                        $('#waiting-list').children('.download-item').each(function() {
+                        $('#waiting-list').children('.download-item:not(#download-item-template)').each(function() {
                             bg.stopDownload(this.id.split('-')[1]);
                         });
                     });
@@ -448,14 +450,16 @@ async function download()
             [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
             { location :
               bg.replaceTags({ // location
-                  path      : bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
-                  targetUrl : targetUrl
+                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
+                  targetUrl  : targetUrl,
+                  refererUrl : $('#dl-single-referer').val()
               }),
               originalLocation : $('#dl-single-location').val() },
             { filename :
               bg.replaceTags({ // filename
-                  path      : $('#dl-single-filename').val(),
-                  targetUrl : targetUrl
+                  path       : $('#dl-single-filename').val(),
+                  targetUrl  : targetUrl,
+                  refererUrl : $('#dl-single-referer').val()
               }, true),
               originalFilename : $('#dl-single-filename').val() },
             { disableResuming    : $('#dl-single-option1').is(':checked'),
@@ -487,14 +491,16 @@ async function download()
                 [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
                 { location :
                   bg.replaceTags({ // location
-                      path      : bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
-                      targetUrl : url
+                      path       : bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
+                      targetUrl  : url,
+                      refererUrl : $('#dl-multiple-referer').val()
                   }),
                   originalLocation : $('#dl-multiple-location').val() },
                 { filename :
                   bg.replaceTags({ // filename
                       path      : $('#dl-multiple-filename').val(),
-                      targetUrl : url
+                      targetUrl : url,
+                      refererUrl : $('#dl-multiple-referer').val()
                   }, true),
                   originalFilename : $('#dl-multiple-filename').val() },
                 { disableResuming    : $('#dl-multiple-option1').is(':checked'),
@@ -678,6 +684,10 @@ function updateDetail(init)
     }
     $('#detail-status-current').val(loadedObj.now.toLocaleString('en-US'));
 
+    // finished
+    $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
+    $('#detail-info-location-open').attr('data-fxid', queue.fxid);
+
     // tile
     queue.detail().forEach((val, index) => {
         $('#detail-status-detail').children().eq(index).attr('data-status', val || '');
@@ -730,6 +740,7 @@ function updateList()
         else {
             $item = $template.clone(true).attr('id', 'item-' + dlid);
             $item.find('.item-status > [data-dlid]').attr('data-dlid', dlid);
+            $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
 
             switch (queue.status) {
             case 'downloading':
