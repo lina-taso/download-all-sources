@@ -69,32 +69,6 @@
                                         <div class="col-lg-2 col-md-2 col-6 text-center" data-string="list_remain"></div>
                                     </div>
                                 </li>
-
-                                <!-- template -->
-                                <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-status="" data-reason="" tabindex="0">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
-                                            <div class="item-status">
-                                                <i class=""></i>
-                                                <i class="item-info-button fas fa-info-circle" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
-                                                <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid=""></i>
-                                                <i class="item-pause-button far fa-pause-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid=""></i>
-                                                <i class="item-resume-button far fa-play-circle" data-toggle="modal" data-dlid=""></i>
-                                                <i class="item-redo-button fas fa-redo" data-dlid=""></i>
-                                                <i class="item-openfile-button fas fa-file" data-fxid=""></i>
-                                                <i class="item-openfolder-button fas fa-folder-open" data-fxid=""></i>
-                                                <i class="item-delete-button fas fa-trash" data-dlid=""></i>
-                                            </div>
-                                        </div>
-                                        <div class="item-filename col-lg-5 col-md-6 col-10">
-                                        </div>
-                                        <div class="progress      col-lg-2 d-none d-lg-flex px-0">
-                                            <div class="item-progress text-center progress-bar progress-bar-striped bg-info px-2"></div>
-                                        </div>
-                                        <div class="item-speed    col-lg-2 col-md-2 col-6 text-center"></div>
-                                        <div class="item-remain   col-lg-2 col-md-2 col-6 text-center"></div>
-                                    </div>
-                                </li>
                             </ul>
                         </div>
 
@@ -782,20 +756,6 @@
                                     </div>
                                 </div>
                             </li>
-                            <!-- template -->
-                            <li id="source-item-template" class="source-item list-group-item list-group-item-action py-0" data-filetype="">
-                                <div class="row">
-                                    <div class="source-url   col-lg-8 col-sm-6 col-12">
-                                        <div class="custom-control custom-checkbox pl-5">
-                                            <input id="" type="checkbox" class="custom-control-input">
-                                            <label class="custom-control-label d-block py-1" for=""></label>
-                                        </div>
-                                    </div>
-                                    <div class="source-type  col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
-                                    <div class="source-tag   col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
-                                    <div class="source-title col-lg-2 col-sm-2 col-4 py-1 text-center"></div>
-                                </div>
-                            </li>
                         </ul>
                     </div>
                     <div class="modal-footer">
@@ -823,6 +783,52 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="loading-cover" class="fade">
+            <span class="fas fa-circle-notch fa-2x fa-spin" />
+        </div>
+
+        <!-- template -->
+        <div class="d-none">
+            <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-status="" data-reason="" tabindex="0">
+                <div class="row align-items-center">
+                    <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
+                        <div class="item-status">
+                            <i class=""></i>
+                            <i class="item-info-button fas fa-info-circle" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
+                            <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid=""></i>
+                            <i class="item-pause-button far fa-pause-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid=""></i>
+                            <i class="item-resume-button far fa-play-circle" data-toggle="modal" data-dlid=""></i>
+                            <i class="item-redo-button fas fa-redo" data-dlid=""></i>
+                            <i class="item-openfile-button fas fa-file" data-fxid=""></i>
+                            <i class="item-openfolder-button fas fa-folder-open" data-fxid=""></i>
+                            <i class="item-delete-button fas fa-trash" data-dlid=""></i>
+                        </div>
+                    </div>
+                    <div class="item-filename col-lg-5 col-md-6 col-10">
+                    </div>
+                    <div class="progress      col-lg-2 d-none d-lg-flex px-0">
+                        <div class="item-progress text-center progress-bar progress-bar-striped bg-info px-2"></div>
+                    </div>
+                    <div class="item-speed    col-lg-2 col-md-2 col-6 text-center"></div>
+                    <div class="item-remain   col-lg-2 col-md-2 col-6 text-center"></div>
+                </div>
+            </li>
+
+            <li id="source-item-template" class="source-item list-group-item list-group-item-action py-0" data-filetype="">
+                <div class="row">
+                    <div class="source-url   col-lg-8 col-sm-6 col-12">
+                        <div class="custom-control custom-checkbox pl-5">
+                            <input id="" type="checkbox" class="custom-control-input">
+                            <label class="custom-control-label d-block py-1" for=""></label>
+                        </div>
+                    </div>
+                    <div class="source-type  col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                    <div class="source-tag   col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                    <div class="source-title col-lg-2 col-sm-2 col-4 py-1 text-center"></div>
+                </div>
+            </li>
         </div>
 
     </body>

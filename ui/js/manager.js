@@ -50,7 +50,7 @@ $(async () => {
     // finished list
     $('#finished-delete-button')
         .on('click', function() {
-            $('#finished-list').children('.download-item:not(#download-item-template)').each(function() {
+            $('#finished-list').children('.download-item').each(function() {
                 bg.deleteQueue(this.id.split('-')[1]);
                 $(this).remove();
             });
@@ -139,9 +139,9 @@ $(async () => {
         let $target;
 
         if (this.id == 'detail-next-button')
-            $target = $('#item-' + this.dataset.dlid).next('.download-item.list-group-item:not(#download-item-template)');
+            $target = $('#item-' + this.dataset.dlid).next('.download-item');
         else
-            $target = $('#item-' + this.dataset.dlid).prev('.download-item.list-group-item:not(#download-item-template)');
+            $target = $('#item-' + this.dataset.dlid).prev('.download-item');
 
         if ($target.length != 0) {
             // update dlid
@@ -162,21 +162,41 @@ $(async () => {
         .on('show.bs.modal', async () => {
             // only once
             $('#source-all').on('input', function() {
-                if (this.checked)
-                    $('#source-list .source-item:not(#source-item-template) .source-url input').prop('checked', true);
-                else
-                    $('#source-list .source-item:not(#source-item-template) .source-url input').prop('checked', false);
-                // count downloads
-                $('#source-download-button1, #source-download-button2').attr(
-                    'data-count',
-                    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').length
-                );
+                const output = (resolve, reject) => {
+                    if (this.checked)
+                        $('#source-list .source-item .source-url input').prop('checked', true);
+                    else
+                        $('#source-list .source-item .source-url input').prop('checked', false);
+
+                    // count downloads
+                    $('#source-download-button1, #source-download-button2').attr(
+                        'data-count',
+                        $('#source-list .source-item .source-url input:checked').length
+                    );
+
+                    resolve();
+                };
+
+                if ($('#source-list .source-item').length < 5000)
+                    new Promise(output);
+                else {
+                    const $loading = $('#loading-cover');
+                    // loading start
+                    $loading.on('transitionend', async function() {
+                        $(this).off('transitionend');
+
+                        await new Promise(output);
+                        // loading end
+                        $loading.removeClass('show');
+
+                    }).addClass('show');
+                }
             });
             $('#source-list').on('input', '.source-url input', function() {
                 // count downloads
                 $('#source-download-button1, #source-download-button2').attr(
                     'data-count',
-                    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').length
+                    $('#source-list .source-item .source-url input:checked').length
                 );
             });
             // default-referer
@@ -223,7 +243,9 @@ $(async () => {
             $('#dl-source-option2').prop('checked', config['remember-source-option2'] ? config['source-option2-value'] : false).trigger('input');
             // tab color
             checkActiveFilter();
-            outputSourceList(source);
+        })
+        .on('shown.bs.modal', async () => {
+            outputSourceList();
         })
         .on('hide.bs.modal', function() { baseurl = null; });
     // modal
@@ -251,7 +273,7 @@ $(async () => {
                 $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
                     .off('click')
                     .on('click', () => {
-                        $('#downloading-list').children('.download-item:not(#download-item-template)').each(function() {
+                        $('#downloading-list').children('.download-item').each(function() {
                             bg.stopDownload(this.id.split('-')[1]);
                         });
                     });
@@ -261,7 +283,7 @@ $(async () => {
                 $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
                     .off('click')
                     .on('click', () => {
-                        $('#waiting-list').children('.download-item:not(#download-item-template)').each(function() {
+                        $('#waiting-list').children('.download-item').each(function() {
                             bg.stopDownload(this.id.split('-')[1]);
                         });
                     });
@@ -424,9 +446,9 @@ $(async () => {
         break;
     case '#source':
         baseurl = bg.lastSource.baseurl;
-        $('#source-download').modal('show');
         updateSourceList();
         bg.lastSource = {};
+        $('#source-download').modal('show');
         break;
     default:
     };
@@ -529,7 +551,7 @@ async function sourceDownload()
     // check invalid
     if ($('#source').find('.is-invalid').length) return;
     // download
-    $('#source-list .source-item:not(#source-item-template) .source-url input:checked').each(function() {
+    $('#source-list .source-item .source-url input:checked').each(function() {
         const targetUrl = this.value,
               tag = $(this).closest('.row').children('.source-tag').text(),
               title = $(this).closest('.row').children('.source-title').text() || defaultTitle;
@@ -789,9 +811,9 @@ function updateList()
     }
 
     // badge
-    $('#downloading-tab > .badge').text($('#downloading-list > li.download-item:not(#download-item-template)').length);
-    $('#waiting-tab > .badge').text($('#waiting-list > li.download-item:not(#download-item-template)').length);
-    $('#finished-tab > .badge').text($('#finished-list > li.download-item:not(#download-item-template)').length);
+    $('#downloading-tab > .badge').text($('#downloading-list').children().length - 1);
+    $('#waiting-tab > .badge').text($('#waiting-list').children().length - 1);
+    $('#finished-tab > .badge').text($('#finished-list').children().length - 1);
 
     // title
     document.title = $('#downloading-tab > .badge').text() == '0' ? PAGE_TITLE : 'DL:' + $('#downloading-tab > .badge').text() + ' ' + PAGE_TITLE;
@@ -851,44 +873,70 @@ function updateSourceList()
         if (!allowProtocol.test(list[url].protocol)) continue;
         for (let i=0; i<list[url].tag.length; i++)
             source.push(Object.assign({}, list[url],
-                                      { tag  : list[url].tag[i],
+                                      { tag   : list[url].tag[i],
                                         title : list[url].title[i] }));
     }
 }
 
 function outputSourceList()
 {
-    const $template = $('#source-item-template');
-    // run all filter
-    const list = sortSourceList(
-        filterDuplicateSourceList(
-            filterSourceList(
-                filterTypeSourceList(
-                    filterTagnameSourceList()))));
+    const docfrag = new DocumentFragment();
 
-    // all checkbox uncheck
-    $('#source-all').prop('checked', false);
-    $('#source-download-button1, #source-download-button2').attr('data-count', 0);
-    // clear list
-    $('#source-list > .source-item:not(#source-item-template)').remove();
+    const output = (resolve, reject) => {
+        // run all filter
+        const list = sortSourceList(
+            filterDuplicateSourceList(
+                filterSourceList(
+                    filterTypeSourceList(
+                        filterTagnameSourceList()))));
 
-    // html
-    for (let i in list) {
-        let $item = $template.clone().removeAttr('id');
+        // all checkbox uncheck
+        $('#source-all').prop('checked', false);
+        $('#source-download-button1, #source-download-button2').attr('data-count', 0);
 
-        // checkbox id & attr
-        $item.attr('data-filetype', list[i].filetype).find('.source-url input')
-            .attr({ id : 'source' + i, value : list[i].url });
-        // label for & text
-        $item.find('.source-url label').attr('for', 'source' + i).text(list[i].url);
-        // extension
-        $item.find('.source-type').text(list[i].filetype);
-        // tag
-        $item.find('.source-tag').text(list[i].tag);
-        // title
-        $item.find('.source-title').text(list[i].title).attr('title', list[i].title);
+        // clear list
+        docfrag.appendChild($('#source-list').children()[0]);
+        $('#source-list').empty();
 
-        $item.appendTo($('#source-list'));
+        // html
+        const $template = $('#source-item-template'),
+              $urlInput = $template.find('input'),
+              $urlLabel = $template.find('label'),
+              $type     = $template.find('.source-type'),
+              $tag      = $template.find('.source-tag'),
+              $title    = $template.find('.source-title');
+
+        for (let i in list) {
+            // checkbox id & attr
+            $urlInput.attr({ id : 'source' + i, value : list[i].url });
+            // label for & text
+            $urlLabel.attr('for', 'source' + i).text(list[i].url);
+            // extension
+            $type.text(list[i].filetype);
+            // tag
+            $tag.text(list[i].tag);
+            // title
+            $title.text(list[i].title).attr('title', list[i].title);
+
+            docfrag.appendChild($template.clone().attr({ id : '', 'data-filetype' : list[i].filetype })[0]);
+        }
+        $('#source-list')[0].appendChild(docfrag);
+        resolve();
+    };
+
+    if (source.length < 5000)
+        new Promise(output);
+    else {
+        const $loading = $('#loading-cover');
+        // loading start
+        $loading.on('transitionend', async function() {
+            $(this).off('transitionend');
+
+            await new Promise(output);
+            // loading end
+            $loading.removeClass('show');
+
+        }).addClass('show');
     }
 }
 
