@@ -41,8 +41,8 @@ $(async () => {
     const $mapTemplate = $('.row.mime-mapping.d-none');
     for (let key of Object.keys(config['mime-mappings'])) {
         let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
-        $target.children('.mime-mime').val(key);
-        $target.children('.mime-ext').val(config['mime-mappings'][key]);
+        $target.find('.mime-mime').val(key);
+        $target.find('.mime-ext').val(config['mime-mappings'][key]);
     }
     // empty box
     $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
@@ -94,20 +94,20 @@ $(async () => {
                       word   = this.value;
 
                 $mimes.each((i, row) => {
-                    const $mime = $(row).children('.mime-mime'),
-                          $ext  = $(row).children('.mime-ext');
+                    const $mime = $(row).find('.mime-mime'),
+                          $ext  = $(row).find('.mime-ext');
 
                     $(row).css('display', ($mime.val().includes(word) || $ext.val().includes(word)) ? '' : 'none');
                 });
             }
             // mime
             else if (this.classList.contains('mime-mapping-box')) {
-                const $mimebox = $(this).parent().children('.mime-mime'),
-                      $extbox  = $(this).parent().children('.mime-ext'),
+                const $mimebox = $(this).closest('.mime-mapping').find('.mime-mime'),
+                      $extbox  = $(this).closest('.mime-mapping').find('.mime-ext'),
                       entered  = $mimebox.val() != '' || $extbox.val() != '';
 
                 // if last is not empty, add new line
-                if ($(this).parent().is(':last-of-type') && entered) {
+                if ($(this).closest('.mime-mapping').is(':last-of-type') && entered) {
                     const $mapTemplate = $('.row.mime-mapping.d-none');
                     // clone with events
                     $mapTemplate.clone(true).removeClass('d-none').appendTo($mapTemplate.parent());
@@ -129,8 +129,8 @@ $(async () => {
                 if (!$('.mime-mapping').find('.is-invalid').length) {
                     const mappings = {};
                     $('.mime-mapping').each(function() {
-                        if($(this).children('.mime-mime').val() == '') return;
-                        mappings[$(this).children('.mime-mime').val().toLowerCase()] = $(this).children('.mime-ext').val();
+                        if($(this).find('.mime-mime').val() == '') return;
+                        mappings[$(this).find('.mime-mime').val().toLowerCase()] = $(this).find('.mime-ext').val();
                     });
                     bg.config.setPref('mime-mappings', mappings);
                 }
@@ -179,8 +179,8 @@ $(async () => {
             // initial mime mappings
             for (let key of Object.keys(config['mime-mappings'])) {
                 let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
-                $target.children('.mime-mime').val(key);
-                $target.children('.mime-ext').val(config['mime-mappings'][key]);
+                $target.find('.mime-mime').val(key);
+                $target.find('.mime-ext').val(config['mime-mappings'][key]);
             }
             // empty box
             $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());

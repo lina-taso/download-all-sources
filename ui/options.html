@@ -15,14 +15,14 @@
     <body>
         <div class="container-fluid">
             <h2 data-string="options_location"></h2>
-            <div class="form-group">
+            <div>
                 <label for="download-location" data-string="options_default_location"></label>
                 <input id="download-location" class="form-control">
                 <small id="download-location-sample" class="form-text text-muted"></small>
                 <p class="form-text text-muted" data-string="options_location_description"></p>
             </div>
-            <div class="form-group tags">
-                <div class="card">
+            <div class="tags mb-3">
+                <div class="card mt-2">
                     <div class="card-body">
                         <h4 class="card-title" data-string="location_tags"></h4>
                         <dl class="row">
@@ -58,211 +58,211 @@
             </div>
 
             <h2 data-string="options_general"></h2>
-            <div class="form-group">
-                <label for="simultaneous-whole" data-string="options_simultaneous"></label>
+            <div class="mb-3">
+                <label class="form-label" for="simultaneous-whole" data-string="options_simultaneous"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="simultaneous-whole" type="range" class="custom-range" min="1" max="24" value="16">
+                        <input id="simultaneous-whole" type="range" class="form-range" min="1" max="24" value="16">
                     </div>
                     <div id="simultaneous-whole-label" class="col-1">16</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="simultaneous-per-server" data-string="options_simultaneous_server"></label>
+            <div class="mb-3">
+                <label class="form-label" for="simultaneous-per-server" data-string="options_simultaneous_server"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="simultaneous-per-server" type="range" class="custom-range" min="1" max="24" value="16">
+                        <input id="simultaneous-per-server" type="range" class="form-range" min="1" max="24" value="16">
                     </div>
                     <div id="simultaneous-per-server-label" class="col-1">16</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="retry-count" data-string="options_retry_count"></label>
+            <div class="mb-3">
+                <label class="form-label" for="retry-count" data-string="options_retry_count"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="retry-count" type="range" class="custom-range" min="1" max="10" value="4">
+                        <input id="retry-count" type="range" class="form-range" min="1" max="10" value="4">
                     </div>
                     <div id="retry-count-label" class="col-1">4</div>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="enable-openfile" type="checkbox" class="custom-control-input">
-                    <label for="enable-openfile" class="custom-control-label" data-string="options_enable_openfile"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="enable-openfile" type="checkbox" class="form-check-input">
+                    <label for="enable-openfile" class="form-check-label" data-string="options_enable_openfile"></label>
                     <p class="form-text text-muted" data-string="options_enable_openfile_description"></p>
                 </div>
             </div>
 
             <h2 data-string="options_multithread"></h2>
-            <div class="form-group">
+            <div class="mb-3">
                 <p class="form-text text-muted" data-string="options_multithread_description"></p>
             </div>
-            <div class="form-group">
-                <label for="split-count" data-string="options_split_count"></label>
+            <div class="mb-3">
+                <label class="form-label" for="split-count" data-string="options_split_count"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="split-count" type="range" class="custom-range" min="1" max="10" value="1">
+                        <input id="split-count" type="range" class="form-range" min="1" max="10" value="1">
                     </div>
                     <div id="split-count-label" class="col-1">1</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="split-size" data-string="options_split_size"></label>
+            <div class="mb-3">
+                <label class="form-label" for="split-size" data-string="options_split_size"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="split-size" type="range" class="custom-range" min="10" max="200" step="10" value="50">
+                        <input id="split-size" type="range" class="form-range" min="10" max="200" step="10" value="50">
                     </div>
                     <div id="split-size-label" class="col-1">50</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="split-ex-size" data-string="options_split_ex_size"></label>
+            <div class="mb-3">
+                <label class="form-label" for="split-ex-size" data-string="options_split_ex_size"></label>
                 <div class="row">
                     <div class="col-11">
-                        <input id="split-ex-size" type="range" class="custom-range" min="10" max="100" step="10" value="50">
+                        <input id="split-ex-size" type="range" class="form-range" min="10" max="100" step="10" value="50">
                     </div>
                     <div id="split-ex-size-label" class="col-1">50</div>
                 </div>
             </div>
 
             <h2 data-string="options_new_parameters"></h2>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-new-referer" type="checkbox" class="custom-control-input" data-value="new-referer-value new-referer-default-value">
-                    <label for="remember-new-referer" class="custom-control-label" data-string="options_new_remember_referer"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-new-referer" type="checkbox" class="form-check-input" data-value="new-referer-value new-referer-default-value">
+                    <label for="remember-new-referer" class="form-check-label" data-string="options_new_remember_referer"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-new-filename" type="checkbox" class="custom-control-input" data-value="new-filename-value">
-                    <label for="remember-new-filename" class="custom-control-label" data-string="options_new_remember_filename"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-new-filename" type="checkbox" class="form-check-input" data-value="new-filename-value">
+                    <label for="remember-new-filename" class="form-check-label" data-string="options_new_remember_filename"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-new-location" type="checkbox" class="custom-control-input" data-value="new-location-value">
-                    <label for="remember-new-location" class="custom-control-label" data-string="options_new_remember_location"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-new-location" type="checkbox" class="form-check-input" data-value="new-location-value">
+                    <label for="remember-new-location" class="form-check-label" data-string="options_new_remember_location"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-new-option1" type="checkbox" class="custom-control-input" data-value="new-option1-value">
-                    <label for="remember-new-option1" class="custom-control-label" data-string="options_new_remember_option1"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-new-option1" type="checkbox" class="form-check-input" data-value="new-option1-value">
+                    <label for="remember-new-option1" class="form-check-label" data-string="options_new_remember_option1"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-new-option2" type="checkbox" class="custom-control-input" data-value="new-option2-value">
-                    <label for="remember-new-option2" class="custom-control-label" data-string="options_new_remember_option2"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-new-option2" type="checkbox" class="form-check-input" data-value="new-option2-value">
+                    <label for="remember-new-option2" class="form-check-label" data-string="options_new_remember_option2"></label>
                 </div>
             </div>
 
             <h2 data-string="options_source_parameters"></h2>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-tagname" type="checkbox" class="custom-control-input" data-value="source-filetype-value">
-                    <label for="remember-source-tagname" class="custom-control-label" data-string="options_source_remember_tagname"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-tagname" type="checkbox" class="form-check-input" data-value="source-filetype-value">
+                    <label for="remember-source-tagname" class="form-check-label" data-string="options_source_remember_tagname"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-filetype" type="checkbox" class="custom-control-input" data-value="source-filetype-value">
-                    <label for="remember-source-filetype" class="custom-control-label" data-string="options_source_remember_filetype"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-filetype" type="checkbox" class="form-check-input" data-value="source-filetype-value">
+                    <label for="remember-source-filetype" class="form-check-label" data-string="options_source_remember_filetype"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-keyword" type="checkbox" class="custom-control-input" data-value="source-keyword-value source-regex-value">
-                    <label for="remember-source-keyword" class="custom-control-label" data-string="options_source_remember_keyword"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-keyword" type="checkbox" class="form-check-input" data-value="source-keyword-value source-regex-value">
+                    <label for="remember-source-keyword" class="form-check-label" data-string="options_source_remember_keyword"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-referer" type="checkbox" class="custom-control-input" data-value="source-referer-value source-referer-default-value">
-                    <label for="remember-source-referer" class="custom-control-label" data-string="options_source_remember_referer"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-referer" type="checkbox" class="form-check-input" data-value="source-referer-value source-referer-default-value">
+                    <label for="remember-source-referer" class="form-check-label" data-string="options_source_remember_referer"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-filename" type="checkbox" class="custom-control-input" data-value="source-filename-value">
-                    <label for="remember-source-filename" class="custom-control-label" data-string="options_source_remember_filename"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-filename" type="checkbox" class="form-check-input" data-value="source-filename-value">
+                    <label for="remember-source-filename" class="form-check-label" data-string="options_source_remember_filename"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-location" type="checkbox" class="custom-control-input" data-value="source-location-value">
-                    <label for="remember-source-location" class="custom-control-label" data-string="options_source_remember_location"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-location" type="checkbox" class="form-check-input" data-value="source-location-value">
+                    <label for="remember-source-location" class="form-check-label" data-string="options_source_remember_location"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-option1" type="checkbox" class="custom-control-input" data-value="source-option1-value">
-                    <label for="remember-source-option1" class="custom-control-label" data-string="options_source_remember_option1"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-option1" type="checkbox" class="form-check-input" data-value="source-option1-value">
+                    <label for="remember-source-option1" class="form-check-label" data-string="options_source_remember_option1"></label>
                 </div>
             </div>
-            <div class="form-group">
-                <div class="custom-control custom-checkbox">
-                    <input id="remember-source-option2" type="checkbox" class="custom-control-input" data-value="source-option2-value">
-                    <label for="remember-source-option2" class="custom-control-label" data-string="options_source_remember_option2"></label>
+            <div class="mb-3">
+                <div class="form-check">
+                    <input id="remember-source-option2" type="checkbox" class="form-check-input" data-value="source-option2-value">
+                    <label for="remember-source-option2" class="form-check-label" data-string="options_source_remember_option2"></label>
                 </div>
             </div>
 
             <h2 data-string="options_filetype_parameters"></h2>
-            <div class="container-fluid">
-                <div class="row">
-                    <label class="font-weight-bold col-3" data-string="options_filetype_filetype"></label>
-                    <label class="font-weight-bold col mx-2" data-string="options_filetype_ext"></label>
-                    <label class="font-weight-bold col-2" data-string="options_filetype_reset"></label>
+            <div>
+                <div class="row g-1">
+                    <label class="form-label fw-bold col-3" data-string="options_filetype_filetype"></label>
+                    <label class="form-label fw-bold col" data-string="options_filetype_ext"></label>
+                    <label class="form-label fw-bold col-2" data-string="options_filetype_reset"></label>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype1-label" class="form-control col-3"></input>
-                    <input id="filetype1-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype1-label" type="text" class="form-control"></input></div>
+                    <div class="col"><input id="filetype1-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype2-label" class="form-control col-3"></input>
-                    <input id="filetype2-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype2-label" class="form-control"></input></div>
+                    <div class="col"><input id="filetype2-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype3-label" class="form-control col-3"></input>
-                    <input id="filetype3-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype3-label" class="form-control"></input></div>
+                    <div class="col"><input id="filetype3-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype4-label" class="form-control col-3"></input>
-                    <input id="filetype4-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype4-label" class="form-control"></input></div>
+                    <div class="col"><input id="filetype4-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype5-label" class="form-control col-3"></input>
-                    <input id="filetype5-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype5-label" class="form-control"></input></div>
+                    <div class="col"><input id="filetype5-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
-                <div class="row form-group">
-                    <input id="filetype6-label" class="form-control col-3"></input>
-                    <input id="filetype6-extension" class="form-control col mx-2"></input>
-                    <button class="col-2 btn btn-sm btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button>
+                <div class="row g-1 mb-3">
+                    <div class="col-3"><input id="filetype6-label" class="form-control"></input></div>
+                    <div class="col"><input id="filetype6-extension" class="form-control"></input></div>
+                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
                 </div>
             </div>
 
             <h2 data-string="options_mime_mappings"></h2>
             <div class="row mb-3">
-                <div class="col mr-auto">
-                    <button id="mime-reset" class="d-inline-block btn btn-sm btn-outline-danger" data-string="options_mime_reset"></button>
+                <div class="col me-auto">
+                    <button id="mime-reset" class="d-inline-block btn btn-outline-danger" data-string="options_mime_reset"></button>
                 </div>
                 <div class="col">
                     <input class="mime-filter d-inline-block form-control" placeholder="Filter..."></input>
                 </div>
             </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <label class="font-weight-bold col" data-string="options_mime_mime"></label>
-                    <label class="font-weight-bold col-2 mime-ext" data-string="options_mime_extension"></label>
+            <div>
+                <div class="row g-1">
+                    <label class="form-label fw-bold col" data-string="options_mime_mime"></label>
+                    <label class="form-label fw-bold col-2 mime-ext" data-string="options_mime_extension"></label>
                 </div>
-                <div class="row form-group mime-mapping d-none">
-                    <input class="form-control col mime-mapping-box mime-mime"></input>
-                    <input class="form-control col-2 ml-2 mime-mapping-box mime-ext"></input>
+                <div class="row g-1 mb-3 mime-mapping d-none">
+                    <div class="col"><input class="form-control mime-mapping-box mime-mime"></input></div>
+                    <div class="col-2"><input class="form-control mime-mapping-box mime-ext"></input></div>
                 </div>
             </div>
         </div>

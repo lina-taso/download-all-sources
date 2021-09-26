@@ -21,29 +21,31 @@
                 <div class="col-lg-2 col-md-3 col-12">
                     <img class="img-fluid d-block mx-auto mb-3" src="/images/title.svg">
 
-                    <button type="button" class="btn btn-warning btn-lg btn-block mb-3" data-toggle="modal" data-target="#new-download">
-                        <i class="fas fa-plus-square"></i>&nbsp;New
-                    </button>
+                    <div class="d-grid">
+                        <button type="button" class="btn btn-warning btn-lg mb-3" data-bs-toggle="modal" data-bs-target="#new-download">
+                            <i class="fas fa-plus-square"></i>&nbsp;New
+                        </button>
+                    </div>
 
                     <!-- tab -->
                     <div class="list-group list-group-flush mb-3" role="tablist" aria-orientation="vertical">
                         <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn active"
                                 id="downloading-tab" href="#downloading"
-                                data-toggle="pill" role="tab" aria-controls="downloading" aria-selected="true">
+                                data-bs-toggle="tab" role="tab" aria-controls="downloading" aria-selected="true">
                             <span data-string="tab_downloading"></span>
-                            <span class="badge badge-dark badge-pill">0</span>
+                            <span class="badge bg-dark rounded-pill">0</span>
                         </button>
                         <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
                                 id="waiting-tab" href="#waiting"
-                                data-toggle="pill" role="tab" aria-controls="waiting" aria-selected="false">
+                                data-bs-toggle="tab" role="tab" aria-controls="waiting" aria-selected="false">
                             <span data-string="tab_waiting"></span>
-                            <span class="badge badge-dark badge-pill">0</span>
+                            <span class="badge bg-dark rounded-pill">0</span>
                         </button>
                         <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
                                 id="finished-tab" href="#finished"
-                                data-toggle="pill" role="tab" aria-controls="finished" aria-selected="false">
+                                data-bs-toggle="tab" role="tab" aria-controls="finished" aria-selected="false">
                             <span data-string="tab_finished"></span>
-                            <span class="badge badge-dark badge-pill">0</span>
+                            <span class="badge bg-dark rounded-pill">0</span>
                         </button>
                     </div>
 
@@ -58,10 +60,10 @@
                         <div class="tab-pane fade show active" id="downloading" role="tabpanel" aria-labelledby="downloading-tab">
                             <ul id="downloading-list" class="list-group list-group-flush mb-3">
                                 <!-- header -->
-                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row align-items-center">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
-                                            <i id="downloading-stop-button" class="far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop-downloading"></i>
+                                            <i id="downloading-stop-button" class="far fa-stop-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-downloading"></i>
                                         </div>
                                         <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
                                         <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
@@ -75,10 +77,10 @@
                         <div class="tab-pane fade" id="waiting" role="tabpanel" aria-labelledby="waiting-tab">
                             <ul id="waiting-list" class="list-group list-group-flush mb-3">
                                 <!-- header -->
-                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
-                                            <i id="waiting-stop-button" class="far fa-times-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop-waiting"></i>
+                                            <i id="waiting-stop-button" class="far fa-times-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-waiting"></i>
                                         </div>
                                         <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
                                         <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
@@ -92,7 +94,7 @@
                         <div class="tab-pane fade" id="finished" role="tabpanel" aria-labelledby="finished-tab">
                             <ul id="finished-list" class="list-group list-group-flush mb-3">
                                 <!-- header -->
-                                <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                                <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
                                             <i id="finished-delete-button" class="fas fa-trash"></i>
@@ -109,8 +111,10 @@
                 </div>
             </div>
             <nav class="navbar navbar-dark bg-dark fixed-bottom">
-                <span class="navbar-text ml-auto mr-2" data-string="footer_total_speed"></span>
-                <span id="total-speed" class="navbar-text">-</span>
+                <div class="container-fluid">
+                    <span class="navbar-text ms-auto me-2" data-string="footer_total_speed"></span>
+                    <span id="total-speed" class="navbar-text">-</span>
+                </div>
             </nav>
         </div>
 
@@ -120,49 +124,47 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" data-string="new_download_title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <!-- download tab -->
                         <div id="new-download-modal-tab" class="nav nav-tabs mb-3" role="tablist">
                             <button class="nav-link nav-item active" id="single-tab" href="#single"
-                                    data-toggle="tab" role="tab" aria-controls="single" aria-selected="true" data-string="new_download_single"></button>
+                                    data-bs-toggle="tab" role="tab" aria-controls="single" aria-selected="true" data-string="new_download_single"></button>
                             <button class="nav-link nav-item" id="multiple-tab" href="#multiple"
-                                    data-toggle="tab" role="tab" aria-controls="multiple" aria-selected="false" data-string="new_download_multiple"></button>
+                                    data-bs-toggle="tab" role="tab" aria-controls="multiple" aria-selected="false" data-string="new_download_multiple"></button>
                         </div>
                         <div class="tab-content">
                             <!-- single download -->
                             <div class="tab-pane fade show active" id="single" role="tabpanel" aria-labelledby="single-tab">
                                 <!-- download url -->
-                                <div class="form-group">
-                                    <label for="dl-single-url" data-string="new_download_single_url"></label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dl-single-url" data-string="new_download_single_url"></label>
                                     <input id="dl-single-url" class="form-control" data-focus="true">
                                     <small class="form-text text-muted" data-string="new_download_single_url_description"></small>
                                 </div>
                                 <!-- referer -->
-                                <div class="form-group">
-                                    <label for="dl-single-referer" data-string="new_download_single_referer"></label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dl-single-referer" data-string="new_download_single_referer"></label>
                                     <input id="dl-single-referer" class="form-control">
-                                </div>
-                                <div id="dl-single-referer-default-group" class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="dl-single-referer-default">
-                                        <label class="custom-control-label" for="dl-single-referer-default" data-string="new_download_single_referer_default"></label>
+                                    <div id="dl-single-referer-default-group">
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" id="dl-single-referer-default">
+                                            <label class="form-check-label" for="dl-single-referer-default" data-string="new_download_single_referer_default"></label>
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- filename -->
-                                <div class="form-group">
-                                    <label for="dl-single-filename" data-string="new_download_single_filename"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-single-filename-tags" aria-expanded="false" aria-controls="dl-single-filename-tags"
+                                <div>
+                                    <label class="form-label" for="dl-single-filename" data-string="new_download_single_filename"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#dl-single-filename-tags" aria-expanded="false" aria-controls="dl-single-filename-tags"
                                             data-string="show_filename_tags"></button>
                                     <input id="dl-single-filename" class="form-control">
                                     <small id="dl-single-filename-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-single-filename-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-single-filename-tags">
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="filename_tags"></h4>
                                             <dl class="row">
@@ -193,16 +195,16 @@
                                     </div>
                                 </div>
                                 <!-- location -->
-                                <div class="form-group">
-                                    <label for="dl-single-location" data-string="new_download_single_location"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-single-location-tags" aria-expanded="false" aria-controls="dl-single-location-tags"
+                                <div>
+                                    <label class="form-label" for="dl-single-location" data-string="new_download_single_location"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#dl-single-location-tags" aria-expanded="false" aria-controls="dl-single-location-tags"
                                             data-string="show_location_tags"></button>
                                     <input id="dl-single-location" class="form-control">
                                     <small id="dl-single-location-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-single-location-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-single-location-tags">
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
@@ -241,43 +243,43 @@
                                     </div>
                                 </div>
                                 <!-- option -->
-                                <label data-string="new_download_single_option"></label>
-                                <div class="form-group container-fluid row">
-                                    <div class="custom-control custom-checkbox col-lg-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-single-option1">
-                                        <label class="custom-control-label" for="dl-single-option1" data-string="new_download_single_option1"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="new_download_single_option1_description"></i>
+                                <label class="form-label" data-string="new_download_single_option"></label>
+                                <div class="mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="dl-single-option1">
+                                        <label class="form-check-label" for="dl-single-option1" data-string="new_download_single_option1"></label>
+                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option1_description"></i>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-lg-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-single-option2">
-                                        <label class="custom-control-label" for="dl-single-option2" data-string="new_download_single_option2"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="new_download_single_option2_description"></i>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="dl-single-option2">
+                                        <label class="form-check-label" for="dl-single-option2" data-string="new_download_single_option2"></label>
+                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option2_description"></i>
                                     </div>
                                 </div>
                             </div>
                             <!-- multiple download -->
                             <div class="tab-pane fade" id="multiple" role="tabpanel" aria-labelledby="multiple-tab">
                                 <!-- download url -->
-                                <div class="form-group">
-                                    <label for="dl-multiple-url" data-string="new_download_multiple_url"></label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dl-multiple-url" data-string="new_download_multiple_url"></label>
                                     <textarea id="dl-multiple-url" class="form-control" rows="6"></textarea>
                                 </div>
                                 <!-- referer -->
-                                <div class="form-group">
-                                    <label for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
                                     <input id="dl-multiple-referer" class="form-control">
                                 </div>
                                 <!-- filename -->
-                                <div class="form-group">
-                                    <label for="dl-multiple-filename" data-string="new_download_multiple_filename"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-multiple-filename-tags" aria-expanded="false" aria-controls="dl-multiple-filename-tags"
+                                <div>
+                                    <label class="form-label" for="dl-multiple-filename" data-string="new_download_multiple_filename"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#dl-multiple-filename-tags" aria-expanded="false" aria-controls="dl-multiple-filename-tags"
                                             data-string="show_filename_tags"></button>
                                     <input id="dl-multiple-filename" class="form-control">
                                     <small id="dl-multiple-filename-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-multiple-filename-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-multiple-filename-tags">
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="filename_tags"></h4>
                                             <dl class="row">
@@ -308,16 +310,16 @@
                                     </div>
                                 </div>
                                 <!-- location -->
-                                <div class="form-group">
-                                    <label for="dl-multiple-location" data-string="new_download_multiple_location"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-multiple-location-tags" aria-expanded="false" aria-controls="dl-multiple-location-tags"
+                                <div>
+                                    <label class="form-label" for="dl-multiple-location" data-string="new_download_multiple_location"></label>
+                                    <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#dl-multiple-location-tags" aria-expanded="false" aria-controls="dl-multiple-location-tags"
                                             data-string="show_location_tags"></button>
                                     <input id="dl-multiple-location" class="form-control">
                                     <small id="dl-multiple-location-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-multiple-location-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-multiple-location-tags">
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
@@ -356,24 +358,24 @@
                                     </div>
                                 </div>
                                 <!-- option -->
-                                <label data-string="new_download_multiple_option"></label>
-                                <div class="form-group container-fluid row">
-                                    <div class="custom-control custom-checkbox col-lg-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-multiple-option1">
-                                        <label class="custom-control-label" for="dl-multiple-option1" data-string="new_download_multiple_option1"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
+                                <label class="form-label" data-string="new_download_multiple_option"></label>
+                                <div class="mb-3">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="dl-multiple-option1">
+                                        <label class="form-check-label" for="dl-multiple-option1" data-string="new_download_multiple_option1"></label>
+                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-lg-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-multiple-option2">
-                                        <label class="custom-control-label" for="dl-multiple-option2" data-string="new_download_multiple_option2"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="checkbox" id="dl-multiple-option2">
+                                        <label class="form-check-label" for="dl-multiple-option2" data-string="new_download_multiple_option2"></label>
+                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-string="button_close">Close</button>
                         <button type="button" class="btn btn-warning" id="download-button" data-string="button_download">Download</button>
                     </div>
                 </div>
@@ -386,123 +388,148 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" data-string="download_detail_title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="nav nav-tabs mb-3" role="tablist">
                             <!-- status tab -->
                             <button class="nav-link nav-item active" id="status-tab" href="#status"
-                                    data-toggle="tab" role="tab" aria-controls="status" aria-selected="true" data-string="download_detail_status"></button>
+                                    data-bs-toggle="tab" role="tab" aria-controls="status" aria-selected="true" data-string="download_detail_status"></button>
                             <button class="nav-link nav-item" id="info-tab" href="#info"
-                                    data-toggle="tab" role="tab" aria-controls="info" aria-selected="false" data-string="download_detail_info"></button>
+                                    data-bs-toggle="tab" role="tab" aria-controls="info" aria-selected="false" data-string="download_detail_info"></button>
                             <!-- next/prev button -->
-                            <div class="btn-group ml-auto" role="group">
-                                <button id="detail-prev-button" type="button" class="btn btn-outline-secondary mb-2" data-toggle="tooltip" data-titlestring="download_detail_previtem_description"><i class="fas fa-angle-up"></i></button>
-                                <button id="detail-next-button" type="button" class="btn btn-outline-secondary mb-2" data-toggle="tooltip" data-titlestring="download_detail_nextitem_description"><i class="fas fa-angle-down"></i></button>
+                            <div class="btn-group ms-auto" role="group">
+                                <button id="detail-prev-button" type="button" class="btn btn-outline-secondary mb-2" data-bs-toggle="tooltip" data-titlestring="download_detail_previtem_description"><i class="fas fa-angle-up"></i></button>
+                                <button id="detail-next-button" type="button" class="btn btn-outline-secondary mb-2" data-bs-toggle="tooltip" data-titlestring="download_detail_nextitem_description"><i class="fas fa-angle-down"></i></button>
                             </div>
                         </div>
                         <div class="tab-content">
                             <!-- status -->
                             <div class="tab-pane fade show active" id="status" role="tabpanel" aria-labelledby="status-tab">
                                 <div class="row">
-                                    <label for="detail-status-dlid" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_dlid"></label>
-                                    <input id="detail-status-dlid" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-status" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_status2"></label>
-                                    <input id="detail-status-status" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-reason" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_reason"></label>
-                                    <input id="detail-status-reason" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-start" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_start"></label>
-                                    <input id="detail-status-start" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-end" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_end"></label>
-                                    <input id="detail-status-end" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-url" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_final_url"></label>
-                                    <input id="detail-status-url" class="col form-control-plaintext" value="" readonly>
-                                    <div class="col-auto">
-                                        <button id="detail-status-url-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-placement="top" data-titlestring="download_detail_final_url_description" data-link=""><i class="fas fa-external-link-alt"></i></button>
+                                    <label for="detail-status-dlid" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_dlid"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-dlid" class="form-control-plaintext" value="" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="detail-status-progress" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_progress"></label>
+                                    <label for="detail-status-status" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_status2"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-status" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-reason" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_reason"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-reason" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-start" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_start"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-start" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-end" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_end"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-end" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-url" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_final_url"></label>
+                                    <div class="col">
+                                        <input id="detail-status-url" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button id="detail-status-url-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_final_url_description" data-link=""><i class="fas fa-external-link-alt"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-progress" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_progress"></label>
                                     <div class="col-lg-9 col-md-8 col-12 d-flex align-items-center">
                                         <div class="progress flex-fill">
-                                            <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info" role="progressbar"></div>
+                                            <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info overflow-visible" role="progressbar"></div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="detail-status-mime" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_mime"></label>
-                                    <input id="detail-status-mime" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-current" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_current"></label>
-                                    <input id="detail-status-current" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-total" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_total"></label>
-                                    <input id="detail-status-total" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-status-detail" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_detail"></label>
-                                    <div id="detail-status-detail" class="col-lg-9 col-md-8 col-12 d-flex align-items-center">
+                                    <label for="detail-status-mime" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_mime"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-mime" class="form-control-plaintext" value="" readonly>
                                     </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-current" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_current"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-current" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-total" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_total"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-status-total" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="detail-status-detail" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_detail"></label>
+                                    <div id="detail-status-detail" class="d-flex align-items-center"></div>
                                 </div>
                             </div>
                             <!-- info -->
                             <div class="tab-pane fade" id="info" role="tabpanel" aria-labelledby="info-tab">
                                 <div class="row">
-                                    <label for="detail-info-registerd" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_registered"></label>
-                                    <input id="detail-info-registered" class="col-lg-9 col-md-8 col-12 form-control-plaintext" value="" readonly>
-                                </div>
-                                <div class="row">
-                                    <label for="detail-info-url" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_url"></label>
-                                    <input id="detail-info-url" class="col form-control-plaintext" value="" readonly>
-                                    <div class="col-auto">
-                                        <button id="detail-info-url-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-placement="top" data-titlestring="download_detail_url_description" data-link=""><i class="fas fa-external-link-alt fa-fw"></i></button>
+                                    <label for="detail-info-registerd" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_registered"></label>
+                                    <div class="col-lg-9 col-md-8 col-12">
+                                        <input id="detail-info-registered" class="form-control-plaintext" value="" readonly>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="detail-info-referer" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_referer"></label>
-                                    <input id="detail-info-referer" class="col form-control-plaintext" value="" readonly>
+                                    <label for="detail-info-url" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_url"></label>
+                                    <div class="col">
+                                        <input id="detail-info-url" class="form-control-plaintext" value="" readonly>
+                                    </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-referer-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-placement="top" data-titlestring="download_detail_referer_description" data-link=""><i class="fas fa-external-link-alt fa-fw"></i></button>
+                                        <button id="detail-info-url-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_url_description" data-link=""><i class="fas fa-external-link-alt fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="detail-info-filename" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_filename"></label>
-                                    <input id="detail-info-filename" class="col form-control-plaintext" value="" readonly>
+                                    <label for="detail-info-referer" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_referer"></label>
+                                    <div class="col">
+                                        <input id="detail-info-referer" class="form-control-plaintext" value="" readonly>
+                                    </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-filename-open" class="btn btn-link openfile-button" data-toggle="tooltip" data-placement="top" data-titlestring="download_detail_filename_description" data-fxid=""><i class="fas fa-file fa-fw"></i></button>
+                                        <button id="detail-info-referer-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_referer_description" data-link=""><i class="fas fa-external-link-alt fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label for="detail-info-location" class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_location"></label>
-                                    <input id="detail-info-location" class="col form-control-plaintext" value="" readonly>
+                                    <label for="detail-info-filename" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_filename"></label>
+                                    <div class="col">
+                                        <input id="detail-info-filename" class="form-control-plaintext" value="" readonly>
+                                    </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-location-open" class="btn btn-link openfolder-button" data-toggle="tooltip" data-placement="top" data-titlestring="download_detail_location_description" data-fxid=""><i class="fas fa-folder-open fa-fw"></i></button>
+                                        <button id="detail-info-filename-open" class="btn btn-link openfile-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_filename_description" data-fxid=""><i class="fas fa-file fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <label class="col-lg-3 col-md-4 col-12 col-form-label font-weight-bold" data-string="download_detail_option"></label>
-                                    <div id="detail-info-option" class="col-lg-9 col-md-8 col-12 form-control-plaintext">
-                                        <div class="custom-control custom-checkbox">
-                                            <input id="detail-info-option1" type="checkbox" class="custom-control-input" readonly>
-                                            <label class="custom-control-label" data-string="download_detail_option1"></label>
+                                    <label for="detail-info-location" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_location"></label>
+                                    <div class="col">
+                                        <input id="detail-info-location" class="form-control-plaintext" value="" readonly>
+                                    </div>
+                                    <div class="col-auto">
+                                        <button id="detail-info-location-open" class="btn btn-link openfolder-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_location_description" data-fxid=""><i class="fas fa-folder-open fa-fw"></i></button>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_option"></label>
+                                    <div id="detail-info-option" class="col-lg-9 col-md-8 col-12 col-form-label">
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option1" disabled>
+                                            <label class="form-check-label opacity-100" data-string="download_detail_option1"></label>
                                         </div>
-                                        <div class="custom-control custom-checkbox">
-                                            <input id="detail-info-option2" type="checkbox" class="custom-control-input" readonly>
-                                            <label class="custom-control-label" data-string="download_detail_option2"></label>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option2" disabled>
+                                            <label class="form-check-label opacity-100" data-string="download_detail_option2"></label>
                                         </div>
                                     </div>
                                 </div>
@@ -511,20 +538,20 @@
                     </div>
                     <div class="modal-footer">
                         <button id="detail-stop-button" type="button" class="btn btn-danger"
-                                data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid="" data-string="button_stop"></button>
+                                data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop" data-dlid="" data-string="button_stop"></button>
                         <button id="detail-pause-button" type="button" class="btn btn-warning"
-                                data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid="" data-string="button_pause"></button>
+                                data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="pause" data-dlid="" data-string="button_pause"></button>
                         <button id="detail-resume-button" type="button" class="btn btn-info" data-dlid="" data-string="button_resume"></button>
                         <div id="detail-redo-button-group" class="btn-group">
                             <button id="detail-redo-button" type="button" class="btn btn-light" data-string="button_redo" data-dlid=""></button>
-                            <button id="detali-redo-button-ref" type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                <span class="sr-only"></span>
+                            <button id="detali-redo-button-ref" type="button" class="btn btn-light dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false" data-bs-reference="parent">
+                                <span class="visually-hidden"></span>
                             </button>
                             <div class="dropdown-menu" aria-labelledby="detail-redo-button-ref" style="min-width: max-content;">
                                 <a id="detail-redo-button-manual" class="dropdown-item" href="#" data-string="button_redo_manual" data-dlid=""></a>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-secondary ml-auto" data-dismiss="modal" data-string="button_close"></button>
+                        <button type="button" class="btn btn-secondary ms-auto" data-bs-dismiss="modal" data-string="button_close"></button>
                     </div>
                 </div>
             </div>
@@ -536,99 +563,93 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" data-string="source_download_title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="source">
                         <!-- filter button -->
                         <div class="d-flex horizontal-button-list">
-                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
-                                    data-target="#byTagname" aria-expanded="false" aria-controls="byTagname" data-string="source_download_filter_tagname"></button>
-                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
-                                    data-target="#byFiletype" aria-expanded="false" aria-controls="byFiletype" data-string="source_download_filter_filetype"></button>
-                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
-                                    data-target="#byKeyword" aria-expanded="false" aria-controls="byKeyword" data-string="source_download_filter_keyword"></button>
-                            <button type="button" class="btn btn-secondary" data-toggle="collapse"
-                                    data-target="#source-download-option" aria-expanded="false" aria-controls="source-download-option" data-string="source_download_option"></button>
-                            <button type="button" class="btn btn-warning ml-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
+                                    data-bs-target="#byTagname" aria-expanded="false" aria-controls="byTagname" data-string="source_download_filter_tagname"></button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
+                                    data-bs-target="#byFiletype" aria-expanded="false" aria-controls="byFiletype" data-string="source_download_filter_filetype"></button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
+                                    data-bs-target="#byKeyword" aria-expanded="false" aria-controls="byKeyword" data-string="source_download_filter_keyword"></button>
+                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
+                                    data-bs-target="#source-download-option" aria-expanded="false" aria-controls="source-download-option" data-string="source_download_option"></button>
+                            <button type="button" class="btn btn-warning ms-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
                         </div>
                         <!-- filter box -->
                         <div id="byTagname" class="collapse">
-                            <div class="card card-body d-block">
-                                <div class="form-group">
-                                    <label for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
-                                    <input id="filter-tagnamelist" class="form-control">
-                                </div>
+                            <div class="card card-body">
+                                <label class="form-label" for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
+                                <input id="filter-tagnamelist" class="form-control">
                             </div>
                         </div>
                         <div id="byFiletype" class="collapse">
-                            <div class="card card-body d-block">
-                                <div class="container-fluid row">
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype1">
-                                        <label class="custom-control-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
+                            <div class="card card-body">
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype1">
+                                        <label class="form-check-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype2">
-                                        <label class="custom-control-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype2">
+                                        <label class="form-check-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype3">
-                                        <label class="custom-control-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype3">
+                                        <label class="form-check-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype4">
-                                        <label class="custom-control-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype4">
+                                        <label class="form-check-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype5">
-                                        <label class="custom-control-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype5">
+                                        <label class="form-check-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
                                     </div>
-                                    <div class="custom-control custom-checkbox col-xl-2 col-md-4 col-sm-6 col-12">
-                                        <input type="checkbox" class="filter-type-checkbox custom-control-input" id="filter-filetype6">
-                                        <label class="custom-control-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
+                                    <div class="form-check form-check-inline">
+                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype6">
+                                        <label class="form-check-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div id="byKeyword" class="collapse">
-                            <div class="card card-body d-block">
-                                <div class="form-group">
-                                    <label for="filter-expression" data-string="source_download_filter_expression"></label>
-                                    <input id="filter-expression" class="form-control">
-                                </div>
-                                <div class="custom-control custom-checkbox">
-                                    <input type="checkbox" class="custom-control-input" id="filter-regex">
-                                    <label class="custom-control-label" for="filter-regex" data-string="source_download_filter_regex"></label>
+                            <div class="card card-body">
+                                <label class="form-label" for="filter-expression" data-string="source_download_filter_expression"></label>
+                                <input id="filter-expression" class="form-control">
+                                <div class="form-check mt-2">
+                                    <input class="form-check-input" type="checkbox" id="filter-regex">
+                                    <label class="form-check-label" for="filter-regex" data-string="source_download_filter_regex"></label>
                                 </div>
                             </div>
                         </div>
                         <!-- option box -->
                         <div id="source-download-option" class="collapse">
-                            <div class="card card-body d-block">
+                            <div class="card card-body">
                                 <!-- referer -->
-                                <div class="form-group">
-                                    <label for="dl-source-referer" data-string="source_download_option_referer"></label>
+                                <div class="mb-3">
+                                    <label class="form-label" for="dl-source-referer" data-string="source_download_option_referer"></label>
                                     <input id="dl-source-referer" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" id="dl-source-referer-default">
-                                        <label class="custom-control-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="dl-source-referer-default">
+                                        <label class="form-check-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
                                     </div>
                                 </div>
                                 <!-- filename -->
-                                <div class="form-group">
-                                    <label for="dl-source-filename" data-string="source_download_option_filename"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-source-filename-tags" aria-expanded="false" aria-controls="dl-source-filename-tags"
-                                            data-string="show_filename_tags"></button>
+                                <div>
+                                    <div>
+                                        <label class="form-label" for="dl-source-filename" data-string="source_download_option_filename"></label>
+                                        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#dl-source-filename-tags" aria-expanded="false" aria-controls="dl-source-filename-tags"
+                                                data-string="show_filename_tags"></button>
+                                    </div>
                                     <input id="dl-source-filename" class="form-control">
                                     <small id="dl-source-filename-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-source-filename-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-source-filename-tags">
                                         <div class="card-body">
                                         <h4 class="card-title" data-string="filename_tags"></h4>
                                             <dl class="row">
@@ -663,16 +684,18 @@
                                     </div>
                                 </div>
                                 <!-- location -->
-                                <div class="form-group">
-                                    <label for="dl-source-location" data-string="source_download_option_location"></label>
-                                    <button class="btn btn-outline-primary btn-sm" type="button" data-toggle="collapse"
-                                            data-target="#dl-source-location-tags" aria-expanded="false" aria-controls="dl-source-location-tags"
-                                            data-string="show_location_tags"></button>
+                                <div>
+                                    <div>
+                                        <label class="form-label" for="dl-source-location" data-string="source_download_option_location"></label>
+                                        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#dl-source-location-tags" aria-expanded="false" aria-controls="dl-source-location-tags"
+                                                data-string="show_location_tags"></button>
+                                    </div>
                                     <input id="dl-source-location" class="form-control">
                                     <small id="dl-source-location-sample" class="form-text text-muted"></small>
                                 </div>
-                                <div class="form-group tags">
-                                    <div class="card collapse" id="dl-source-location-tags">
+                                <div class="tags mb-3">
+                                    <div class="card collapse mt-2" id="dl-source-location-tags">
                                         <div class="card-body">
                                             <h4 class="card-title" data-string="location_tags"></h4>
                                             <dl class="row">
@@ -713,53 +736,55 @@
                                     </div>
                                 </div>
                                 <!-- option -->
-                                <label data-string="source_download_option_option"></label>
-                                <div class="form-group container-fluid row">
-                                    <div class="custom-control custom-checkbox col-md-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-source-option1">
-                                        <label class="custom-control-label" for="dl-source-option1" data-string="source_download_option_option1"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="source_download_option_option1_description"></i>
-                                    </div>
-                                    <div class="custom-control custom-checkbox col-md-6 col-12">
-                                        <input type="checkbox" class="custom-control-input" id="dl-source-option2">
-                                        <label class="custom-control-label" for="dl-source-option2" data-string="source_download_option_option2"></label>
-                                        <i class="fas fa-question pointer" data-toggle="tooltip" data-placement="top" data-titlestring="source_download_option_option2_description"></i>
+                                <div>
+                                    <label class="form-label" data-string="source_download_option_option"></label>
+                                    <div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="dl-source-option1">
+                                            <label class="form-check-label" for="dl-source-option1" data-string="source_download_option_option1"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option1_description"></i>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="dl-source-option2">
+                                            <label class="form-check-label" for="dl-source-option2" data-string="source_download_option_option2"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option2_description"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group mt-3">
-                            <div class="custom-control custom-checkbox">
-                                <input type="checkbox" class="custom-control-input" id="filter-dup" checked>
-                                <label class="custom-control-label" for="filter-dup" data-string="source_download_filter_dup"></label>
+                        <div class="mt-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="filter-dup" checked>
+                                <label class="form-check-label" for="filter-dup" data-string="source_download_filter_dup"></label>
                             </div>
                         </div>
                         <ul id="source-list" class="list-group list-group-flush mt-3">
                             <!-- header -->
-                            <li class="list-group-item list-group-item-dark font-weight-bold sticky-top">
+                            <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                 <div class="row">
                                     <div class="col-lg-8 col-sm-6 col-12">
-                                        <div class="custom-control custom-checkbox pl-5">
-                                            <input id="source-all" type="checkbox" class="custom-control-input">
-                                            <label class="custom-control-label" for="source-all">&#8203;</label>
-                                            <label id="sort-url" class="control-label my-0" data-order="" data-string="source_download_header_url"></label>
+                                        <div class="form-check ps-5">
+                                            <input class="form-check-input" type="checkbox" id="source-all">
+                                            <label class="form-check-label" for="source-all">&#8203;</label>
+                                            <label id="sort-url" class="form-label my-0" data-order="" data-string="source_download_header_url"></label>
                                         </div>
                                     </div>
                                     <div class="col-lg-1 col-sm-2 col-4 px-0 text-center">
-                                        <label id="sort-filetype" class="control-label my-0" data-order="" data-string="source_download_header_filetype"></label>
+                                        <label id="sort-filetype" class="form-label my-0" data-order="" data-string="source_download_header_filetype"></label>
                                     </div>
                                     <div class="col-lg-1 col-sm-2 col-4 px-0 text-center">
-                                        <label id="sort-tag" class="control-label my-0" data-order="" data-string="source_download_header_tag"></label>
+                                        <label id="sort-tag" class="form-label my-0" data-order="" data-string="source_download_header_tag"></label>
                                     </div>
                                     <div class="col-lg-2 col-sm-2 col-4 px-0 text-center">
-                                        <label id="sort-title" class="control-label my-0" data-order="" data-string="source_download_header_title"></label>
+                                        <label id="sort-title" class="form-label my-0" data-order="" data-string="source_download_header_title"></label>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_close">Close</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-string="button_close">Close</button>
                         <button type="button" class="btn btn-warning" id="source-download-button2" data-count="0" data-string="button_download">Download</button>
                     </div>
                 </div>
@@ -772,14 +797,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" data-string="confirm_title"></h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body"></div>
                     <div class="modal-footer">
-                        <button type="button" class="modal-action-button btn btn-danger" data-dismiss="modal" data-focus="true"></button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" data-string="button_cancel"></button>
+                        <button type="button" class="modal-action-button btn btn-danger" data-bs-dismiss="modal" data-focus="true"></button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-string="button_cancel"></button>
                     </div>
                 </div>
             </div>
@@ -796,10 +819,10 @@
                     <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
                         <div class="item-status">
                             <i class=""></i>
-                            <i class="item-info-button fas fa-info-circle" data-toggle="modal" data-target="#download-detail" data-dlid=""></i>
-                            <i class="item-stop-button far fa-stop-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="stop" data-dlid=""></i>
-                            <i class="item-pause-button far fa-pause-circle" data-toggle="modal" data-target="#confirm-dialog" data-action="pause" data-dlid=""></i>
-                            <i class="item-resume-button far fa-play-circle" data-toggle="modal" data-dlid=""></i>
+                            <i class="item-info-button fas fa-info-circle" data-bs-toggle="modal" data-bs-target="#download-detail" data-dlid=""></i>
+                            <i class="item-stop-button far fa-stop-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop" data-dlid=""></i>
+                            <i class="item-pause-button far fa-pause-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="pause" data-dlid=""></i>
+                            <i class="item-resume-button far fa-play-circle" data-bs-toggle="modal" data-dlid=""></i>
                             <i class="item-redo-button fas fa-redo" data-dlid=""></i>
                             <i class="item-openfile-button fas fa-file" data-fxid=""></i>
                             <i class="item-openfolder-button fas fa-folder-open" data-fxid=""></i>
@@ -808,24 +831,24 @@
                     </div>
                     <div class="item-filename col-lg-5 col-md-6 col-10">
                     </div>
-                    <div class="progress      col-lg-2 d-none d-lg-flex px-0">
-                        <div class="item-progress text-center progress-bar progress-bar-striped bg-info px-2"></div>
+                    <div class="progress col-lg-2 d-none d-lg-flex px-0">
+                        <div class="item-progress text-center progress-bar progress-bar-striped bg-info overflow-visible px-2"></div>
                     </div>
-                    <div class="item-speed    col-lg-2 col-md-2 col-6 text-center"></div>
-                    <div class="item-remain   col-lg-2 col-md-2 col-6 text-center"></div>
+                    <div class="item-speed col-lg-2 col-md-2 col-6 text-center"></div>
+                    <div class="item-remain col-lg-2 col-md-2 col-6 text-center"></div>
                 </div>
             </li>
 
             <li id="source-item-template" class="source-item list-group-item list-group-item-action py-0" data-filetype="">
                 <div class="row">
-                    <div class="source-url   col-lg-8 col-sm-6 col-12">
-                        <div class="custom-control custom-checkbox pl-5">
-                            <input id="" type="checkbox" class="custom-control-input">
-                            <label class="custom-control-label d-block py-1" for=""></label>
+                    <div class="source-url col-lg-8 col-sm-6 col-12">
+                        <div class="form-check ps-5 py-1">
+                            <input class="form-check-input pointer" type="checkbox" id="">
+                            <label class="form-check-label d-block pointer" for=""></label>
                         </div>
                     </div>
-                    <div class="source-type  col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
-                    <div class="source-tag   col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                    <div class="source-type col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
+                    <div class="source-tag col-lg-1 col-sm-2 col-4 py-1 text-center"></div>
                     <div class="source-title col-lg-2 col-sm-2 col-4 py-1 text-center"></div>
                 </div>
             </li>
