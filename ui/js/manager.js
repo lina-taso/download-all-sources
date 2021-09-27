@@ -164,14 +164,14 @@ $(async () => {
             $('#source-all').on('input', function() {
                 const output = (resolve, reject) => {
                     if (this.checked)
-                        $('#source-list .source-item .source-url input').prop('checked', true);
+                        $('#source-list .source-url-input').prop('checked', true);
                     else
-                        $('#source-list .source-item .source-url input').prop('checked', false);
+                        $('#source-list .source-url-input').prop('checked', false);
 
                     // count downloads
                     $('#source-download-button1, #source-download-button2').attr(
                         'data-count',
-                        $('#source-list .source-item .source-url input:checked').length
+                        $('#source-list .source-url-input:checked').length
                     );
 
                     resolve();
@@ -192,11 +192,11 @@ $(async () => {
                     }).addClass('show');
                 }
             });
-            $('#source-list').on('input', '.source-url input', function() {
+            $('#source-list').on('input', '.source-url-input', function() {
                 // count downloads
                 $('#source-download-button1, #source-download-button2').attr(
                     'data-count',
-                    $('#source-list .source-item .source-url input:checked').length
+                    $('#source-list .source-url-input:checked').length
                 );
             });
             // default-referer
