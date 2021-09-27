@@ -209,12 +209,12 @@ $(async () => {
             // initial value
             const config = await bg.config.getPref();
             // filter-filetypes
-            filter1 = new RegExp('^' + config['filetype1-extension'] + '$'),
-            filter2 = new RegExp('^' + config['filetype2-extension'] + '$'),
-            filter3 = new RegExp('^' + config['filetype3-extension'] + '$'),
-            filter4 = new RegExp('^' + config['filetype4-extension'] + '$'),
-            filter5 = new RegExp('^' + config['filetype5-extension'] + '$'),
-            filter6 = new RegExp('^' + config['filetype6-extension'] + '$');
+            filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
+            filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
+            filter3 = new RegExp('^(' + config['filetype3-extension'] + ')$'),
+            filter4 = new RegExp('^(' + config['filetype4-extension'] + ')$'),
+            filter5 = new RegExp('^(' + config['filetype5-extension'] + ')$'),
+            filter6 = new RegExp('^(' + config['filetype6-extension'] + ')$');
             // initial source-tagname (checked by checkActiveFilter)
             if (config['remember-source-tagname'])
                 $('#filter-tagnamelist').val(config['source-tagname-value']);
@@ -997,7 +997,7 @@ function filterTagnameSourceList(filteredSource)
     if ($tagnamelist.val().trim() != '') {
         if (/^[a-zA-Z|]*$/.test($tagnamelist.val().trim())) {
             try {
-                let re = new RegExp('^' + $tagnamelist.val().trim() + '$');
+                let re = new RegExp('^(' + $tagnamelist.val().trim() + ')$');
                 $tagnamelist.toggleClass('is-invalid', false);
                 filtered = list.filter((a) => { return re.test(a.tag); });
             }
