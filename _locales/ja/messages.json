@@ -492,6 +492,9 @@
     "button_download" : {
         "message" : "ダウンロード"
     },
+    "button_filter" : {
+        "message" : "フィルタ"
+    },
     "button_stop" : {
         "message" : "停止"
     },

@@ -6,7 +6,6 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>Download All Sources Manager</title>
         <script src="js/jquery.min.js"></script>
-        <script src="js/popper.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
         <script src="js/manager.js"></script>
         <link rel="stylesheet" href="css/all.css"> <!-- fontawesome -->
@@ -244,16 +243,20 @@
                                 </div>
                                 <!-- option -->
                                 <label class="form-label" data-string="new_download_single_option"></label>
-                                <div class="mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="dl-single-option1">
-                                        <label class="form-check-label" for="dl-single-option1" data-string="new_download_single_option1"></label>
-                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option1_description"></i>
+                                <div class="mb-3 col row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="dl-single-option1">
+                                            <label class="form-check-label" for="dl-single-option1" data-string="new_download_single_option1"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option1_description"></i>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="dl-single-option2">
-                                        <label class="form-check-label" for="dl-single-option2" data-string="new_download_single_option2"></label>
-                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option2_description"></i>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="dl-single-option2">
+                                            <label class="form-check-label" for="dl-single-option2" data-string="new_download_single_option2"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option2_description"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -359,16 +362,20 @@
                                 </div>
                                 <!-- option -->
                                 <label class="form-label" data-string="new_download_multiple_option"></label>
-                                <div class="mb-3">
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="dl-multiple-option1">
-                                        <label class="form-check-label" for="dl-multiple-option1" data-string="new_download_multiple_option1"></label>
-                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
+                                <div class="mb-3 col row">
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="dl-multiple-option1">
+                                            <label class="form-check-label" for="dl-multiple-option1" data-string="new_download_multiple_option1"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="checkbox" id="dl-multiple-option2">
-                                        <label class="form-check-label" for="dl-multiple-option2" data-string="new_download_multiple_option2"></label>
-                                        <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
+                                    <div class="col-12 col-lg-6">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="dl-multiple-option2">
+                                            <label class="form-check-label" for="dl-multiple-option2" data-string="new_download_multiple_option2"></label>
+                                            <i class="fas fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -522,14 +529,18 @@
                                 </div>
                                 <div class="row">
                                     <label class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_option"></label>
-                                    <div id="detail-info-option" class="col-lg-9 col-md-8 col-12 col-form-label">
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option1" disabled>
-                                            <label class="form-check-label opacity-100" data-string="download_detail_option1"></label>
+                                    <div id="detail-info-option" class="col row col-form-label">
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option1" disabled>
+                                                <label class="form-check-label opacity-100" data-string="download_detail_option1"></label>
+                                            </div>
                                         </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option2" disabled>
-                                            <label class="form-check-label opacity-100" data-string="download_detail_option2"></label>
+                                        <div class="col-12 col-lg-6">
+                                            <div class="form-check">
+                                                <input class="form-check-input opacity-100" type="checkbox" id="detail-info-option2" disabled>
+                                                <label class="form-check-label opacity-100" data-string="download_detail_option2"></label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -582,35 +593,59 @@
                         <div id="byTagname" class="collapse">
                             <div class="card card-body">
                                 <label class="form-label" for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
-                                <input id="filter-tagnamelist" class="form-control">
+                                <div class="row">
+                                    <div class="col">
+                                        <input id="filter-tagnamelist" class="form-control">
+                                    </div>
+                                    <div class="col-sm-auto d-grid d-none">
+                                        <button id="filter-tagnamelist-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div id="byFiletype" class="collapse">
                             <div class="card card-body">
-                                <div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype1">
-                                        <label class="form-check-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
+                                <div class="row">
+                                    <div class="col row">
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype1">
+                                                <label class="form-check-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype2">
+                                                <label class="form-check-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype3">
+                                                <label class="form-check-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype4">
+                                                <label class="form-check-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype5">
+                                                <label class="form-check-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                            <div class="form-check">
+                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype6">
+                                                <label class="form-check-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype2">
-                                        <label class="form-check-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype3">
-                                        <label class="form-check-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype4">
-                                        <label class="form-check-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype5">
-                                        <label class="form-check-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
-                                    </div>
-                                    <div class="form-check form-check-inline">
-                                        <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype6">
-                                        <label class="form-check-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
+                                    <div class="col-auto d-grid d-none">
+                                        <button id="filter-type-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
                                     </div>
                                 </div>
                             </div>
@@ -618,7 +653,14 @@
                         <div id="byKeyword" class="collapse">
                             <div class="card card-body">
                                 <label class="form-label" for="filter-expression" data-string="source_download_filter_expression"></label>
-                                <input id="filter-expression" class="form-control">
+                                <div class="row">
+                                    <div class="col">
+                                        <input id="filter-expression" class="form-control">
+                                    </div>
+                                    <div class="col-sm-auto d-grid d-none">
+                                        <button id="filter-expression-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                                    </div>
+                                </div>
                                 <div class="form-check mt-2">
                                     <input class="form-check-input" type="checkbox" id="filter-regex">
                                     <label class="form-check-label" for="filter-regex" data-string="source_download_filter_regex"></label>
@@ -843,7 +885,7 @@
                 <div class="row">
                     <div class="source-url col-lg-8 col-sm-6 col-12">
                         <div class="form-check ps-5 py-1">
-                            <input class="form-check-input pointer" type="checkbox" id="">
+                            <input class="source-url-input form-check-input pointer" type="checkbox" id="">
                             <label class="form-check-label d-block pointer" for=""></label>
                         </div>
                     </div>

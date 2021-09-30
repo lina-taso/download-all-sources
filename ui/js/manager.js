@@ -75,11 +75,17 @@ $(async () => {
                 if (this.id != target) $('#' + target).attr('data-order', '');
             outputSourceList();
         });
-    // filter
-    $('#byTagname input, #byFiletype input, #byKeyword input, #filter-dup').on('input', function() {
-        checkActiveFilter();
-        outputSourceList();
+    // source list filter
+    $('#byTagname input, #byFiletype input, #byKeyword input').on('input', function() {
+        if (source.length < 5000) { checkActiveFilter(); outputSourceList(); }
     });
+    $('#filter-dup').on('input', function() {
+        checkActiveFilter(); outputSourceList();
+    });
+    // source list filter button
+    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button').on('click', function() {
+        checkActiveFilter(); outputSourceList();
+    })
     // checkbox validation
     $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
 
@@ -199,6 +205,12 @@ $(async () => {
                     $('#source-list .source-url-input:checked').length
                 );
             });
+            // filter button
+            if (source.length > 5000) {
+                $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+                    .parent().removeClass('d-none');
+            }
+
             // default-referer
             $('#dl-source-referer-default').on('input', function() {
                 if (this.checked)
@@ -247,7 +259,10 @@ $(async () => {
         .on('shown.bs.modal', async () => {
             outputSourceList();
         })
-        .on('hide.bs.modal', function() { baseurl = null; });
+        .on('hidden.bs.modal', function() {
+            baseurl = null;
+            $(this).remove();
+        });
     // modal
     $('#confirm-dialog')
         .on('show.bs.modal', function(e) {
@@ -1028,12 +1043,12 @@ function filterTypeSourceList(filteredSource)
         || $('#filter-filetype4').prop('checked') || $('#filter-filetype5').prop('checked') || $('#filter-filetype6').prop('checked')) {
 
         filtered = list.filter((a) => {
-            if ($('#filter-filetype1').prop('checked') && filter1.test(a.filetype)) return true;
-            if ($('#filter-filetype2').prop('checked') && filter2.test(a.filetype)) return true;
-            if ($('#filter-filetype3').prop('checked') && filter3.test(a.filetype)) return true;
-            if ($('#filter-filetype4').prop('checked') && filter4.test(a.filetype)) return true;
-            if ($('#filter-filetype5').prop('checked') && filter5.test(a.filetype)) return true;
-            if ($('#filter-filetype6').prop('checked') && filter6.test(a.filetype)) return true;
+            if ($('#filter-filetype1').prop('checked') && filter1.test(a.filetype)
+                || $('#filter-filetype2').prop('checked') && filter2.test(a.filetype)
+                || $('#filter-filetype3').prop('checked') && filter3.test(a.filetype)
+                || $('#filter-filetype4').prop('checked') && filter4.test(a.filetype)
+                || $('#filter-filetype5').prop('checked') && filter5.test(a.filetype)
+                || $('#filter-filetype6').prop('checked') && filter6.test(a.filetype)) return true;
             return false;
         });
     }
@@ -1068,9 +1083,9 @@ function filterDuplicateSourceList(filteredSource)
 
 function checkActiveFilter()
 {
-    $('button[data-target="#byTagname"]').toggleClass('disabled', $('#filter-tagnamelist').val().trim().length == 0);
-    $('button[data-target="#byFiletype"]').toggleClass('disabled', $('#byFiletype input:checked').length == 0);
-    $('button[data-target="#byKeyword"]').toggleClass('disabled', $('#filter-expression').val().length == 0);
+    $('button[data-bs-target="#byTagname"]').toggleClass('bg-dark', $('#filter-tagnamelist').val().trim().length != 0);
+    $('button[data-bs-target="#byFiletype"]').toggleClass('bg-dark', $('#byFiletype input:checked').length != 0);
+    $('button[data-bs-target="#byKeyword"]').toggleClass('bg-dark', $('#filter-expression').val().length != 0);
 }
 
 function checkDownloadOptions()
