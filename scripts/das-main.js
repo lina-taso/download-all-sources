@@ -700,31 +700,26 @@ async function downloadCompleted(dlid, blob)
 
     const queue = downloadQueue[dlid];
 
-    // filename
-    let filename;
     // specified filename
     if (queue.filename) {
-        // starting with period
-        if (/^\./.test(queue.filename))
-            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + queue.filename);
-        else
-            filename = queue.location + queue.filename;
+        let tempFilename = queue.filename.replace(/^[. ]+/, '').replace(/[. ]$/, '');
+        if (!tempFilename) tempFilename = DEFAULT_FILENAME;
+        if (queue.filename !== tempFilename) queue.autoFilename = tempFilename;
     }
     // url's leafname
     else if (queue.responseFilename) {
-        // starting with period
-        if (/^\./.test(queue.responseFilename))
-            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + queue.responseFilename);
-        else
-            filename = queue.location + queue.responseFilename;
+        let tempFilename = queue.responseFilename.replace(/^[. ]+/, '').replace(/[. ]$/, '');
+        if (!tempFilename) tempFilename = DEFAULT_FILENAME;
+        if (queue.responseFilename !== tempFilename) queue.autoFilename = tempFilename;
     }
     // noname
     else {
         if (blob.type == 'text/html')
-            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME + '.html');
+            filename = (queue.autoFilename = DEFAULT_FILENAME + '.html');
         else
-            filename = queue.location + (queue.autoFilename = DEFAULT_FILENAME);
+            filename = (queue.autoFilename = DEFAULT_FILENAME);
     }
+    const filename = queue.location + (queue.autoFilename || queue.filename);
 
     // random wait
     await new Promise(resolve => { setTimeout(resolve, Math.floor(Math.random() * 1000)); });
