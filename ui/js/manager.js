@@ -86,16 +86,19 @@ $(async () => {
             outputSourceList();
         });
     // source list filter
-    $('#byTagname input, #byFiletype input, #byKeyword input').on('input', function() {
-        if (source.length < 5000) { checkActiveFilter(); outputSourceList(); }
-    });
-    $('#filter-dup').on('input', function() {
-        checkActiveFilter(); outputSourceList();
-    });
+    $('#byTagname input, #byFiletype input, #byKeyword input')
+        .on('input', function() {
+            if (source.length < 5000) { checkActiveFilter(); outputSourceList(); }
+        });
+    $('#filter-dup')
+        .on('input', function() {
+            checkActiveFilter(); outputSourceList();
+        });
     // source list filter button
-    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button').on('click', function() {
-        checkActiveFilter(); outputSourceList();
-    });
+    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+        .on('click', function() {
+            checkActiveFilter(); outputSourceList();
+        });
     // checkbox validation
     $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
 
@@ -125,12 +128,13 @@ $(async () => {
         .on('hide.bs.modal', function() { baseurl = null; });
     // in new download modal
     $('#dl-single-url').on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); });
-    $('#dl-single-referer-default').on('input', function() {
-        if (this.checked)
-            $('#dl-single-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
-        else
-            $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
-    });
+    $('#dl-single-referer-default')
+        .on('input', function() {
+            if (this.checked)
+                $('#dl-single-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
+            else
+                $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
+        });
     // modal
     $('#download-detail')
         .on('show.bs.modal', function(e) {
@@ -151,22 +155,23 @@ $(async () => {
     $('#detail-resume-button').on('click', resumeDownload);
     $('#detail-redo-button').on('click', reDownload);
     $('#detail-redo-button-manual').on('click', reDownloadManual);
-    $('#detail-next-button, #detail-prev-button').on('click', function() {
-        let $target;
+    $('#detail-next-button, #detail-prev-button')
+        .on('click', function() {
+            let $target;
 
-        if (this.id == 'detail-next-button')
-            $target = $('#item-' + this.dataset.dlid).next('.download-item');
-        else
-            $target = $('#item-' + this.dataset.dlid).prev('.download-item');
+            if (this.id == 'detail-next-button')
+                $target = $('#item-' + this.dataset.dlid).next('.download-item');
+            else
+                $target = $('#item-' + this.dataset.dlid).prev('.download-item');
 
-        if ($target.length != 0) {
-            // update dlid
-            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-                .attr('data-dlid', $target.attr('id').split('-')[1]);
-            // update detail
-            updateDetail(true);
-        }
-    });
+            if ($target.length != 0) {
+                // update dlid
+                $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
+                    .attr('data-dlid', $target.attr('id').split('-')[1]);
+                // update detail
+                updateDetail(true);
+            }
+        });
     $('#detail-status-detail').append(() => {
         const box   = [],
               $tile = $('<div class="detail-tile" data-status="" />');
