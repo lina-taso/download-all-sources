@@ -14,12 +14,15 @@ const progressInterval = 2000,
       PAGE_TITLE    = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
       allowUrl      = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
-      // not include tag, title
+      // not include tags such as tag and title
       allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
       allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
-      // include tag, title for source download
+      // include tags such as tag and title for source download
       allowFilenameS= /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
       allowLocationS= /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
+      // not include any tags for detail modal
+      allowFilenameD= /^[^/\\:,;*?"<>|]*$/,
+      allowLocationD= /^[^:,;*?"<>|]*$/,
       denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
       defaultTitle  = 'no-title';
 
@@ -170,6 +173,54 @@ $(async () => {
         [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
         return box;
     });
+    $('#detail-info-filename-edit, #detail-info-location-edit')
+        .on('click', function() {
+            $(this).parent().prev().attr('data-editing', 'true');
+            $(this).parent().prev().children().eq(0).prop('readonly', false).addClass('form-control').removeClass('form-control-plaintext').focus();
+        });
+    $('#detail-info-filename-apply')
+        .on('click', function() {
+            const dlid = $('#download-detail').attr('data-dlid'),
+                  $div = $(this).parent().prev(),
+                  $input = $div.children().eq(0),
+                  queue = bg.downloadQueue[dlid];
+            if ($input.hasClass('is-invalid')) return;
+
+            // download finished
+            if (!/waiting|downloading|paused/.test(queue.status)) return;
+
+            queue.filename = $input.val();
+            if ($input.val() === '') $input.val(queue.responseFilename);
+            $div.attr('data-editing', '');
+            $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
+        });
+    $('#detail-info-location-apply')
+        .on('click', function() {
+            const dlid = $('#download-detail').attr('data-dlid'),
+                  $div = $(this).parent().prev(),
+                  $input = $div.children().eq(0),
+                  queue = bg.downloadQueue[dlid];
+            if ($input.hasClass('is-invalid')) return;
+
+            // download finished
+            if (!/waiting|downloading|paused/.test(queue.status)) return;
+
+            queue.location = $input.val();
+            $div.attr('data-editing', '');
+            $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
+        });
+    // filename validation
+    $('#detail-info-filename')
+        .on('input', function() {
+            const valid = allowFilenameD.test(this.value);
+            $(this).toggleClass('is-invalid', !valid);
+        });
+    // location validation
+    $('#detail-info-location')
+        .on('input', function() {
+            const valid = allowLocationD.test(this.value);
+            $(this).toggleClass('is-invalid', !valid);
+        });
     // modal
     $('#source-download')
         .on('show.bs.modal', async () => {
@@ -700,13 +751,30 @@ function updateDetail(init)
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
         $('#detail-info-referer-open').attr('data-link', referer.value);
-        $('#detail-info-filename').val(() => {
-            if (queue.autoFilename) return queue.autoFilename + ' (auto)';
-            return queue.filename || queue.responseFilename || '';
-        });
-        $('#detail-info-location').val(queue.location || '(Default download directory)');
+        $('#detail-info-filename').parent().attr('data-editing', '');
+        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(() => {
+                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
+                return queue.filename || queue.responseFilename || '';
+            });
+        $('#detail-info-location').parent().attr('data-editing', '');
+        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(queue.location);
         $('#detail-info-option1').prop('checked', queue.option.disableResuming);
         $('#detail-info-option2').prop('checked', queue.option.ignoreSizemismatch);
+    }
+
+    // download finished
+    if (!/waiting|downloading|paused/.test(queue.status)) {
+        $('#detail-info-filename').parent().attr('data-editing', '');
+        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(() => {
+                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
+                return queue.filename || queue.responseFilename || '';
+            });
+        $('#detail-info-location').parent().attr('data-editing', '');
+        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(queue.location);
     }
 
     $('#download-detail').attr('data-status', queue.status);

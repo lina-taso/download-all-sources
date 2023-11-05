@@ -196,11 +196,23 @@
     "download_detail_filename" : {
         "message" : "ファイル名"
     },
+    "download_detail_editfilename_description" : {
+        "message" : "ファイル名を変更する"
+    },
+    "download_detail_applyfilename_description" : {
+        "message" : "確定する"
+    },
     "download_detail_filename_description" : {
         "message" : "クリックしてファイルを開く"
     },
     "download_detail_location" : {
         "message" : "ディレクトリ"
+    },
+    "download_detail_editlocation_description" : {
+        "message" : "ディレクトリ名を変更する"
+    },
+    "download_detail_applylocation_description" : {
+        "message" : "確定する"
     },
     "download_detail_location_description" : {
         "message" : "クリックしてディレクトリを開く"

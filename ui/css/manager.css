@@ -187,9 +187,27 @@ html, body {
 #detail-status-detail .detail-tile[data-status="unknown"] {
     background: linear-gradient(to bottom right, #ffd030, #ffc107);
 }
+#detail-info-filename-edit,
+#detail-info-location-edit,
+#detail-info-filename-apply,
+#detail-info-location-apply,
 #detail-info-filename-open,
 #detail-info-location-open {
     display: none;
+}
+#download-detail[data-status="waiting"] [data-editing=""] + div > #detail-info-filename-edit,
+#download-detail[data-status="waiting"] [data-editing=""] + div > #detail-info-location-edit,
+#download-detail[data-status="waiting"] [data-editing="true"] + div > #detail-info-filename-apply,
+#download-detail[data-status="waiting"] [data-editing="true"] + div > #detail-info-location-apply,
+#download-detail[data-status="downloading"] [data-editing=""] + div > #detail-info-filename-edit,
+#download-detail[data-status="downloading"] [data-editing=""] + div > #detail-info-location-edit,
+#download-detail[data-status="downloading"] [data-editing="true"] + div > #detail-info-filename-apply,
+#download-detail[data-status="downloading"] [data-editing="true"] + div > #detail-info-location-apply,
+#download-detail[data-status="paused"] [data-editing=""] + div > #detail-info-filename-edit,
+#download-detail[data-status="paused"] [data-editing=""] + div > #detail-info-location-edit,
+#download-detail[data-status="paused"] [data-editing="true"] + div > #detail-info-filename-apply,
+#download-detail[data-status="paused"] [data-editing="true"] + div > #detail-info-location-apply {
+    display: inline-block;
 }
 #detail-info-filename-open[data-fxid],
 #detail-info-location-open[data-fxid] {

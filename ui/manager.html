@@ -511,19 +511,23 @@
                                 </div>
                                 <div class="row">
                                     <label for="detail-info-filename" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_filename"></label>
-                                    <div class="col">
+                                    <div class="col" data-editing="">
                                         <input id="detail-info-filename" class="form-control-plaintext" value="" readonly>
                                     </div>
                                     <div class="col-auto">
+                                        <button id="detail-info-filename-edit" class="btn btn-link editfilename-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editfilename_description" data-fxid=""><i class="fas fa-pen fa-fw"></i></button>
+                                        <button id="detail-info-filename-apply" class="btn btn-link applyfilename-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applyfilename_description" data-fxid=""><i class="fas fa-check fa-fw"></i></button>
                                         <button id="detail-info-filename-open" class="btn btn-link openfile-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_filename_description" data-fxid=""><i class="fas fa-file fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <label for="detail-info-location" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_location"></label>
-                                    <div class="col">
-                                        <input id="detail-info-location" class="form-control-plaintext" value="" readonly>
+                                    <div class="col" data-editing="">
+                                        <input id="detail-info-location" class="form-control-plaintext" value="" placeholder="(Default download directory)" readonly>
                                     </div>
                                     <div class="col-auto">
+                                        <button id="detail-info-location-edit" class="btn btn-link editlocation-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editlocation_description" data-fxid=""><i class="fas fa-pen fa-fw"></i></button>
+                                        <button id="detail-info-location-apply" class="btn btn-link applylocation-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applylocation_description" data-fxid=""><i class="fas fa-check fa-fw"></i></button>
                                         <button id="detail-info-location-open" class="btn btn-link openfolder-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_location_description" data-fxid=""><i class="fas fa-folder-open fa-fw"></i></button>
                                     </div>
                                 </div>

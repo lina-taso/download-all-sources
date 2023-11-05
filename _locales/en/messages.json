@@ -196,11 +196,23 @@
     "download_detail_filename" : {
         "message" : "Filename"
     },
+    "download_detail_editfilename_description" : {
+        "message" : "Change filename"
+    },
+    "download_detail_applyfilename_description" : {
+        "message" : "Apply"
+    },
     "download_detail_filename_description" : {
         "message" : "Click to open the file"
     },
     "download_detail_location" : {
         "message" : "Location"
+    },
+    "download_detail_editlocation_description" : {
+        "message" : "Change location"
+    },
+    "download_detail_applylocation_description" : {
+        "message" : "Apply"
     },
     "download_detail_location_description" : {
         "message" : "Click to open the location"
