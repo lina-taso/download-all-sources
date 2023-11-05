@@ -41,7 +41,7 @@ $(async () => {
     // miscellanies events
     $('.openlink-button').on('click', function() { this.dataset.link && browser.tabs.create({ url : this.dataset.link }); });
     $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
-    $('.openfolder-button, .item-openfolder-button').on('click', async function() { this.dataset.fxid && browser.downloads.show( parseInt(this.dataset.fxid)); });
+    $('.openlocation-button, .item-openlocation-button').on('click', async function() { this.dataset.fxid && browser.downloads.show( parseInt(this.dataset.fxid)); });
     // all tooltip enabled
     $('[data-bs-toggle=tooltip]').tooltip({ title : function() {
         return browser.i18n.getMessage(this.dataset.titlestring);

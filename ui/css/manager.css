@@ -129,13 +129,13 @@ html, body {
 #finished-list .download-item:focus .item-status > .item-redo-button,
 #finished-list .download-item:focus .item-status > .item-delete-button,
 #finished-list .download-item:focus .item-status > .item-openfile-button[data-fxid],
-#finished-list .download-item:focus .item-status > .item-openfolder-button[data-fxid] {
+#finished-list .download-item:focus .item-status > .item-openlocation-button[data-fxid] {
     display: inline-block;
 }
 #finished-list .download-item .item-status:hover > .item-redo-button,
 #finished-list .download-item .item-status:hover > .item-delete-button,
 #finished-list .download-item .item-status:hover > .item-openfile-button[data-fxid],
-#finished-list .download-item .item-status:hover > .item-openfolder-button[data-fxid] {
+#finished-list .download-item .item-status:hover > .item-openlocation-button[data-fxid] {
     display: inline-block;
 }
 
