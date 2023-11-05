@@ -161,7 +161,7 @@
         "message" : "最終URL"
     },
     "download_detail_final_url_description" : {
-        "message" : "クリックしてURLを開く"
+        "message" : "URLを開く"
     },
     "download_detail_mime" : {
         "message" : "MIMEタイプ"
@@ -185,13 +185,13 @@
         "message" : "ダウンロードURL"
     },
     "download_detail_url_description" : {
-        "message" : "クリックしてURLを開く"
+        "message" : "URLを開く"
     },
     "download_detail_referer" : {
         "message" : "リファラ"
     },
     "download_detail_referer_description" : {
-        "message" : "クリックしてURLを開く"
+        "message" : "URLを開く"
     },
     "download_detail_filename" : {
         "message" : "ファイル名"
@@ -203,7 +203,7 @@
         "message" : "確定する"
     },
     "download_detail_filename_description" : {
-        "message" : "クリックしてファイルを開く"
+        "message" : "ファイルを開く"
     },
     "download_detail_location" : {
         "message" : "ディレクトリ"
@@ -215,7 +215,7 @@
         "message" : "確定する"
     },
     "download_detail_location_description" : {
-        "message" : "クリックしてディレクトリを開く"
+        "message" : "ディレクトリを開く"
     },
     "download_detail_option" : {
         "message" : "オプション"
