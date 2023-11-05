@@ -64,6 +64,13 @@ $(async () => {
             $('#item-' + this.dataset.dlid).remove();
         });
 
+    // source list item
+    $('#source-list')
+        .on('click', '.source-item', function(e) {
+            // disable clicking checkbox
+            if (e.target === $(this).find('.source-url-input')[0]) return;
+            $(this).find('.source-url-input').prop('checked', !$(this).find('.form-check-input').prop('checked'));
+        });
     // source list sort
     $('#sort-url, #sort-filetype, #sort-tag')
         .on('click', function() {
@@ -85,7 +92,7 @@ $(async () => {
     // source list filter button
     $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button').on('click', function() {
         checkActiveFilter(); outputSourceList();
-    })
+    });
     // checkbox validation
     $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
 
@@ -916,7 +923,7 @@ function outputSourceList()
         // html
         const $template = $('#source-item-template'),
               $urlInput = $template.find('input'),
-              $urlLabel = $template.find('label'),
+              $urlLabel = $template.find('span'),
               $type     = $template.find('.source-type'),
               $tag      = $template.find('.source-tag'),
               $title    = $template.find('.source-title');
@@ -925,7 +932,7 @@ function outputSourceList()
             // checkbox id & attr
             $urlInput.attr({ id : 'source' + i, value : list[i].url });
             // label for & text
-            $urlLabel.attr('for', 'source' + i).text(list[i].url);
+            $urlLabel.text(list[i].url);
             // extension
             $type.text(list[i].filetype);
             // tag
