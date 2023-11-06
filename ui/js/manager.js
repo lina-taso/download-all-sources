@@ -73,7 +73,7 @@ $(async () => {
         .on('click', '.source-item', function(e) {
             // disable clicking checkbox
             if (e.target === $(this).find('.source-url-input')[0]) return;
-            $(this).find('.source-url-input').prop('checked', !$(this).find('.form-check-input').prop('checked'));
+            $(this).find('.source-url-input').prop('checked', !$(this).find('.source-url-input').prop('checked')).change();
         });
     // source list sort
     $('#sort-url, #sort-filetype, #sort-tag')
@@ -264,7 +264,7 @@ $(async () => {
                     }).addClass('show');
                 }
             });
-            $('#source-list').on('input', '.source-url-input', function() {
+            $('#source-list').on('change', '.source-url-input', function() {
                 // count downloads
                 $('#source-download-button1, #source-download-button2').attr(
                     'data-count',
