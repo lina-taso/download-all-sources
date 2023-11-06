@@ -23,7 +23,8 @@ const progressInterval = 2000,
       // not include any tags for detail modal
       allowFilenameD= /^[^/\\:,;*?"<>|]*$/,
       allowLocationD= /^[^:,;*?"<>|]*$/,
-      denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
+      denyFilename  = /^[. ]+|[. ]+$/,
+      denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       defaultTitle  = 'no-title';
 
 // valuables
@@ -218,13 +219,14 @@ $(async () => {
     // filename validation
     $('#detail-info-filename')
         .on('input', function() {
-            const valid = allowFilenameD.test(this.value);
+            const valid = allowFilenameD.test(this.value) && !denyFilename.test(this.value);
             $(this).toggleClass('is-invalid', !valid);
         });
     // location validation
     $('#detail-info-location')
         .on('input', function() {
-            const valid = allowLocationD.test(this.value);
+            const location = bg.normalizeLocation(this.value);
+            const valid = allowLocationD.test(location) && !denyLocation.test(location);
             $(this).toggleClass('is-invalid', !valid);
         });
     // modal
@@ -439,7 +441,7 @@ $(async () => {
                     // referer tag is included, referer is invalid if empty
                     !$referer.val() && !$referer.addClass('is-invalid') || $referer.val() && !$referer.hasClass('is-invalid') ) &&
                   // pattern validation
-                  allowPattern.test(this.value);
+                  allowPattern.test(this.value) && !denyFilename.test(this.value);
 
             $(this).toggleClass('is-invalid', !valid);
             // sample
