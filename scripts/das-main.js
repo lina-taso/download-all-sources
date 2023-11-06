@@ -719,7 +719,7 @@ async function downloadCompleted(dlid, blob)
         else
             filename = (queue.autoFilename = DEFAULT_FILENAME);
     }
-    const filename = queue.location + (queue.autoFilename || queue.filename);
+    const filename = queue.location + (queue.autoFilename || queue.filename || queue.responseFilename);
 
     // random wait
     await new Promise(resolve => { setTimeout(resolve, Math.floor(Math.random() * 1000)); });
