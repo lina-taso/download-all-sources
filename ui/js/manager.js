@@ -210,7 +210,8 @@ $(async () => {
             // download finished
             if (!/waiting|downloading|paused/.test(queue.status)) return;
 
-            queue.location = $input.val();
+            let location = bg.normalizeLocation($input.val());
+            queue.location = $input.val(location).val();
             $div.attr('data-editing', '');
             $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
         });
