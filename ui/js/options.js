@@ -10,6 +10,8 @@ var bg;
 
 const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
+      allowSimultaneous = /^([1-9]|1[0-9]|2[0-4])$/,
+      allowSplitCount = /^([1-9]|10)$/,
       allowMimetype = /^\S+$/,
       allowExtension= /^([A-Za-z0-9]+|[A-Za-z0-9]+(\.[A-Za-z0-9]+)+)$/;
 
@@ -37,6 +39,20 @@ $(async () => {
             this.value = config[id];
         }
     });
+
+    // initial server parameters
+    const $paramTemplate = $('.row.server-parameter.d-none');
+    for (let key of Object.keys(config['server-parameter'])) {
+        let $target = $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
+        $target.find('.server-fqdn-punycode').val(key);
+        $target.find('.server-fqdn').val(config['server-parameter'][key].fqdn);
+        $target.find('.server-simultaneous').val(config['server-parameter'][key].simultaneous);
+        $target.find('.server-split-count').val(config['server-parameter'][key]['split-count']);
+        $target.find('.server-disable-multithread').prop('checked', config['server-parameter'][key]['disable-multithread']);
+    }
+    // empty box
+    $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
+
     // initial mime mapipngs
     const $mapTemplate = $('.row.mime-mapping.d-none');
     for (let key of Object.keys(config['mime-mappings'])) {
@@ -56,6 +72,25 @@ $(async () => {
     $('input').on('input', function() {
         switch(this.type) {
         case 'checkbox':
+            // server specific parameter
+            if (this.classList.contains('server-parameter-box')) {
+                // save pref
+                if (!$('.server-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.server-parameter').each(function() {
+                        if($(this).find('.server-fqdn').val() == '') return;
+                        parameters[$(this).find('.server-fqdn-punycode').val()] = {
+                            fqdn          : $(this).find('.server-fqdn').val(),
+                            simultaneous  : $(this).find('.server-simultaneous').val(),
+                            'split-count' : $(this).find('.server-split-count').val(),
+                            'disable-multithread' : $(this).find('.server-disable-multithread').prop('checked')
+                        };
+                    });
+                    bg.config.setPref('server-parameter', parameters);
+                }
+                return;
+            }
+
             bg.config.setPref(this.id, this.checked);
             // clear saved value
             if (this.dataset.value) {
@@ -86,6 +121,64 @@ $(async () => {
                 }
                 else {
                     $('#download-location-sample').text('');
+                }
+            }
+            // server specific parameter
+            else if (this.classList.contains('server-parameter-box')) {
+                const $fqdnbox    = $(this).closest('.server-parameter').find('.server-fqdn'),
+                      $punybox    = $(this).closest('.server-parameter').find('.server-fqdn-punycode'),
+                      $simulbox   = $(this).closest('.server-parameter').find('.server-simultaneous'),
+                      $splitbox   = $(this).closest('.server-parameter').find('.server-split-count'),
+                      entered     = $fqdnbox.val() != '';
+
+                // if last is not empty, add new line
+                if ($(this).closest('.server-parameter').is(':last-of-type') && entered) {
+                    const $paramTemplate = $('.row.server-parameter.d-none');
+                    // clone with events
+                    $paramTemplate.clone(true).removeClass('d-none').appendTo($paramTemplate.parent());
+                }
+                // validation
+                if (entered) {
+                    let fqdnvalid = false;
+                    if (!$fqdnbox.val()) {
+                        $punybox.val('');
+                    }
+                    else {
+                        try {
+                            const url = new URL('http://' + $fqdnbox.val());
+                            $punybox.val(url.hostname);
+                            fqdnvalid = true;
+                        }
+                        catch (e) {
+                            $punybox.val('');
+                        }
+                    }
+                    const simulvalid = allowSimultaneous.test($simulbox.val()),
+                          splitvalid = allowSplitCount.test($splitbox.val());
+                    $fqdnbox.toggleClass('is-invalid', !fqdnvalid);
+                    $simulbox.toggleClass('is-invalid', !simulvalid);
+                    $splitbox.toggleClass('is-invalid', !splitvalid);
+
+                    if (!fqdnvalid || !simulvalid || !splitvalid) return;
+                }
+                else {
+                    $fqdnbox.toggleClass('is-invalid', false);
+                    $simulbox.toggleClass('is-invalid', false);
+                    $splitbox.toggleClass('is-invalid', false);
+                }
+                // save pref
+                if (!$('.server-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.server-parameter').each(function() {
+                        if($(this).find('.server-fqdn').val() == '') return;
+                        parameters[$(this).find('.server-fqdn-punycode').val()] = {
+                            fqdn          : $(this).find('.server-fqdn').val(),
+                            simultaneous  : $(this).find('.server-simultaneous').val(),
+                            'split-count' : $(this).find('.server-split-count').val(),
+                            'disable-multithread' : $(this).find('.server-disable-multithread').prop('checked')
+                        };
+                    });
+                    bg.config.setPref('server-parameter', parameters);
                 }
             }
             // mime filter

@@ -362,6 +362,21 @@
     "options_split_ex_size" : {
         "message" : "Max file size not to split (MB)"
     },
+    "options_server_specific_parameters" : {
+        "message" : "Server specific parameters"
+    },
+    "options_server_fqdn" : {
+        "message" : "Domain name（Starting with . matches backwards.）"
+    },
+    "options_server_simultaneous" : {
+        "message" : "Max simultaneous download count"
+    },
+    "options_server_split_count" : {
+        "message" : "Split count"
+    },
+    "options_server_disable_multithread" : {
+        "message" : "Disable multi-thread download"
+    },
     "options_new_parameters" : {
         "message" : "New Download parameters"
     },

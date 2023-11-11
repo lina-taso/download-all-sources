@@ -11,6 +11,13 @@ h2:not(:first-child) {
     margin-top: .75em;
 }
 
+.form-control.server-parameter-box.server-simultaneous,
+.form-control.server-parameter-box.server-split-count {
+    padding-left: .25em;
+    padding-right: 0;
+    background: none;
+}
+
 /* localization */
 [data-string] {
     white-space: pre-line;

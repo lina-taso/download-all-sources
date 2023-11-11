@@ -7,6 +7,8 @@ var defaultconfig = {
     'split-count' : 1,
     'split-size' : 50,
     'split-ex-size' : 50,
+    'server-parameter' : {
+    },
     'remember-new-referer' : false,
     'new-referer-value' : '',
     'new-referer-default-value' : true,

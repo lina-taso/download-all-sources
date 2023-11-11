@@ -362,6 +362,21 @@
     "options_split_ex_size" : {
         "message" : "マルチスレッドダウンロードしない最大ファイルサイズ (MB)"
     },
+    "options_server_specific_parameters" : {
+        "message" : "サーバ固有の設定"
+    },
+    "options_server_fqdn" : {
+        "message" : "ドメイン名（.から始めると後方一致）"
+    },
+    "options_server_simultaneous" : {
+        "message" : "同時ダウンロード数"
+    },
+    "options_server_split_count" : {
+        "message" : "分割数"
+    },
+    "options_server_disable_multithread" : {
+        "message" : "マルチスレッド無効"
+    },
     "options_new_parameters" : {
         "message" : "新しいダウンロードの設定"
     },
