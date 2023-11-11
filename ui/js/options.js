@@ -9,7 +9,7 @@
 var bg;
 
 const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
-      denyLocation  = /(^\/)|(\.\/|\.\.\/|\/\/)/,
+      denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       allowMimetype = /^\S+$/,
       allowExtension= /^([A-Za-z0-9]+|[A-Za-z0-9]+(\.[A-Za-z0-9]+)+)$/;
 
