@@ -13,7 +13,6 @@ const progressInterval = 2000,
       TILE_SIZE     = 400,
       PAGE_TITLE    = 'Download All Source Manager',
       allowProtocol = /^(https|http):/,
-      allowUrl      = /^(https|http):\/\/([\\w-]+\\.)+[\\w-]+(\/[\\w./?%&=-]*)?$/,
       // not include tags such as tag and title
       allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
       allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
@@ -384,7 +383,10 @@ $(async () => {
             }
             try {
                 new URL(this.value);
-                $(this).toggleClass('is-invalid', false);
+                if (!allowProtocol.test(this.value))
+                    $(this).toggleClass('is-invalid', true);
+                else
+                    $(this).toggleClass('is-invalid', false);
             }
             catch (e) {
                 $(this).toggleClass('is-invalid', true);
@@ -399,7 +401,10 @@ $(async () => {
             try {
                 ($(this).val().split('\n')).forEach((line) => {
                     new URL(line);
-                    $(this).toggleClass('is-invalid', false);
+                    if (!allowProtocol.test(line))
+                        $(this).toggleClass('is-invalid', true);
+                    else
+                        $(this).toggleClass('is-invalid', false);
                 });
             }
             catch (e) {
