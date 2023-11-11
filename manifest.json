@@ -7,11 +7,11 @@
         "url" : "https://www2.filewo.net/"
     },
     "description" : "__MSG_extensionDescription__",
-    "version" : "0.3.0",
+    "version" : "0.3.1",
     "applications" : {
         "gecko" : {
             "id" : "download-all-src@filewo.net",
-            "strict_min_version" : "75.0"
+            "strict_min_version" : "119.0"
         }
     },
 
