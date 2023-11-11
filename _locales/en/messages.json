@@ -333,10 +333,10 @@
         "message" : "General parameters"
     },
     "options_simultaneous" : {
-        "message" : "Max simultaneous download"
+        "message" : "Max simultaneous download count"
     },
     "options_simultaneous_server" : {
-        "message" : "Max simultaneous download per server"
+        "message" : "Max simultaneous download count per server"
     },
     "options_retry_count" : {
         "message" : "Download retry count when failed"
@@ -351,7 +351,7 @@
         "message" : "Multi-thread parameters"
     },
     "options_multithread_description" : {
-        "message" : "[NOTE]\nSimultaneous download doesn't consider splitting.\n\"Max simultaneous download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
+        "message" : "[NOTE]\nSimultaneous download count doesn't consider splitting.\n\"Max simultaneous count download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
     },
     "options_split_count" : {
         "message" : "Split count"
