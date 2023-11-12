@@ -761,9 +761,9 @@ async function downloadCompleted(dlid, blob)
     // noname
     else {
         if (blob.type == 'text/html')
-            filename = (queue.autoFilename = DEFAULT_FILENAME + '.html');
+            queue.autoFilename = DEFAULT_FILENAME + '.html';
         else
-            filename = (queue.autoFilename = DEFAULT_FILENAME);
+            queue.autoFilename = DEFAULT_FILENAME;
     }
     const filename = queue.location + (queue.autoFilename || queue.filename || queue.responseFilename);
 
