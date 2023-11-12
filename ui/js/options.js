@@ -240,6 +240,13 @@ $(async () => {
         }
     });
 
+    // server-parameter delete button
+    $('.server-parameter-delete')
+        .on('click', function() {
+            $(this).closest('.server-parameter').remove();
+            $('.server-parameter:last-of-type .server-fqdn').trigger('input');
+        });
+
     // reset button
     $('.filetype-reset')
         .on('click', async function() {

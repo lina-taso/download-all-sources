@@ -11,11 +11,9 @@ h2:not(:first-child) {
     margin-top: .75em;
 }
 
-.form-control.server-parameter-box.server-simultaneous,
-.form-control.server-parameter-box.server-split-count {
-    padding-left: .25em;
-    padding-right: 0;
-    background: none;
+/* .server-parameter */
+.server-parameter:last-of-type .server-parameter-delete {
+    visibility: hidden;
 }
 
 /* localization */
