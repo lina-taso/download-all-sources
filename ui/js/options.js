@@ -81,8 +81,8 @@ $(async () => {
                         if($(this).find('.server-fqdn').val() == '') return;
                         parameters[$(this).find('.server-fqdn-punycode').val()] = {
                             fqdn          : $(this).find('.server-fqdn').val(),
-                            simultaneous  : $(this).find('.server-simultaneous').val(),
-                            'split-count' : $(this).find('.server-split-count').val(),
+                            simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
+                            'split-count' : parseInt($(this).find('.server-split-count').val()),
                             'disable-multithread' : $(this).find('.server-disable-multithread').prop('checked')
                         };
                     });
@@ -173,8 +173,8 @@ $(async () => {
                         if($(this).find('.server-fqdn').val() == '') return;
                         parameters[$(this).find('.server-fqdn-punycode').val()] = {
                             fqdn          : $(this).find('.server-fqdn').val(),
-                            simultaneous  : $(this).find('.server-simultaneous').val(),
-                            'split-count' : $(this).find('.server-split-count').val(),
+                            simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
+                            'split-count' : parseInt($(this).find('.server-split-count').val()),
                             'disable-multithread' : $(this).find('.server-disable-multithread').prop('checked')
                         };
                     });
