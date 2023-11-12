@@ -58,11 +58,35 @@ async function downloadFile(url, requestHeaders, locs, names, option)
     // check download count
     let status = 'downloading';
     const domain = (new URL(url)).hostname;
+
+    // whole
     if (searchQueue({ status : 'downloading' }).length >= config.getPref('simultaneous-whole'))
         status = 'waiting';
-    else if (searchQueue({ status : 'downloading', originalDomain : domain }).length
-             >= config.getPref('simultaneous-per-server'))
-        status = 'waiting';
+    else {
+        const params = config.getPref('server-parameter'),
+              subdomains = domain.split('.');
+
+        // server specified
+        if (params[domain]) {
+            if (searchQueue({ status : 'downloading', originalDomain : domain }).length >= params[domain]['simultaneous']) {
+                status = 'waiting';
+            }
+        }
+        // server specified (starting with .)
+        while (subdomains.shift()) {
+            const targetdomain = '.' + subdomains.join('.');
+            if (params[targetdomain]) {
+                if (searchQueue({ status : 'downloading', originalDomain : targetdomain }).length >= params[targetdomain]['simultaneous']) {
+                    status = 'waiting';
+                }
+                break;
+            }
+        }
+        // same domain name
+        if (searchQueue({ status : 'downloading', originalDomain : domain }).length >= config.getPref('simultaneous-per-server')) {
+            status = 'waiting';
+        }
+    }
 
     // queuing
     downloadQueue[dlid] = {
@@ -90,7 +114,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         requestHeaders : JSON.parse(JSON.stringify(requestHeaders)),
         // if total is 0, download is not started or total size is unknown
         total          : 0,
-        loaded         : () => {
+        loaded         : function() {
             const loaded     = downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0);
             const prevLoaded = downloadQueue[dlid].prevLoaded,
                   prevTime   = downloadQueue[dlid].prevTime,
@@ -107,7 +131,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         prevLoaded     : 0,
         prevTime       : null,
         Bps            : 0,
-        detail         : () => {
+        detail         : function() {
             const queue  = downloadQueue[dlid];
 
             // completed
@@ -127,6 +151,23 @@ async function downloadFile(url, requestHeaders, locs, names, option)
                 detail.fill('loaded', firstBlock, nextBlock ? lastBlock+1 : lastBlock);
             }
             return detail;
+        },
+        splitCount     : function() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = this.originalDomain.split('.');
+            // server specified
+            if (params[this.originalDomain]) {
+                return params[this.originalDomain]['split-count'];
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['split-count'];
+                }
+            }
+            // default
+            return config.getPref('split-count');
         }
     };
 
@@ -145,7 +186,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
 function createXhr(dlid, index, start, end)
 {
     const queue       = downloadQueue[dlid],
-          splitCount  = config.getPref('split-count'),
+          splitCount  = queue.splitCount(),
           splitSize   = config.getPref('split-size') * 1024 * 1024,
           splitExSize = config.getPref('split-ex-size') * 1024 * 1024;
 
@@ -208,7 +249,7 @@ function createXhr(dlid, index, start, end)
             DEBUG && console.log({ dlid : dlid, index : index, message : 'onload2' });
 
             // update download queue (url & filename)
-            let url = new URL(this.responseURL);
+            const url = new URL(this.responseURL);
             queue.responseUrl = url;
             queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
             // content type
@@ -638,8 +679,12 @@ function searchQueue(query)
 {
     let result = Array.from(downloadQueue);
 
-    for (let key of Object.keys(query))
-        result = result.filter(ele => ele[key] == query[key]);
+    for (let key of Object.keys(query)) {
+        if (key == 'originalDomain' && /^\./.test(query[key]))
+            result = result.filter(ele => ele[key].endsWith(query[key]));
+        else
+            result = result.filter(ele => ele[key] == query[key]);
+    }
     return result;
 }
 
@@ -913,18 +958,41 @@ function checkWaiting()
     updateBadge();
 
     const waiting = searchQueue({ status : 'waiting' });
-    for (let q of waiting) {
-        if ((searchQueue({ status : 'downloading' })).length >= config.getPref('simultaneous-whole')) return;
-        else if ((searchQueue({ status : 'downloading', originalDomain : q.originalDomain })).length
-                 >= config.getPref('simultaneous-per-server')) continue;
-        // run
-        else {
-            let now = (new Date()).getTime();
-            downloadQueue[q.id].status = 'downloading',
-            downloadQueue[q.id].data.push(createXhr(q.id, 0));
-            downloadQueue[q.id].startTime = now;
-            downloadQueue[q.id].prevTime  = now;
+    ROOT: for (let q of waiting) {
+        // whole
+        if (searchQueue({ status : 'downloading' }).length >= config.getPref('simultaneous-whole'))
+            return;
+
+        const params = config.getPref('server-parameter'),
+              subdomains = q.originalDomain.split('.');
+
+        // server specified
+        if (params[q.originalDomain]) {
+            if (searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length >= params[q.originalDomain]['simultaneous']) {
+                continue;
+            }
         }
+        // server specified (starting with .)
+        while (subdomains.shift()) {
+            const targetdomain = '.' + subdomains.join('.');
+            if (params[targetdomain]) {
+                if (searchQueue({ status : 'downloading', originalDomain : targetdomain }).length >= params[targetdomain]['simultaneous']) {
+                    continue ROOT;
+                }
+                break;
+            }
+        }
+        // same domain name
+        if (searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length >= config.getPref('simultaneous-per-server')) {
+            continue;
+        }
+
+        // run
+        let now = (new Date()).getTime();
+        downloadQueue[q.id].status = 'downloading',
+        downloadQueue[q.id].data.push(createXhr(q.id, 0));
+        downloadQueue[q.id].startTime = now;
+        downloadQueue[q.id].prevTime  = now;
     }
 }
 
