@@ -12,7 +12,8 @@ browser.storage.onChanged.addListener(configChanged);
 let DEBUG;
 const DEFAULT_FILENAME  = 'download',
       DEFAULT_EXTENSION = 'no-ext',
-      DEFAULT_MIME      = { 'sample/mime-type' : 'mext' },
+      DEFAULT_MIME      = 'application/octet-stream',
+      DEFAULT_MIME_MAP  = { 'sample/mime-type' : 'mext' },
       RETRY_WAIT        = 5000,
       TILE_SIZE         = 400;
 
@@ -211,7 +212,7 @@ function createXhr(dlid, index, start, end)
             queue.responseUrl = url;
             queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
             // content type
-            queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
+            queue.contentType = (this.getResponseHeader('content-type') ? this.getResponseHeader('content-type') : DEFAULT_MIME).split(';')[0].toLowerCase();
 
             // split filename and extension
             const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
@@ -278,7 +279,7 @@ function createXhr(dlid, index, start, end)
         queue.responseUrl = url;
         queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
         // content type
-        queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
+        queue.contentType = (this.getResponseHeader('content-type') ? this.getResponseHeader('content-type') : DEFAULT_MIME).split(';')[0].toLowerCase();
 
         // split filename and extension
         const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
@@ -469,7 +470,7 @@ function restartXhr(dlid, index)
             queue.responseUrl = url;
             queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
             // content type
-            queue.contentType = this.getResponseHeader('content-type').split(';')[0].toLowerCase();
+            queue.contentType = (this.getResponseHeader('content-type') ? this.getResponseHeader('content-type') : DEFAULT_MIME).split(';')[0].toLowerCase();
 
             // split filename and extension
             const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
@@ -972,7 +973,7 @@ function replaceTags(param, forfile)
 
 function mime2ext(mime, forfile)
 {
-    const mimeMap = Object.assign({}, config.getPref('mime-mappings'), DEFAULT_MIME),
+    const mimeMap = Object.assign({}, config.getPref('mime-mappings'), DEFAULT_MIME_MAP),
           ext     = mimeMap[mime];
     return forfile ? ext ? '.' + ext : '' : ext || '';
 }
