@@ -152,7 +152,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             }
             return detail;
         },
-        splitCount     : function() {
+        get splitCount() {
             const params     = config.getPref('server-parameter'),
                   subdomains = this.originalDomain.split('.');
             // server specified
@@ -186,7 +186,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
 function createXhr(dlid, index, start, end)
 {
     const queue       = downloadQueue[dlid],
-          splitCount  = queue.splitCount(),
+          splitCount  = queue.splitCount,
           splitSize   = config.getPref('split-size') * 1024 * 1024,
           splitExSize = config.getPref('split-ex-size') * 1024 * 1024;
 
