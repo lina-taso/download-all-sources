@@ -374,7 +374,7 @@
     "options_server_split_count" : {
         "message" : "Split count"
     },
-    "options_server_disable_multithread" : {
+    "options_server_disable_resuming" : {
         "message" : "Disable multi-thread download"
     },
     "options_new_parameters" : {

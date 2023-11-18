@@ -374,7 +374,7 @@
     "options_server_split_count" : {
         "message" : "分割数"
     },
-    "options_server_disable_multithread" : {
+    "options_server_disable_resuming" : {
         "message" : "マルチスレッド無効"
     },
     "options_new_parameters" : {
