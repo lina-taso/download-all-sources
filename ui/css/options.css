@@ -15,7 +15,10 @@ h2:not(:first-child) {
 .server-parameter:last-of-type .server-parameter-delete {
     visibility: hidden;
 }
-
+input.form-check-input.server-parameter-box {
+    width: 2em;
+    height: 2em;
+}
 /* localization */
 [data-string] {
     white-space: pre-line;
