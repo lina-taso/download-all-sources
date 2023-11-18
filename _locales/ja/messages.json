@@ -377,6 +377,9 @@
     "options_server_disable_resuming" : {
         "message" : "マルチスレッド無効"
     },
+    "options_server_ignore_sizemismatch" : {
+        "message" : "size mismatchエラーを無視"
+    },
     "options_new_parameters" : {
         "message" : "新しいダウンロードの設定"
     },

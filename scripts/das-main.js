@@ -168,6 +168,40 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             }
             // default
             return config.getPref('split-count');
+        },
+        get disableResuming() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = this.originalDomain.split('.');
+            // server specified
+            if (params[this.originalDomain]) {
+                return params[this.originalDomain]['disable-resuming'] || this.option.disableResuming;
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['disable-resuming'] || this.option.disableResuming;
+                }
+            }
+            // default
+            return this.option.disableResuming;
+        },
+        get ignoreSizemismatch() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = this.originalDomain.split('.');
+            // server specified
+            if (params[this.originalDomain]) {
+                return params[this.originalDomain]['ignore-sizemismatch'] || this.option.ignoreSizemismatch;
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['ignore-sizemismatch'] || this.option.ignoreSizemismatch;
+                }
+            }
+            // default
+            return this.option.ignoreSizemismatch;
         }
     };
 
@@ -346,7 +380,7 @@ function createXhr(dlid, index, start, end)
         queue.total = parseInt(this.getResponseHeader('content-length')) || 0;
 
         // manually disable resuming
-        if (queue.option.disableResuming) {
+        if (queue.disableResuming) {
             DEBUG && console.log({ dlid : dlid, index : index, message : 'manually disable resuming. initial download continued.' });
         }
 
@@ -577,7 +611,7 @@ async function retryPartialDownload(dlid, index)
         DEBUG && console.log({ dlid : dlid, index : index, retry : datum.retry, message : 'give up retrying download' });
 
         // [ignore size mismatch] wait another partial downloads
-        if (datum.status == 'size mismatch' && queue.option.ignoreSizemismatch)
+        if (datum.status == 'size mismatch' && queue.ignoreSizemismatch)
             downloadFailed2(dlid, datum.status);
         // stop all partial downloads
         else

@@ -377,6 +377,9 @@
     "options_server_disable_resuming" : {
         "message" : "Disable multi-thread download"
     },
+    "options_server_ignore_sizemismatch" : {
+        "message" : "Ignore size mismatch error"
+    },
     "options_new_parameters" : {
         "message" : "New Download parameters"
     },

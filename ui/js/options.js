@@ -49,6 +49,7 @@ $(async () => {
         $target.find('.server-simultaneous').val(config['server-parameter'][key].simultaneous);
         $target.find('.server-split-count').val(config['server-parameter'][key]['split-count']);
         $target.find('.server-disable-resuming').prop('checked', config['server-parameter'][key]['disable-resuming']);
+        $target.find('.server-ignore-sizemismatch').prop('checked', config['server-parameter'][key]['ignore-sizemismatch']);
     }
     // empty box
     $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
@@ -83,7 +84,8 @@ $(async () => {
                             fqdn          : $(this).find('.server-fqdn').val(),
                             simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
                             'split-count' : parseInt($(this).find('.server-split-count').val()),
-                            'disable-resuming' : $(this).find('.server-disable-resuming').prop('checked')
+                            'disable-resuming' : $(this).find('.server-disable-resuming').prop('checked'),
+                            'ignore-sizemismatch' : $(this).find('.server-ignore-sizemismatch').prop('checked')
                         };
                     });
                     bg.config.setPref('server-parameter', parameters);
@@ -175,7 +177,8 @@ $(async () => {
                             fqdn          : $(this).find('.server-fqdn').val(),
                             simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
                             'split-count' : parseInt($(this).find('.server-split-count').val()),
-                            'disable-resuming' : $(this).find('.server-disable-resuming').prop('checked')
+                            'disable-resuming' : $(this).find('.server-disable-resuming').prop('checked'),
+                            'ignore-sizemismatch' : $(this).find('.server-ignore-sizemismatch').prop('checked')
                         };
                     });
                     bg.config.setPref('server-parameter', parameters);
