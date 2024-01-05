@@ -104,12 +104,12 @@ $(async () => {
                 if (!$('.server-parameter').find('.is-invalid').length) {
                     const parameters = {};
                     $('.server-parameter').each(function() {
-                        if($(this).find('.server-fqdn').val() == '') return;
+                        if ($(this).find('.server-fqdn').val() == '') return;
                         parameters[$(this).find('.server-fqdn-punycode').val()] = {
-                            fqdn          : $(this).find('.server-fqdn').val(),
-                            simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
-                            'split-count' : parseInt($(this).find('.server-split-count').val()),
-                            'disable-resuming' : $(this).find('.server-disable-resuming').prop('checked'),
+                            fqdn                  : $(this).find('.server-fqdn').val(),
+                            simultaneous          : parseInt($(this).find('.server-simultaneous').val()),
+                            'split-count'         : parseInt($(this).find('.server-split-count').val()),
+                            'disable-resuming'    : $(this).find('.server-disable-resuming').prop('checked'),
                             'ignore-sizemismatch' : $(this).find('.server-ignore-sizemismatch').prop('checked')
                         };
                     });
@@ -182,11 +182,11 @@ $(async () => {
             }
             // server specific parameter
             else if (this.classList.contains('server-parameter-box')) {
-                const $fqdnbox    = $(this).closest('.server-parameter').find('.server-fqdn'),
-                      $punybox    = $(this).closest('.server-parameter').find('.server-fqdn-punycode'),
-                      $simulbox   = $(this).closest('.server-parameter').find('.server-simultaneous'),
-                      $splitbox   = $(this).closest('.server-parameter').find('.server-split-count'),
-                      entered     = $fqdnbox.val() != '';
+                const $fqdnbox  = $(this).closest('.server-parameter').find('.server-fqdn'),
+                      $punybox  = $(this).closest('.server-parameter').find('.server-fqdn-punycode'),
+                      $simulbox = $(this).closest('.server-parameter').find('.server-simultaneous'),
+                      $splitbox = $(this).closest('.server-parameter').find('.server-split-count'),
+                      entered   = $fqdnbox.val() != '';
 
                 // if last is not empty, add new line
                 if ($(this).closest('.server-parameter').is(':last-of-type') && entered) {
@@ -227,7 +227,7 @@ $(async () => {
                 if (!$('.server-parameter').find('.is-invalid').length) {
                     const parameters = {};
                     $('.server-parameter').each(function() {
-                        if($(this).find('.server-fqdn').val() == '') return;
+                        if ($(this).find('.server-fqdn').val() == '') return;
                         parameters[$(this).find('.server-fqdn-punycode').val()] = {
                             fqdn          : $(this).find('.server-fqdn').val(),
                             simultaneous  : parseInt($(this).find('.server-simultaneous').val()),
@@ -333,7 +333,7 @@ $(async () => {
                 if (!$('.mime-mapping').find('.is-invalid').length) {
                     const mappings = {};
                     $('.mime-mapping').each(function() {
-                        if($(this).find('.mime-mime').val() == '') return;
+                        if ($(this).find('.mime-mime').val() == '') return;
                         mappings[$(this).find('.mime-mime').val().toLowerCase()] = $(this).find('.mime-ext').val();
                     });
                     bg.config.setPref('mime-mappings', mappings);
