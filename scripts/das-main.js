@@ -208,6 +208,42 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             }
             // default
             return this.option.ignoreSizemismatch;
+        },
+        get authorization() {
+            const params = config.getPref('authorization-parameter');
+
+            // queue specified
+            if (this.option.authorization[0]) {
+                return this.option.authorization;
+            }
+
+            // url specified
+            let target   = null;
+            const punyurls        = Object.keys(params),
+                  originalPunyUrl = (new URL(this.originalUrl)).href;
+
+            for (let punyurl of punyurls) {
+                // directory (forward match)
+                if (/\/$/.test(punyurl)) {
+                    if ((new RegExp('^' + punyurl, 'i')).test(this.responseUrl || originalPunyUrl)) {
+                        if (!(target && punyurl.split('/').length < target[0])) {
+                            target = [punyurl.split('/').length, punyurl];
+                        }
+                    }
+                }
+                // file (exact match)
+                else {
+                    if ((new RegExp('^' + punyurl + '$', 'i')).test(this.responseUrl || originalPunyUrl)) {
+                        return [params[punyurl].user, params[punyurl].pass];
+                    }
+                }
+            }
+
+            // directory
+            if (target) {
+                return [params[target[1]].user, params[target[1]].pass];
+            }
+            return ['', ''];
         }
     };
 
@@ -254,7 +290,7 @@ function createXhr(dlid, index, start, end)
         // readystatechange
         datum.xhr.addEventListener('readystatechange', onreadystatechange);
 
-    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authorization);
     datum.xhr.responseType = 'blob';
     queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -448,7 +484,7 @@ function createXhr(dlid, index, start, end)
             datum.xhr.addEventListener('progress', onprogress);
             datum.xhr.addEventListener('readystatechange', onreadystatechange2);
 
-            datum.xhr.open('GET', queue.responseUrl);
+            datum.xhr.open('GET', queue.responseUrl, true, ...queue.authorization);
             datum.xhr.responseType = 'blob';
             queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -515,7 +551,7 @@ function restartXhr(dlid, index)
     datum.xhr.addEventListener('error',    onerror);
     datum.xhr.addEventListener('progress', onprogress);
 
-    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authorization);
     datum.xhr.responseType = 'blob';
     for (let header of queue.requestHeaders)
         datum.xhr.setRequestHeader(header.name, header.value);

@@ -9,6 +9,8 @@ var defaultconfig = {
     'split-ex-size' : 50,
     'server-parameter' : {
     },
+    'authorization-parameter' : {
+    },
     'remember-new-referer' : false,
     'new-referer-value' : '',
     'new-referer-default-value' : true,

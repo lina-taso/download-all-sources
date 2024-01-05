@@ -142,8 +142,20 @@
                                     <input id="dl-single-url" class="form-control" data-focus="true">
                                     <small class="form-text text-muted" data-string="new_download_single_url_description"></small>
                                 </div>
+                                <!-- authorization -->
+                                <a class="collapse-toggle-link d-block" href="#new-download-single-authorization" data-bs-toggle="collapse" aria-expanded="false" data-string="new_download_single_authorization"></a>
+                                <div id="new-download-single-authorization" class="row collapse">
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-single-user" data-string="new_download_single_user"></label>
+                                        <input id="dl-single-user" class="form-control" data-focus="true">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-single-pass" data-string="new_download_single_pass"></label>
+                                        <input id="dl-single-pass" class="form-control" type="password" data-focus="true">
+                                    </div>
+                                </div>
                                 <!-- referer -->
-                                <div class="mb-3">
+                                <div class="my-3">
                                     <label class="form-label" for="dl-single-referer" data-string="new_download_single_referer"></label>
                                     <input id="dl-single-referer" class="form-control">
                                     <div id="dl-single-referer-default-group">
@@ -267,8 +279,20 @@
                                     <label class="form-label" for="dl-multiple-url" data-string="new_download_multiple_url"></label>
                                     <textarea id="dl-multiple-url" class="form-control" rows="6"></textarea>
                                 </div>
+                                <!-- authorization -->
+                                <a class="collapse-toggle-link d-block" href="#new-download-multiple-authorization" data-bs-toggle="collapse" aria-expanded="false" data-string="new_download_multiple_authorization"></a>
+                                <div id="new-download-multiple-authorization" class="row collapse">
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-multiple-user" data-string="new_download_multiple_user"></label>
+                                        <input id="dl-multiple-user" class="form-control" data-focus="true">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-multiple-pass" data-string="new_download_multiple_pass"></label>
+                                        <input id="dl-multiple-pass" class="form-control" type="password" data-focus="true">
+                                    </div>
+                                </div>
                                 <!-- referer -->
-                                <div class="mb-3">
+                                <div class="my-3">
                                     <label class="form-label" for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
                                     <input id="dl-multiple-referer" class="form-control">
                                 </div>
@@ -672,10 +696,24 @@
                             </div>
                         </div>
                         <!-- option box -->
-                        <div id="source-download-option" class="collapse">
-                            <div class="card card-body">
+                        <div id="source-download-option" class="card collapse mb-1">
+                            <a class="card-header" data-bs-toggle="collapse"
+                               href="#source-download-option" aria-expanded="false" data-string="source_download_option"></a>
+                            <div class="card-body">
+                                <!-- authorization -->
+                                <a class="collapse-toggle-link d-block" href="#source-download-option-authorization" data-bs-toggle="collapse" aria-expanded="false" data-string="source_download_option_authorization"></a>
+                                <div id="source-download-option-authorization" class="row collapse">
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-source-user" data-string="source_download_option_user"></label>
+                                        <input id="dl-source-user" class="form-control" data-focus="true">
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label" for="dl-source-pass" data-string="source_download_option_pass"></label>
+                                        <input id="dl-source-pass" class="form-control" type="password" data-focus="true">
+                                    </div>
+                                </div>
                                 <!-- referer -->
-                                <div class="mb-3">
+                                <div class="my-3">
                                     <label class="form-label" for="dl-source-referer" data-string="source_download_option_referer"></label>
                                     <input id="dl-source-referer" class="form-control">
                                     <div class="form-check mt-2">

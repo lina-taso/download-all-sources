@@ -19,6 +19,14 @@ input.form-check-input.server-parameter-box {
     width: 2em;
     height: 2em;
 }
+/* .authorization-parameter */
+.authorization-parameter:last-of-type .authorization-parameter-delete {
+    visibility: hidden;
+}
+input.form-check-input.authorization-parameter-box {
+    width: 2em;
+    height: 2em;
+}
 /* localization */
 [data-string] {
     white-space: pre-line;

@@ -54,6 +54,24 @@ $(async () => {
     // empty box
     $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
 
+    // initial authorization parameters
+    const $authTemplate = $('.row.authorization-parameter.d-none'),
+          authParams    = Object.keys(config['authorization-parameter']);
+    for (let key of authParams) {
+        const $target = $authTemplate.clone().removeClass('d-none').appendTo($authTemplate.parent());
+        $target.find('.authorization-url-punycode').val(key);
+        $target.find('.authorization-url').val(config['authorization-parameter'][key].url);
+        $target.find('.authorization-user').val(config['authorization-parameter'][key].user);
+        $target.find('.authorization-pass').val(config['authorization-parameter'][key].pass);
+        if (!config['authorization-parameter'][key].user && !config['authorization-parameter'][key].pass) {
+            $target.find('.authorization-user').prop('disabled', true);
+            $target.find('.authorization-pass').prop('disabled', true);
+            $target.find('.authorization-noauth').prop('checked', true);
+        }
+    }
+    // empty box
+    $authTemplate.clone().removeClass('d-none').appendTo($authTemplate.parent());
+
     // initial mime mapipngs
     const $mapTemplate = $('.row.mime-mapping.d-none');
     for (let key of Object.keys(config['mime-mappings'])) {
@@ -89,6 +107,36 @@ $(async () => {
                         };
                     });
                     bg.config.setPref('server-parameter', parameters);
+                }
+                return;
+            }
+
+            // authorization parameter
+            if (this.classList.contains('authorization-parameter-box')) {
+                // validation
+                // no auth
+                if (this.classList.contains('authorization-noauth')) {
+                    if (this.checked) {
+                        $(this).closest('.authorization-parameter').find('.authorization-user, .authorization-pass').val('').prop('disabled', true).removeClass('is-invalid');
+                    }
+                    else {
+                        $(this).closest('.authorization-parameter').find('.authorization-user, .authorization-pass').prop('disabled', false);
+                        $(this).closest('.authorization-parameter').find('.authorization-user').addClass('is-invalid');
+                    }
+                }
+
+                // save pref
+                if (!$('.authorization-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.authorization-parameter').each(function() {
+                        if ($(this).find('.authorization-url').val() == '') return;
+                        parameters[$(this).find('.authorization-url-punycode').val()] = {
+                            url  : $(this).find('.authorization-url').val(),
+                            user : $(this).find('.authorization-user').val(),
+                            pass : $(this).find('.authorization-pass').val()
+                        };
+                    });
+                    bg.config.setPref('authorization-parameter', parameters);
                 }
                 return;
             }
@@ -184,6 +232,59 @@ $(async () => {
                     bg.config.setPref('server-parameter', parameters);
                 }
             }
+            // authorization parameter
+            else if (this.classList.contains('authorization-parameter-box')) {
+                const $urlbox    = $(this).closest('.authorization-parameter').find('.authorization-url'),
+                      $punybox   = $(this).closest('.authorization-parameter').find('.authorization-url-punycode'),
+                      $userbox   = $(this).closest('.authorization-parameter').find('.authorization-user'),
+                      $passbox   = $(this).closest('.authorization-parameter').find('.authorization-pass'),
+                      $noauthbox = $(this).closest('.authorization-parameter').find('.authorization-noauth'),
+                      entered    = $urlbox.val() != '';
+
+                // if last is not empty, add new line
+                if ($(this).closest('.authorization-parameter').is(':last-of-type') && entered) {
+                    const $authTemplate = $('.row.authorization-parameter.d-none');
+                    // clone with events
+                    $authTemplate.clone(true).removeClass('d-none').appendTo($authTemplate.parent());
+                }
+                // validation
+                if (entered) {
+                    let urlvalid = false;
+                    if (!$urlbox.val()) {
+                        $punybox.val('');
+                    }
+                    else {
+                        try {
+                            const url = new URL($urlbox.val());
+                            $punybox.val(url.href);
+                            urlvalid = true;
+                        }
+                        catch (e) {
+                            $punybox.val('');
+                        }
+                    }
+                    const uservalid = !$noauthbox.prop('checked') && $userbox.val();
+                    $urlbox.toggleClass('is-invalid', !urlvalid);
+                    $userbox.toggleClass('is-invalid', !uservalid);
+                }
+                else {
+                    $urlbox.toggleClass('is-invalid', false);
+                    $userbox.toggleClass('is-invalid', false);
+                }
+                // save pref
+                if (!$('.authorization-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.authorization-parameter').each(function() {
+                        if ($(this).find('.authorization-url').val() == '') return;
+                        parameters[$(this).find('.authorization-url-punycode').val()] = {
+                            url  : $(this).find('.authorization-url').val(),
+                            user : $(this).find('.authorization-user').val(),
+                            pass : $(this).find('.authorization-pass').val()
+                        };
+                    });
+                    bg.config.setPref('authorization-parameter', parameters);
+                }
+            }
             // mime filter
             else if (this.classList.contains('mime-filter')) {
                 const $mimes = $('.row.mime-mapping:not(.d-none)'),
@@ -248,6 +349,13 @@ $(async () => {
         .on('click', function() {
             $(this).closest('.server-parameter').remove();
             $('.server-parameter:last-of-type .server-fqdn').trigger('input');
+        });
+
+    // authorization-parameter delete button
+    $('.authorization-parameter-delete')
+        .on('click', function() {
+            $(this).closest('.authorization-parameter').remove();
+            $('.authorization-parameter:last-of-type .authorization-url').trigger('input');
         });
 
     // reset button
