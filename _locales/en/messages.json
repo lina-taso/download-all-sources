@@ -73,6 +73,15 @@
     "new_download_single_url_description" : {
         "message" : "Press Enter key to start download"
     },
+    "new_download_single_authorization" : {
+        "message" : "BASIC Authorization [Optional]"
+    },
+    "new_download_single_user" : {
+        "message" : "Username"
+    },
+    "new_download_single_pass" : {
+        "message" : "Password"
+    },
     "new_download_single_referer" : {
         "message" : "Referer [Optional]"
     },
@@ -105,6 +114,15 @@
     },
     "new_download_multiple_filename" : {
         "message" : "Filename [Optional]"
+    },
+    "new_download_multiple_authorization" : {
+        "message" : "BASIC Authorization [Optional]"
+    },
+    "new_download_multiple_user" : {
+        "message" : "Username"
+    },
+    "new_download_multiple_pass" : {
+        "message" : "Password"
     },
     "new_download_multiple_referer" : {
         "message" : "Referer [Optional]"
@@ -250,11 +268,20 @@
     "source_download_filter_regex" : {
         "message" : "Expression is regular expression"
     },
-    "source_download_option_filename" : {
-        "message" : "Filename [Optional]"
+    "source_download_option_authorization" : {
+        "message" : "BASIC Authorization [Optional]"
+    },
+    "source_download_option_user" : {
+        "message" : "Username"
+    },
+    "source_download_option_pass" : {
+        "message" : "Password"
     },
     "source_download_option_referer" : {
         "message" : "Referer [Optional]"
+    },
+    "source_download_option_filename" : {
+        "message" : "Filename [Optional]"
     },
     "source_download_option_referer_default" : {
         "message" : "Use default referer"
@@ -366,7 +393,10 @@
         "message" : "Server specific parameters"
     },
     "options_server_fqdn" : {
-        "message" : "Domain name（Starting with . matches backwards.）"
+        "message" : "Domain name"
+    },
+    "options_server_fqdn_description" : {
+        "message" : "If starting with . matches backwards."
     },
     "options_server_simultaneous" : {
         "message" : "Max simultaneous download count"
@@ -379,6 +409,24 @@
     },
     "options_server_ignore_sizemismatch" : {
         "message" : "Ignore size mismatch error"
+    },
+    "options_authorization_parameters" : {
+        "message" : "Authorization parameters"
+    },
+    "options_authorization_url" : {
+        "message" : "URL"
+    },
+    "options_authorization_url_description" : {
+        "message" : "Exact match if the ending is not / (for file specification).\nIf ends with / matches everything under the directory (longest match)."
+    },
+    "options_authorization_user" : {
+        "message" : "Username"
+    },
+    "options_authorization_pass" : {
+        "message" : "Password"
+    },
+    "options_authorization_noauth" : {
+        "message" : "No auth"
     },
     "options_new_parameters" : {
         "message" : "New Download parameters"

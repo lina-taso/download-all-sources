@@ -73,6 +73,15 @@
     "new_download_single_url_description" : {
         "message" : "Enterキーを押すとダウンロードが始まります"
     },
+    "new_download_single_authorization" : {
+        "message" : "BASIC認証 [任意]"
+    },
+    "new_download_single_user" : {
+        "message" : "ユーザ名"
+    },
+    "new_download_single_pass" : {
+        "message" : "パスワード"
+    },
     "new_download_single_referer" : {
         "message" : "リファラ [任意]"
     },
@@ -102,6 +111,15 @@
     },
     "new_download_multiple_url" : {
         "message" : "ダウンロードURL (1行ずつ)"
+    },
+    "new_download_multiple_authorization" : {
+        "message" : "BASIC認証 [任意]"
+    },
+    "new_download_multiple_user" : {
+        "message" : "ユーザ名"
+    },
+    "new_download_multiple_pass" : {
+        "message" : "パスワード"
     },
     "new_download_multiple_referer" : {
         "message" : "リファラ [任意]"
@@ -250,11 +268,20 @@
     "source_download_filter_regex" : {
         "message" : "文字列は正規表現"
     },
-    "source_download_option_filename" : {
-        "message" : "ファイル名 [任意]"
+    "source_download_option_authorization" : {
+        "message" : "BASIC認証 [任意]"
+    },
+    "source_download_option_user" : {
+        "message" : "ユーザ名"
+    },
+    "source_download_option_pass" : {
+        "message" : "パスワード"
     },
     "source_download_option_referer" : {
         "message" : "リファラ [任意]"
+    },
+    "source_download_option_filename" : {
+        "message" : "ファイル名 [任意]"
     },
     "source_download_option_referer_default" : {
         "message" : "デフォルトのリファラ"
@@ -366,7 +393,10 @@
         "message" : "サーバ固有の設定"
     },
     "options_server_fqdn" : {
-        "message" : "ドメイン名（.から始めると後方一致）"
+        "message" : "ドメイン名"
+    },
+    "options_server_fqdn_description" : {
+        "message" : ".から始めると後方一致"
     },
     "options_server_simultaneous" : {
         "message" : "同時ダウンロード数"
@@ -379,6 +409,21 @@
     },
     "options_server_ignore_sizemismatch" : {
         "message" : "size mismatchエラーを無視"
+    },
+    "options_authorization_url" : {
+        "message" : "URL"
+    },
+    "options_authorization_url_description" : {
+        "message" : "/で終わらない場合は完全一致（ファイル指定用）。\n/で終わる場合はディレクトリ配下全てが対象（最長一致）。"
+    },
+    "options_authorization_user" : {
+        "message" : "ユーザ名"
+    },
+    "options_authorization_pass" : {
+        "message" : "パスワード"
+    },
+    "options_authorization_noauth" : {
+        "message" : "認証 不要"
     },
     "options_new_parameters" : {
         "message" : "新しいダウンロードの設定"
