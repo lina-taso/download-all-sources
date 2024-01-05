@@ -20,6 +20,11 @@ $(async () => {
     bg = await browser.runtime.getBackgroundPage();
     localization();
 
+    // all tooltip enabled
+    $('[data-bs-toggle=tooltip]').tooltip({ title : function() {
+        return browser.i18n.getMessage(this.dataset.titlestring);
+    }});
+
     // input range
     $('#simultaneous-whole, #simultaneous-per-server, #retry-count, #split-count, #split-size, #split-ex-size')
         .on('input', function() {

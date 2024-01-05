@@ -8,7 +8,7 @@ html, body {
     top: .5rem;
 }
 .horizontal-button-list > :not(:last-child) {
-    margin-right: .25rem;
+    margin-right: 1rem;
 }
 .progress {
     height: initial;
@@ -17,6 +17,23 @@ html, body {
 .pointer {
     cursor: pointer;
 }
+.tooltip {
+    white-space: pre-wrap;
+}
+.collapse-toggle-link::before {
+    display: inline-block;
+    margin-right: .5em;
+    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    content: '\f054';
+    transition: transform 0.35s ease;
+}
+.collapse-toggle-link[aria-expanded="true"]::before {
+    transform: rotate(90deg);
+}
+.collapse-toggle-link[aria-expanded="true"] {
+    font-weight: bold;
+}
+
 /* localization */
 [data-string] {
     white-space: pre-line;
@@ -73,7 +90,7 @@ html, body {
     font-family: "Font Awesome 5 Free"; font-weight: 900;
     font-style: normal;
     font-variant: normal;
-    font-rendering: auto;
+    text-rendering: auto;
     line-height: 1;
 }
 .download-item[data-status="downloading"] .item-status > :first-child::before {
@@ -222,24 +239,11 @@ html, body {
 #source-download-button2::after {
     content: ' (' attr(data-count) ')';
 }
-button[data-bs-target="#byTagname"]::after,
-button[data-bs-target="#byFiletype"]::after,
-button[data-bs-target="#byKeyword"]::after,
-button[data-bs-target="#source-download-option"]::after {
+#source .card-header::before {
+    display: inline-block;
+    margin-right: .5em;
     font-family: "Font Awesome 5 Free"; font-weight: 900;
-    padding-left: .5em;
-}
-button[data-bs-target="#byTagname"][aria-expanded="false"]::after,
-button[data-bs-target="#byFiletype"][aria-expanded="false"]::after,
-button[data-bs-target="#byKeyword"][aria-expanded="false"]::after,
-button[data-bs-target="#source-download-option"][aria-expanded="false"]::after {
-    content: "\f0d7";
-}
-button[data-bs-target="#byTagname"][aria-expanded="true"]::after,
-button[data-bs-target="#byFiletype"][aria-expanded="true"]::after,
-button[data-bs-target="#byKeyword"][aria-expanded="true"]::after,
-button[data-bs-target="#source-download-option"][aria-expanded="true"]::after {
-    content: "\f0d8";
+    content: '\f2d1';
 }
 #sort-url,
 #sort-filetype,

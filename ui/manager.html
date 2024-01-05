@@ -606,20 +606,22 @@
                     </div>
                     <div class="modal-body" id="source">
                         <!-- filter button -->
-                        <div class="d-flex horizontal-button-list">
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
-                                    data-bs-target="#byTagname" aria-expanded="false" aria-controls="byTagname" data-string="source_download_filter_tagname"></button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
-                                    data-bs-target="#byFiletype" aria-expanded="false" aria-controls="byFiletype" data-string="source_download_filter_filetype"></button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
-                                    data-bs-target="#byKeyword" aria-expanded="false" aria-controls="byKeyword" data-string="source_download_filter_keyword"></button>
-                            <button type="button" class="btn btn-secondary" data-bs-toggle="collapse"
-                                    data-bs-target="#source-download-option" aria-expanded="false" aria-controls="source-download-option" data-string="source_download_option"></button>
+                        <div class="horizontal-button-list d-flex flex-wrap">
+                            <a class="collapse-toggle-link d-inline-block" data-bs-toggle="collapse"
+                               href="#byTagname" aria-expanded="false" data-string="source_download_filter_tagname"></a>
+                            <a class="collapse-toggle-link d-inline-block" data-bs-toggle="collapse"
+                               href="#byFiletype" aria-expanded="false" data-string="source_download_filter_filetype"></a>
+                            <a class="collapse-toggle-link d-inline-block" data-bs-toggle="collapse"
+                               href="#byKeyword" aria-expanded="false" data-string="source_download_filter_keyword"></a>
+                            <a class="collapse-toggle-link d-inline-block" data-bs-toggle="collapse"
+                               href="#source-download-option" aria-expanded="false" data-string="source_download_option"></a>
                             <button type="button" class="btn btn-warning ms-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
                         </div>
                         <!-- filter box -->
-                        <div id="byTagname" class="collapse">
-                            <div class="card card-body">
+                        <div id="byTagname" class="card collapse mb-1">
+                            <a class="card-header" data-bs-toggle="collapse"
+                               href="#byTagname" aria-expanded="false" data-string="source_download_filter_tagname"></a>
+                            <div class="card-body">
                                 <label class="form-label" for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
                                 <div class="row">
                                     <div class="col">
@@ -631,8 +633,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="byFiletype" class="collapse">
-                            <div class="card card-body">
+                        <div id="byFiletype" class="card collapse mb-1">
+                            <a class="card-header" data-bs-toggle="collapse"
+                               href="#byFiletype" aria-expanded="false" data-string="source_download_filter_filetype"></a>
+                            <div class="card-body">
                                 <div class="row">
                                     <div class="col row">
                                         <div class="col-12 col-md-4 col-xl-2 col-form-label">
@@ -678,8 +682,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="byKeyword" class="collapse">
-                            <div class="card card-body">
+                        <div id="byKeyword" class="card collapse mb-1">
+                            <a class="card-header" data-bs-toggle="collapse"
+                               href="#byKeyword" aria-expanded="false" data-string="source_download_filter_keyword"></a>
+                            <div class="card-body">
                                 <label class="form-label" for="filter-expression" data-string="source_download_filter_expression"></label>
                                 <div class="row">
                                     <div class="col">
@@ -837,6 +843,7 @@
                                 </div>
                             </div>
                         </div>
+                        <!-- /option box -->
                         <div class="mt-3">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" id="filter-dup" checked>
