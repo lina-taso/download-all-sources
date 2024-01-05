@@ -41,9 +41,10 @@ $(async () => {
     });
 
     // initial server parameters
-    const $paramTemplate = $('.row.server-parameter.d-none');
-    for (let key of Object.keys(config['server-parameter'])) {
-        let $target = $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
+    const $paramTemplate = $('.row.server-parameter.d-none'),
+          serverParams   = Object.keys(config['server-parameter']);
+    for (let key of serverParams) {
+        const $target = $paramTemplate.clone().removeClass('d-none').appendTo($paramTemplate.parent());
         $target.find('.server-fqdn-punycode').val(key);
         $target.find('.server-fqdn').val(config['server-parameter'][key].fqdn);
         $target.find('.server-simultaneous').val(config['server-parameter'][key].simultaneous);
@@ -73,8 +74,9 @@ $(async () => {
     $authTemplate.clone().removeClass('d-none').appendTo($authTemplate.parent());
 
     // initial mime mapipngs
-    const $mapTemplate = $('.row.mime-mapping.d-none');
-    for (let key of Object.keys(config['mime-mappings'])) {
+    const $mapTemplate = $('.row.mime-mapping.d-none'),
+          mimeMappings = Object.keys(config['mime-mappings']);
+    for (let key of mimeMappings) {
         let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
         $target.find('.mime-mime').val(key);
         $target.find('.mime-ext').val(config['mime-mappings'][key]);
@@ -388,7 +390,8 @@ $(async () => {
             $('.row.mime-mapping:not(.d-none)').remove();
 
             // initial mime mappings
-            for (let key of Object.keys(config['mime-mappings'])) {
+            const mimeMappings = Object.keys(config['mime-mappings']);
+            for (let key of mimeMappings) {
                 let $target = $mapTemplate.clone().removeClass('d-none').appendTo($mapTemplate.parent());
                 $target.find('.mime-mime').val(key);
                 $target.find('.mime-ext').val(config['mime-mappings'][key]);

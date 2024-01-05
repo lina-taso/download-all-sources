@@ -754,8 +754,9 @@ function deleteQueue(dlid)
 function searchQueue(query)
 {
     let result = Array.from(downloadQueue);
+    const queries = Object.keys(query);
 
-    for (let key of Object.keys(query)) {
+    for (let key of queries) {
         if (key == 'originalDomain' && /^\./.test(query[key]))
             result = result.filter(ele => ele[key].endsWith(query[key]));
         else

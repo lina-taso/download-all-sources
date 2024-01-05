@@ -992,10 +992,11 @@ function updateList()
 
 function updateSourceList()
 {
-    const list = bg.lastSource.list;
+    const list = bg.lastSource.list,
+          urls = Object.keys(list);
 
     // data
-    for (let url of Object.keys (list)) {
+    for (let url of urls) {
         if (!allowProtocol.test(list[url].protocol)) continue;
         for (let i=0; i<list[url].tag.length; i++)
             source.push(Object.assign({}, list[url],
