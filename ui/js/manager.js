@@ -742,6 +742,7 @@ function reDownloadManual()
     $('#new-download').modal('show');
 
     function setParameters() {
+        $('#single-tab').tab('show');
         $('#dl-single-url').val(queue.originalUrlInput);
         $('#dl-single-user').val(queue.option.authorization[0]);
         $('#dl-single-pass').val(queue.option.authorization[1]);
