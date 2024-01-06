@@ -96,31 +96,31 @@ async function downloadFile(url, requestHeaders, locs, names, option)
 
     // queuing
     downloadQueue[dlid] = {
-        id             : dlid,
-        fxid           : null,
-        regTime        : (new Date()).getTime(),
-        startTime      : null,
-        endTime        : null,
-        status         : status,
-        reason         : '',
-        data           : [],
-        option         : JSON.parse(JSON.stringify(option)),
-        resumeEnabled  : false,
-        originalUrl    : url,
-        originalDomain : domain,
+        id               : dlid,
+        fxid             : null,
+        regTime          : (new Date()).getTime(),
+        startTime        : null,
+        endTime          : null,
+        status           : status,
+        reason           : '',
+        data             : [],
+        option           : JSON.parse(JSON.stringify(option)),
+        resumeEnabled    : false,
+        originalUrl      : url,
+        originalDomain   : domain,
         // if location is specified, last character must be '/'|'\\'
-        location       : locs.location,
+        location         : locs.location,
         originalLocation : locs.originalLocation,
-        filename       : names.filename,
+        filename         : names.filename,
         originalFilename : names.originalFilename,
-        autoFilename   : '',
-        responseUrl    : '',
+        autoFilename     : '',
+        responseUrl      : '',
         responseFilename : '',
-        contentType    : '',
-        requestHeaders : JSON.parse(JSON.stringify(requestHeaders)),
+        contentType      : '',
+        requestHeaders   : JSON.parse(JSON.stringify(requestHeaders)),
         // if total is 0, download is not started or total size is unknown
-        total          : 0,
-        loaded         : function() {
+        total            : 0,
+        loaded           : function() {
             const loaded     = downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0);
             const prevLoaded = downloadQueue[dlid].prevLoaded,
                   prevTime   = downloadQueue[dlid].prevTime,
@@ -134,10 +134,10 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             }
             return { now : loaded, nowTime : nowTime,  prev : prevLoaded, prevTime : prevTime, Bps : downloadQueue[dlid].Bps };
         },
-        prevLoaded     : 0,
-        prevTime       : null,
-        Bps            : 0,
-        detail         : function() {
+        prevLoaded       : 0,
+        prevTime         : null,
+        Bps              : 0,
+        detail           : function() {
             const queue  = downloadQueue[dlid];
 
             // completed
