@@ -106,7 +106,8 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         data             : [],
         option           : JSON.parse(JSON.stringify(option)),
         resumeEnabled    : false,
-        originalUrl      : url,
+        originalUrl      : new URL(url),
+        originalUrlInput : url,
         originalDomain   : domain,
         // if location is specified, last character must be '/'|'\\'
         location         : locs.location,
@@ -114,7 +115,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         filename         : names.filename,
         originalFilename : names.originalFilename,
         autoFilename     : '',
-        responseUrl      : '',
+        responseUrl      : null,
         responseFilename : '',
         contentType      : '',
         requestHeaders   : JSON.parse(JSON.stringify(requestHeaders)),
@@ -220,7 +221,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             // url specified
             let target   = null;
             const punyurls        = Object.keys(params),
-                  originalPunyUrl = (new URL(this.originalUrl)).href;
+                  originalPunyUrl = this.originalUrl.href;
 
             for (let punyurl of punyurls) {
                 // directory (forward match)

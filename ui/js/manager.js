@@ -720,7 +720,7 @@ function reDownload()
           queue = bg.downloadQueue[dlid];
 
     bg.downloadFile(
-        queue.originalUrl,
+        queue.originalUrlInput,
         queue.requestHeaders,
         { location         : queue.location,
           originalLocation : queue.originalLocation },
@@ -742,7 +742,7 @@ function reDownloadManual()
     $('#new-download').modal('show');
 
     function setParameters() {
-        $('#dl-single-url').val(queue.originalUrl);
+        $('#dl-single-url').val(queue.originalUrlInput);
         $('#dl-single-user').val(queue.option.authorization[0]);
         $('#dl-single-pass').val(queue.option.authorization[1]);
         if (queue.option.authorization[0]) $('#new-download-single-authorization').collapse('show');
@@ -782,8 +782,8 @@ function updateDetail(init)
     if (init) {
         $('#detail-status-dlid').val(dlid);
         $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
-        $('#detail-info-url').val(queue.originalUrl);
-        $('#detail-info-url-open').attr('data-link', queue.originalUrl);
+        $('#detail-info-url').val(queue.originalUrlInput);
+        $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
         $('#detail-info-referer-open').attr('data-link', referer.value);
@@ -912,7 +912,7 @@ function updateList()
             'data-status' : queue.status,
             'data-reason' : queue.reason
         });
-        $item.find('.item-filename').text(queue.autoFilename || queue.filename || queue.responseFilename || queue.originalUrl);
+        $item.find('.item-filename').text(queue.autoFilename || queue.filename || queue.responseFilename || queue.originalUrlInput);
         // progress
         if (queue.total)
             $item.find('.item-progress')
