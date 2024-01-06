@@ -210,12 +210,12 @@ async function downloadFile(url, requestHeaders, locs, names, option)
             // default
             return this.option.ignoreSizemismatch;
         },
-        get authorization() {
-            const params = config.getPref('authorization-parameter');
+        get authentication() {
+            const params = config.getPref('authentication-parameter');
 
             // queue specified
-            if (this.option.authorization[0]) {
-                return this.option.authorization;
+            if (this.option.authentication[0]) {
+                return this.option.authentication;
             }
 
             // url specified
@@ -293,7 +293,7 @@ function createXhr(dlid, index, start, end)
         // readystatechange
         datum.xhr.addEventListener('readystatechange', onreadystatechange);
 
-    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authorization);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authentication);
     datum.xhr.responseType = 'blob';
     queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -487,7 +487,7 @@ function createXhr(dlid, index, start, end)
             datum.xhr.addEventListener('progress', onprogress);
             datum.xhr.addEventListener('readystatechange', onreadystatechange2);
 
-            datum.xhr.open('GET', queue.responseUrl, true, ...queue.authorization);
+            datum.xhr.open('GET', queue.responseUrl, true, ...queue.authentication);
             datum.xhr.responseType = 'blob';
             queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -554,7 +554,7 @@ function restartXhr(dlid, index)
     datum.xhr.addEventListener('error',    onerror);
     datum.xhr.addEventListener('progress', onprogress);
 
-    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authorization);
+    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authentication);
     datum.xhr.responseType = 'blob';
     for (let header of queue.requestHeaders)
         datum.xhr.setRequestHeader(header.name, header.value);

@@ -22,11 +22,11 @@ input.form-check-input.server-parameter-box {
     width: 2em;
     height: 2em;
 }
-/* .authorization-parameter */
-.authorization-parameter:last-of-type .authorization-parameter-delete {
+/* .authentication-parameter */
+.authentication-parameter:last-of-type .authentication-parameter-delete {
     visibility: hidden;
 }
-input.form-check-input.authorization-parameter-box {
+input.form-check-input.authentication-parameter-box {
     width: 2em;
     height: 2em;
 }

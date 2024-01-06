@@ -113,7 +113,7 @@ $(async () => {
 
             // initial value
             const config = await bg.config.getPref();
-            // initial authorization
+            // initial authentication
             $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
             // initial referer
             $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '');
@@ -305,7 +305,7 @@ $(async () => {
                 $('#filter-expression').val(config['source-keyword-value']);
                 $('#filter-regex').prop('checked', config['source-regex-value']);
             }
-            // initial source-authorization
+            // initial source-authentication
             $('#dl-source-user, #dl-source-pass').val('');
             // initial source-referer
             if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
@@ -415,7 +415,7 @@ $(async () => {
                 $(this).toggleClass('is-invalid', true);
             }
         });
-    // authorization validation
+    // authentication validation
     $('#dl-single-user, #dl-single-pass')
         .on('input', function() {
             $('#dl-single-user').toggleClass('is-invalid', $('#dl-single-user').val() == '' && $('#dl-single-pass').val() != '');
@@ -587,7 +587,7 @@ async function download()
                   refererUrl : $('#dl-single-referer').val()
               }, true),
               originalFilename : $('#dl-single-filename').val() },
-            { authorization      : [ $('#dl-single-user').val(), $('#dl-single-pass').val() ],
+            { authentication      : [ $('#dl-single-user').val(), $('#dl-single-pass').val() ],
               disableResuming    : $('#dl-single-option1').is(':checked'),
               ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
         );
@@ -629,7 +629,7 @@ async function download()
                       refererUrl : $('#dl-multiple-referer').val()
                   }, true),
                   originalFilename : $('#dl-multiple-filename').val() },
-                { authorization      : [ $('#dl-multiple-user').val(), $('#dl-multiple-pass').val() ],
+                { authentication      : [ $('#dl-multiple-user').val(), $('#dl-multiple-pass').val() ],
                   disableResuming    : $('#dl-multiple-option1').is(':checked'),
                   ignoreSizemismatch : $('#dl-multiple-option2').is(':checked') }
             );
@@ -680,7 +680,7 @@ async function sourceDownload()
                   title      : title
               }, true),
               originalFilename : $('#dl-source-filename').val() },
-            { authorization      : [ $('#dl-source-user').val(), $('#dl-source-pass').val() ],
+            { authentication      : [ $('#dl-source-user').val(), $('#dl-source-pass').val() ],
               disableResuming    : $('#dl-source-option1').is(':checked'),
               ignoreSizemismatch : $('#dl-source-option2').is(':checked') }
         );
@@ -744,9 +744,9 @@ function reDownloadManual()
     function setParameters() {
         $('#single-tab').tab('show');
         $('#dl-single-url').val(queue.originalUrlInput);
-        $('#dl-single-user').val(queue.option.authorization[0]);
-        $('#dl-single-pass').val(queue.option.authorization[1]);
-        if (queue.option.authorization[0]) $('#new-download-single-authorization').collapse('show');
+        $('#dl-single-user').val(queue.option.authentication[0]);
+        $('#dl-single-pass').val(queue.option.authentication[1]);
+        if (queue.option.authentication[0]) $('#new-download-single-authentication').collapse('show');
         const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#dl-single-referer').val(referer.value).trigger('input');
         $('#dl-single-location').val(queue.originalLocation).trigger('input');
@@ -786,7 +786,7 @@ function updateDetail(init)
         $('#detail-info-url').val(queue.originalUrlInput);
         $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
-        $('#detail-info-user').val(queue.option.authorization[0]);
+        $('#detail-info-user').val(queue.option.authentication[0]);
         $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
         $('#detail-info-referer-open').attr('data-link', referer.value);
         $('#detail-info-filename').parent().attr('data-editing', '');

@@ -73,8 +73,8 @@
     "new_download_single_url_description" : {
         "message" : "Press Enter key to start download"
     },
-    "new_download_single_authorization" : {
-        "message" : "BASIC Authorization [Optional]"
+    "new_download_single_authentication" : {
+        "message" : "BASIC Authentication [Optional]"
     },
     "new_download_single_user" : {
         "message" : "Username"
@@ -112,8 +112,8 @@
     "new_download_multiple_url" : {
         "message" : "Download URLs (per line)"
     },
-    "new_download_multiple_authorization" : {
-        "message" : "BASIC Authorization [Optional]"
+    "new_download_multiple_authentication" : {
+        "message" : "BASIC Authentication [Optional]"
     },
     "new_download_multiple_user" : {
         "message" : "Username"
@@ -185,7 +185,7 @@
         "message" : "Final Username"
     },
     "download_detail_final_user_placeholder" : {
-        "message" : "(No authorization)"
+        "message" : "(No authentication)"
     },
     "download_detail_mime" : {
         "message" : "MIME Type"
@@ -283,8 +283,8 @@
     "source_download_filter_regex" : {
         "message" : "Expression is regular expression"
     },
-    "source_download_option_authorization" : {
-        "message" : "BASIC Authorization [Optional]"
+    "source_download_option_authentication" : {
+        "message" : "BASIC Authentication [Optional]"
     },
     "source_download_option_user" : {
         "message" : "Username"
@@ -425,22 +425,22 @@
     "options_server_ignore_sizemismatch" : {
         "message" : "Ignore size mismatch error"
     },
-    "options_authorization_parameters" : {
-        "message" : "Authorization parameters"
+    "options_authentication_parameters" : {
+        "message" : "Authentication parameters"
     },
-    "options_authorization_url" : {
+    "options_authentication_url" : {
         "message" : "URL"
     },
-    "options_authorization_url_description" : {
+    "options_authentication_url_description" : {
         "message" : "Exact match if the ending is not / (for file specification).\nIf ends with / matches everything under the directory (longest match)."
     },
-    "options_authorization_user" : {
+    "options_authentication_user" : {
         "message" : "Username"
     },
-    "options_authorization_pass" : {
+    "options_authentication_pass" : {
         "message" : "Password"
     },
-    "options_authorization_noauth" : {
+    "options_authentication_noauth" : {
         "message" : "No auth"
     },
     "options_new_parameters" : {

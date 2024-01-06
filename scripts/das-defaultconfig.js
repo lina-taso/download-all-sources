@@ -9,7 +9,7 @@ var defaultconfig = {
     'split-ex-size' : 50,
     'server-parameter' : {
     },
-    'authorization-parameter' : {
+    'authentication-parameter' : {
     },
     'remember-new-referer' : false,
     'new-referer-value' : '',

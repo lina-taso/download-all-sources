@@ -73,7 +73,7 @@
     "new_download_single_url_description" : {
         "message" : "Enterキーを押すとダウンロードが始まります"
     },
-    "new_download_single_authorization" : {
+    "new_download_single_authentication" : {
         "message" : "BASIC認証 [任意]"
     },
     "new_download_single_user" : {
@@ -112,7 +112,7 @@
     "new_download_multiple_url" : {
         "message" : "ダウンロードURL (1行ずつ)"
     },
-    "new_download_multiple_authorization" : {
+    "new_download_multiple_authentication" : {
         "message" : "BASIC認証 [任意]"
     },
     "new_download_multiple_user" : {
@@ -283,7 +283,7 @@
     "source_download_filter_regex" : {
         "message" : "文字列は正規表現"
     },
-    "source_download_option_authorization" : {
+    "source_download_option_authentication" : {
         "message" : "BASIC認証 [任意]"
     },
     "source_download_option_user" : {
@@ -425,22 +425,22 @@
     "options_server_ignore_sizemismatch" : {
         "message" : "size mismatchエラーを無視"
     },
-    "options_authorization_parameters" : {
+    "options_authentication_parameters" : {
         "message" : "認証設定"
     },
-    "options_authorization_url" : {
+    "options_authentication_url" : {
         "message" : "URL"
     },
-    "options_authorization_url_description" : {
+    "options_authentication_url_description" : {
         "message" : "/で終わらない場合は完全一致（ファイル指定用）。\n/で終わる場合はディレクトリ配下全てが対象（最長一致）。"
     },
-    "options_authorization_user" : {
+    "options_authentication_user" : {
         "message" : "ユーザ名"
     },
-    "options_authorization_pass" : {
+    "options_authentication_pass" : {
         "message" : "パスワード"
     },
-    "options_authorization_noauth" : {
+    "options_authentication_noauth" : {
         "message" : "認証 不要"
     },
     "options_new_parameters" : {
