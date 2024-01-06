@@ -732,6 +732,9 @@ function resumeDownload(dlid)
         // restart xhr
         queue.data.forEach((datum, index) => datum.status == 'abort' && restartXhr(dlid, index));
     queue.status  = 'downloading';
+
+    // update badge
+    updateBadge();
 }
 
 function deleteQueue(dlid)
