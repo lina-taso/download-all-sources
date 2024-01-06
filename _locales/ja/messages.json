@@ -181,6 +181,12 @@
     "download_detail_final_url_description" : {
         "message" : "URLを開く"
     },
+    "download_detail_final_user" : {
+        "message" : "最終ユーザ名"
+    },
+    "download_detail_final_user_placeholder" : {
+        "message" : "（認証なし）"
+    },
     "download_detail_mime" : {
         "message" : "MIMEタイプ"
     },
@@ -204,6 +210,12 @@
     },
     "download_detail_url_description" : {
         "message" : "URLを開く"
+    },
+    "download_detail_user" : {
+        "message" : "ユーザ名"
+    },
+    "download_detail_user_placeholder" : {
+        "message" : "（ユーザ名未入力）"
     },
     "download_detail_referer" : {
         "message" : "リファラ"

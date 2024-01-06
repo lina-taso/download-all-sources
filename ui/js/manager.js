@@ -785,6 +785,7 @@ function updateDetail(init)
         $('#detail-info-url').val(queue.originalUrlInput);
         $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
         let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
+        $('#detail-info-user').val(queue.option.authorization[0]);
         $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
         $('#detail-info-referer-open').attr('data-link', referer.value);
         $('#detail-info-filename').parent().attr('data-editing', '');
@@ -818,8 +819,9 @@ function updateDetail(init)
     $('#detail-status-reason').val(queue.reason);
     $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
     $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
-    $('#detail-status-url').val(queue.responseUrl);
-    $('#detail-status-url-open').attr('data-link', queue.responseUrl);
+    $('#detail-status-url').val(queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-url-open').attr('data-link', queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-user').val(queue.responseUrl.username);
     $('#detail-status-mime').val(queue.contentType);
     if (queue.total) {
         let progress = parseInt(loadedObj.now / queue.total * 100);
