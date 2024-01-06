@@ -149,10 +149,10 @@
         "message" : "Download Detail"
     },
     "download_detail_status" : {
-        "message" : "Status"
+        "message" : "Queue Status"
     },
     "download_detail_info" : {
-        "message" : "Info"
+        "message" : "Registered Info"
     },
     "download_detail_previtem_description" : {
         "message" : "Prev item"
@@ -225,6 +225,9 @@
     },
     "download_detail_location" : {
         "message" : "Location"
+    },
+    "download_detail_location_placeholder" : {
+        "message" : "(Default download directory)"
     },
     "download_detail_editlocation_description" : {
         "message" : "Change location"

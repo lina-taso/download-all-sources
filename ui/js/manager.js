@@ -1220,6 +1220,9 @@ async function localization()
     $('[data-string]').each(function() {
         $(this).text(browser.i18n.getMessage(this.dataset.string));
     });
+    $('[data-string-placeholder]').each(function() {
+        $(this).attr('placeholder', browser.i18n.getMessage(this.dataset.stringPlaceholder));
+    });
     $('[data-configstring]').each(function() {
         $(this).text(config[this.dataset.configstring]);
     });

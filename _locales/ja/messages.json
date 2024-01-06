@@ -149,10 +149,10 @@
         "message" : "ダウンロード詳細"
     },
     "download_detail_status" : {
-        "message" : "ステータス"
+        "message" : "キューのステータス"
     },
     "download_detail_info" : {
-        "message" : "情報"
+        "message" : "登録情報"
     },
     "download_detail_previtem_description" : {
         "message" : "前のアイテム"
@@ -225,6 +225,9 @@
     },
     "download_detail_location" : {
         "message" : "ディレクトリ"
+    },
+    "download_detail_location_placeholder" : {
+        "message" : "（標準のダウンロードディレクトリ）"
     },
     "download_detail_editlocation_description" : {
         "message" : "ディレクトリ名を変更する"
