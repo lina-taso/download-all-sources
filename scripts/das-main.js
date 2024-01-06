@@ -746,7 +746,7 @@ function deleteQueue(dlid)
     downloadQueue[dlid] = {
         id     : dlid,
         status : 'deleted',
-        loaded : () => loaded
+        loaded : loaded
     };
 }
 
