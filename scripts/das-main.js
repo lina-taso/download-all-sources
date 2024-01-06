@@ -736,7 +736,7 @@ function resumeDownload(dlid)
 
 function deleteQueue(dlid)
 {
-    const loaded = downloadQueue[dlid].loaded();
+    const loaded = downloadQueue[dlid].loaded;
 
     // fxdownloadqueue
     if (downloadQueue[dlid].fxid) {
