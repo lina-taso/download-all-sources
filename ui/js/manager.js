@@ -776,7 +776,7 @@ function updateDetail(init)
 {
     const dlid      = $('#download-detail').attr('data-dlid'),
           queue     = bg.downloadQueue[dlid],
-          loadedObj = queue.loaded();
+          loadedObj = queue.loaded;
 
     // init
     if (init) {
@@ -837,7 +837,7 @@ function updateDetail(init)
     $('#detail-info-location-open').attr('data-fxid', queue.fxid);
 
     // tile
-    queue.detail().forEach((val, index) => {
+    queue.detail.forEach((val, index) => {
         $('#detail-status-detail').children().eq(index).attr('data-status', val || '');
     });
 }
@@ -853,7 +853,7 @@ function updateList()
             $item;
 
         // total speed
-        const loadedObj = queue.loaded();
+        const loadedObj = queue.loaded;
         totalLoaded += parseInt(loadedObj.now / 1000);
 
         // listed item
@@ -927,7 +927,7 @@ function updateList()
             $item.find('.item-remain').text(calcRemain(loadedObj, queue.total));
             break;
         case 'finished':
-            $item.find('.item-speed').text(calcBps({ now : queue.loaded().now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
+            $item.find('.item-speed').text(calcBps({ now : queue.loaded.now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
             $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
             break;
         default:

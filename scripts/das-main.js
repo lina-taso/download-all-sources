@@ -121,40 +121,38 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         requestHeaders   : JSON.parse(JSON.stringify(requestHeaders)),
         // if total is 0, download is not started or total size is unknown
         total            : 0,
-        loaded           : function() {
-            const loaded     = downloadQueue[dlid].data.reduce((acc, cur) => acc + cur.loaded, 0);
-            const prevLoaded = downloadQueue[dlid].prevLoaded,
-                  prevTime   = downloadQueue[dlid].prevTime,
+        get loaded() {
+            const loaded     = this.data.reduce((acc, cur) => acc + cur.loaded, 0);
+            const prevLoaded = this.prevLoaded,
+                  prevTime   = this.prevTime,
                   nowTime    = (new Date()).getTime();
 
             // prev is old
             if (nowTime - prevTime > 2000) {
-                downloadQueue[dlid].prevLoaded = loaded;
-                downloadQueue[dlid].prevTime   = nowTime;
-                downloadQueue[dlid].Bps        = (loaded - prevLoaded) / (nowTime - prevTime) * 1000;
+                this.prevLoaded = loaded;
+                this.prevTime   = nowTime;
+                this.Bps        = (loaded - prevLoaded) / (nowTime - prevTime) * 1000;
             }
-            return { now : loaded, nowTime : nowTime,  prev : prevLoaded, prevTime : prevTime, Bps : downloadQueue[dlid].Bps };
+            return { now : loaded, nowTime : nowTime,  prev : prevLoaded, prevTime : prevTime, Bps : this.Bps };
         },
         prevLoaded       : 0,
         prevTime         : null,
         Bps              : 0,
-        detail           : function() {
-            const queue  = downloadQueue[dlid];
-
+        get detail() {
             // completed
-            if (queue.status == 'downloaded' || queue.reason == 'complete' || queue.reason == 'interrupted')
+            if (this.status == 'downloaded' || this.reason == 'complete' || this.reason == 'interrupted')
                 return [...Array(TILE_SIZE)].fill('loaded', 0, TILE_SIZE);
 
             // downloading size unknown file
-            if (!queue.total)
+            if (!this.total)
                 return [...Array(TILE_SIZE)].fill('unknown', 0, TILE_SIZE);
 
             // downloading size known file
             const detail = [...Array(TILE_SIZE)];
-            for (let datum of queue.data) {
-                const firstBlock = Math.ceil(datum.rangeStart * TILE_SIZE / queue.total),
-                      lastBlock  = Math.floor((datum.rangeStart + datum.loaded) * TILE_SIZE / queue.total),
-                      nextBlock  = (datum.rangeStart + datum.loaded) * TILE_SIZE % queue.total > 0;
+            for (let datum of this.data) {
+                const firstBlock = Math.ceil(datum.rangeStart * TILE_SIZE / this.total),
+                      lastBlock  = Math.floor((datum.rangeStart + datum.loaded) * TILE_SIZE / this.total),
+                      nextBlock  = (datum.rangeStart + datum.loaded) * TILE_SIZE % this.total > 0;
                 detail.fill('loaded', firstBlock, nextBlock ? lastBlock+1 : lastBlock);
             }
             return detail;
