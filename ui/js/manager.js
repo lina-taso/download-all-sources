@@ -820,9 +820,9 @@ function updateDetail(init)
     $('#detail-status-reason').val(queue.reason);
     $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
     $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
-    $('#detail-status-url').val(queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
-    $('#detail-status-url-open').attr('data-link', queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
-    $('#detail-status-user').val(queue.responseUrl.username);
+    $('#detail-status-url').val(queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-url-open').attr('data-link', queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-user').val(queue.responseUrl && queue.responseUrl.username);
     $('#detail-status-mime').val(queue.contentType);
     if (queue.total) {
         let progress = parseInt(loadedObj.now / queue.total * 100);
