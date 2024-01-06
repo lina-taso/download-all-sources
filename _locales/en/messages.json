@@ -112,9 +112,6 @@
     "new_download_multiple_url" : {
         "message" : "Download URLs (per line)"
     },
-    "new_download_multiple_filename" : {
-        "message" : "Filename [Optional]"
-    },
     "new_download_multiple_authorization" : {
         "message" : "BASIC Authorization [Optional]"
     },
@@ -126,6 +123,9 @@
     },
     "new_download_multiple_referer" : {
         "message" : "Referer [Optional]"
+    },
+    "new_download_multiple_filename" : {
+        "message" : "Filename [Optional]"
     },
     "new_download_multiple_location" : {
         "message" : "Download Location [Optional]"
@@ -575,9 +575,6 @@
     },
     "tag_mext2" : {
         "message" : "Extension corresponding to MIME Type (.mext)\n* Replace to 'no-ext' when no mapping defined\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
-    },
-    "tag_string" : {
-        "message" : "Default referer root path"
     },
     "tag_delimiter" : {
         "message" : "Directory delimiter\nEven if you run Windows, '\\' is available for delimiter but also '/' is too."

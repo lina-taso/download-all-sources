@@ -425,6 +425,9 @@
     "options_server_ignore_sizemismatch" : {
         "message" : "size mismatchエラーを無視"
     },
+    "options_authorization_parameters" : {
+        "message" : "認証設定"
+    },
     "options_authorization_url" : {
         "message" : "URL"
     },
