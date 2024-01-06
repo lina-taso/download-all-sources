@@ -21,6 +21,8 @@ var lastid = 0,
     downloadQueue   = [],
     fxDownloadQueue = [];
 
+let updateavailable = false;
+
 var config = {
     _config : {},
     getPref : function(key)
@@ -256,6 +258,8 @@ async function downloadFile(url, requestHeaders, locs, names, option)
 
     // update badge
     updateBadge();
+    // prevent updating addon
+    checkDownloading();
 }
 
 function createXhr(dlid, index, start, end)
@@ -735,6 +739,8 @@ function resumeDownload(dlid)
 
     // update badge
     updateBadge();
+    // prevent updating addon
+    checkDownloading();
 }
 
 function deleteQueue(dlid)
@@ -1035,6 +1041,8 @@ function checkWaiting()
 {
     // update badge
     updateBadge();
+    // prevent updating addon
+    checkDownloading();
 
     const waiting = searchQueue({ status : 'waiting' });
     let count;
@@ -1090,6 +1098,26 @@ function updateBadge()
         browser.browserAction.setBadgeText({ text : (downloading + waiting).toString() });
     else
         browser.browserAction.setBadgeText({ text : '' });
+}
+
+function checkDownloading()
+{
+    let downloading = searchQueue({ status : 'downloading' }).length,
+        paused      = searchQueue({ status : 'paused' }).length;
+
+    // prevent updating addon
+    if (downloading + paused) {
+        browser.runtime.onUpdateAvailable.addListener(onUpdateavailable);
+    }
+    else {
+        browser.runtime.onUpdateAvailable.removeListener(onUpdateavailable);
+        if (updateavailable) browser.runtime.reload();
+    }
+
+    function onUpdateavailable() {
+        console.log('Update available but download queue is active so update is holding.');
+        updateavailable = true;
+    }
 }
 
 // location operations
