@@ -745,7 +745,7 @@ function reDownloadManual()
         $('#dl-single-url').val(queue.originalUrl);
         $('#dl-single-user').val(queue.option.authorization[0]);
         $('#dl-single-pass').val(queue.option.authorization[1]);
-        $('#new-download-single-authorization').collapse(queue.option.authorization[0] ? 'show' : 'hide');
+        if (queue.option.authorization[0]) $('#new-download-single-authorization').collapse('show');
         const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#dl-single-referer').val(referer.value).trigger('input');
         $('#dl-single-location').val(queue.originalLocation).trigger('input');
