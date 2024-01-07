@@ -30,12 +30,14 @@ const progressInterval = 2000,
 let source     = [],
     prevLoadedKB = null, prevLoadedTime = null,
     baseurl,
-    filter1, filter2, filter3, filter4, filter5, filter6;
+    filter1, filter2, filter3, filter4, filter5, filter6,
+    totalGraph;
 
 
 $(async () => {
     bg = await browser.runtime.getBackgroundPage();
     localization();
+    createGraph();
     updateList();
     setInterval(updateList, progressInterval);
     // miscellanies events
@@ -845,6 +847,75 @@ function updateDetail(init)
     });
 }
 
+function createGraph()
+{
+    const ctx = $('#total-speed-graph')[0];
+    totalGraph = new Chart(ctx, {
+        type : 'line',
+        data : {
+            labels : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+            datasets : [{
+                data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                tension : 0.2,
+                fill : true,
+                borderColor : '#ffc10780',
+                backgroundColor : '#ffc10740'
+            }]
+        },
+        options : {
+            responsive : true,
+            resizeDelay : 100,
+            maintainAspectRatio : false,
+            elements : {
+                point : {
+                    pointStyle : false
+                }
+            },
+            interaction : {
+                mode : 'index',
+                intersect : false
+            },
+            plugins : {
+                legend : { display : false },
+                tooltip : {
+                    usePointStyle : true,
+                    callbacks : {
+                        title : () => '',
+                        label : (context) => { return context.parsed.y + ' MB/s'; },
+                        labelPointStyle : () => { return { pointStyle : 'line' }; }
+                    }
+                }
+            },
+            scales : {
+                x : {
+                    display : false,
+                    min : 1,
+                    grid : { display : false }
+                },
+                y : {
+                    display : false,
+                    min : 0,
+                    grid : { display : false },
+                    beforeCalculateLabelRotation : (axis) => {
+                        console.log(axis._valueRange);
+                        // change all itemGraph range
+                        $('#downloading-list > .download-item').each((i, e) => {
+                            e.chart.options.scales.y.max = axis._valueRange;
+                        });
+                    }
+                }
+            }
+        }
+    });
+}
+
+function updateGraph(Bps)
+{
+    totalGraph.data.datasets[0].data.shift();
+    totalGraph.data.datasets[0].data.push(Bps);
+    totalGraph.update();
+}
+
 function updateList()
 {
     const $template = $('#download-item-template');
@@ -898,6 +969,7 @@ function updateList()
             case 'paused':
             case 'downloaded':
                 $item.appendTo($('#downloading-list'));
+                $item[0].chart = createItemGraph($item.find('.item-speed-graph'));
                 break;
             case 'waiting':
                 $item.appendTo($('#waiting-list'));
@@ -928,11 +1000,23 @@ function updateList()
         case 'downloading':
             $item.find('.item-speed').text(calcByte(loadedObj.Bps) + '/s');
             $item.find('.item-remain').text(calcRemain(loadedObj, queue.total));
+            // chart
+            setTimeout(
+                () => { updateItemGraph($item[0].chart, loadedObj.Bps / 1024 / 1024); },
+                100
+            );
             break;
         case 'finished':
             $item.find('.item-speed').text(calcBps({ now : queue.loaded.now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
             $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
             break;
+        case 'paused':
+        case 'downloaded':
+            // chart
+            setTimeout(
+                () => { updateItemGraph($item[0].chart, 0); },
+                100
+            );
         default:
             $item.find('.item-speed').text('-');
             $item.find('.item-remain').text('-');
@@ -951,9 +1035,11 @@ function updateList()
     const now = (new Date()).getTime();
     if (prevLoadedKB > totalLoadedKB) {
         $('#total-speed').text(calcBpsKB({ now : 0, nowTime : now, prev : 0, prevTime : prevLoadedTime }));
+        updateGraph(calcMBpsKB({ now : 0, nowTime : now, prev : 0, prevTime : prevLoadedTime }));
     }
     else if (prevLoadedKB != null) {
         $('#total-speed').text(calcBpsKB({ now : totalLoadedKB, nowTime : now, prev : prevLoadedKB, prevTime : prevLoadedTime }));
+        updateGraph(calcMBpsKB({ now : totalLoadedKB, nowTime : now, prev : prevLoadedKB, prevTime : prevLoadedTime }));
     }
     else
         $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
@@ -985,6 +1071,12 @@ function updateList()
               Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
         return calcByte(Bps * 1024) + '/s';
     }
+    function calcMBpsKB(loadedObj)
+    {
+        const term = loadedObj.nowTime - loadedObj.prevTime,
+              Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
+        return (Bps / 1024).toFixed(1);
+    }
     function calcRemain(loadedObj, total)
     {
         if (!loadedObj.now || !total) return 'unknown';
@@ -995,6 +1087,61 @@ function updateList()
         if (remain > 86400 * 30) return 'stalled';
 
         return Math.floor(remain) + ' s';
+    }
+    function createItemGraph($itemSpeedGraph)
+    {
+        return new Chart($itemSpeedGraph[0], {
+            type : 'line',
+            data : {
+                labels : [0,1,2,3,4,5,6,7,8,9,10],
+                datasets : [{
+                    data : [0,0,0,0,0,0,0,0,0,0,0],
+                    tension : 0.2,
+                    fill : true,
+                    borderColor : '#0dcaf080',
+                    backgroundColor : '#0dcaf040'
+                }]
+            },
+            options : {
+                responsive : true,
+                resizeDelay : 100,
+                maintainAspectRatio : false,
+                elements : {
+                    point : {
+                        pointStyle : false
+                    }
+                },
+                interaction : {
+                    mode : 'index',
+                    intersect : false
+                },
+                plugins : {
+                    legend : { display : false },
+                    tooltip : {
+                        enabled : false
+                    }
+                },
+                scales : {
+                    x : {
+                        display : false,
+                        min : 1,
+                        grid : { display : false }
+                    },
+                    y : {
+                        display : false,
+                        min : 0,
+                        max : 1,
+                        grid : { display : false }
+                    }
+                }
+            }
+        });
+    }
+    function updateItemGraph(chart, Bps)
+    {
+        chart.data.datasets[0].data.shift();
+        chart.data.datasets[0].data.push(Bps);
+        chart.update();
     }
 }
 

@@ -161,6 +161,20 @@ html, body {
     animation: progress-bar-stripes 1s linear infinite;
 }
 
+/* item-speed */
+.item-speed-graph-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+.item-speed-graph {
+    width: 100%;
+    height: 100%;
+}
+
 /* confirm modal */
 #confirm-dialog .modal-body {
     white-space: pre-wrap;
@@ -359,6 +373,21 @@ html, body {
     text-overflow: ellipsis;
 }
 
+#total-speed-graph-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+#total-speed-graph-container ~ * {
+    z-index: 0;
+    pointer-events: none;
+}
+#total-speed-graph {
+    width: 100%;
+    height: 100%;
+}
 #loading-cover {
     width: 100%;
     height: 100%;

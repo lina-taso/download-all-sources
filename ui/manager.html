@@ -7,6 +7,7 @@
         <title>Download All Sources Manager</title>
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>
+        <script src="js/chart.umd.js"></script>
         <script src="js/manager.js"></script>
         <link rel="stylesheet" href="css/all.css"> <!-- fontawesome -->
         <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -111,6 +112,9 @@
             </div>
             <nav class="navbar navbar-dark bg-dark fixed-bottom">
                 <div class="container-fluid">
+                    <div id="total-speed-graph-container">
+                        <canvas id="total-speed-graph"></canvas>
+                    </div>
                     <span class="navbar-text ms-auto me-2" data-string="footer_total_speed"></span>
                     <span id="total-speed" class="navbar-text">-</span>
                 </div>
@@ -917,9 +921,9 @@
 
         <!-- template -->
         <div class="d-none">
-            <li id="download-item-template" class="download-item list-group-item list-group-item-action" data-status="" data-reason="" tabindex="0">
+            <li id="download-item-template" class="download-item list-group-item list-group-item-action py-0" data-status="" data-reason="" tabindex="0">
                 <div class="row align-items-center">
-                    <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center px-0">
+                    <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center px-0 my-2">
                         <div class="item-status">
                             <i class=""></i>
                             <i class="item-info-button fas fa-info-circle" data-bs-toggle="modal" data-bs-target="#download-detail" data-dlid=""></i>
@@ -932,13 +936,18 @@
                             <i class="item-delete-button fas fa-trash" data-dlid=""></i>
                         </div>
                     </div>
-                    <div class="item-filename col-lg-5 col-md-6 col-10">
+                    <div class="item-filename col-lg-5 col-md-6 col-10 my-2">
                     </div>
-                    <div class="progress col-lg-2 d-none d-lg-flex px-0">
+                    <div class="progress col-lg-2 d-none d-lg-flex px-0 my-2">
                         <div class="item-progress text-center progress-bar progress-bar-striped bg-info overflow-visible px-2"></div>
                     </div>
-                    <div class="item-speed col-lg-2 col-md-2 col-6 text-center"></div>
-                    <div class="item-remain col-lg-2 col-md-2 col-6 text-center"></div>
+                    <div class="col-lg-2 col-md-2 col-6" style="position: relative;">
+                        <div class="item-speed-graph-container">
+                            <canvas class="item-speed-graph"></canvas>
+                        </div>
+                        <div class="item-speed text-center my-2"></div>
+                    </div>
+                    <div class="item-remain col-lg-2 col-md-2 col-6 my-2 text-center"></div>
                 </div>
             </li>
 
