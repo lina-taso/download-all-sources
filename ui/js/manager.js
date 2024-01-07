@@ -897,7 +897,6 @@ function createGraph()
                     min : 0,
                     grid : { display : false },
                     beforeCalculateLabelRotation : (axis) => {
-                        console.log(axis._valueRange);
                         // change all itemGraph range
                         $('#downloading-list > .download-item').each((i, e) => {
                             e.chart.options.scales.y.max = axis._valueRange;
