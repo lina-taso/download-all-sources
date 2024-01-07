@@ -28,7 +28,7 @@ const progressInterval = 2000,
 
 // valuables
 let source     = [],
-    prevLoaded = null, prevLoadedTime = null,
+    prevLoadedKB = null, prevLoadedTime = null,
     baseurl,
     filter1, filter2, filter3, filter4, filter5, filter6;
 
@@ -849,7 +849,7 @@ function updateList()
 {
     const $template = $('#download-item-template');
 
-    let totalLoaded = 0;
+    let totalLoadedKB = 0;
 
     for (let queue of bg.downloadQueue) {
         let dlid = queue.id,
@@ -857,7 +857,7 @@ function updateList()
 
         // total speed
         const loadedObj = queue.loaded;
-        totalLoaded += parseInt(loadedObj.now / 1000);
+        totalLoadedKB += parseInt(loadedObj.now / 1000);
 
         // listed item
         if ($('#item-' + dlid).length) {
@@ -949,10 +949,15 @@ function updateList()
 
     // total speed
     const now = (new Date()).getTime();
-    if (prevLoaded > totalLoaded) $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
-    else if (prevLoaded != null)  $('#total-speed').text(calcKBps({ now : totalLoaded, nowTime : now, prev : prevLoaded, prevTime : prevLoadedTime }));
-    else                          $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
-    prevLoaded     = totalLoaded;
+    if (prevLoadedKB > totalLoadedKB) {
+        $('#total-speed').text(calcBpsKB({ now : 0, nowTime : now, prev : 0, prevTime : prevLoadedTime }));
+    }
+    else if (prevLoadedKB != null) {
+        $('#total-speed').text(calcBpsKB({ now : totalLoadedKB, nowTime : now, prev : prevLoadedKB, prevTime : prevLoadedTime }));
+    }
+    else
+        $('#total-speed').text(browser.i18n.getMessage('footer_speed_calc'));
+    prevLoadedKB   = totalLoadedKB;
     prevLoadedTime = now;
 
 
@@ -974,7 +979,7 @@ function updateList()
               Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
         return calcByte(Bps) + '/s';
     }
-    function calcKBps(loadedObj)
+    function calcBpsKB(loadedObj)
     {
         const term = loadedObj.nowTime - loadedObj.prevTime,
               Bps  = (loadedObj.now - loadedObj.prev) / term * 1000;
