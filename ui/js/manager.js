@@ -899,7 +899,7 @@ function createGraph()
                     beforeCalculateLabelRotation : (axis) => {
                         // change all itemGraph range
                         $('#downloading-list > .download-item').each((i, e) => {
-                            e.chart.options.scales.y.max = axis._valueRange;
+                            if (e.chart) e.chart.options.scales.y.max = axis._valueRange;
                         });
                     }
                 }
@@ -937,8 +937,11 @@ function updateList()
             case 'downloading':
             case 'paused':
             case 'downloaded':
-                if (!$('#downloading-list').has($item).length)
+                if (!$('#downloading-list').has($item).length) {
                     $item.appendTo($('#downloading-list'));
+                    // chart
+                    $item[0].chart = createItemGraph($item.find('.item-speed-graph'));
+                }
                 break;
             case 'waiting':
                 if ($('#waiting-list').has($item).length)
@@ -950,8 +953,12 @@ function updateList()
                 $item.find('.item-status > [data-fxid]').attr('data-fxid', queue.fxid);
                 if ($('#finished-list').has($item).length)
                     continue;
-                else
+                else {
                     $item.appendTo($('#finished-list'));
+                    // chart
+                    $item[0].chart.destroy();
+                    delete $item[0].chart;
+                }
                 break;
             case 'deleted':
                 $item.remove();
@@ -968,6 +975,7 @@ function updateList()
             case 'paused':
             case 'downloaded':
                 $item.appendTo($('#downloading-list'));
+                // chart
                 $item[0].chart = createItemGraph($item.find('.item-speed-graph'));
                 break;
             case 'waiting':
