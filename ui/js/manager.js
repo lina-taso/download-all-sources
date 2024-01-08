@@ -12,6 +12,7 @@ let bg;
 const progressInterval = 2000,
       TILE_SIZE     = 400,
       PAGE_TITLE    = 'Download All Source Manager',
+      MAX_FILTER_CNT= 5000,
       allowProtocol = /^(https|http):/,
       // not include tags such as tag and title
       allowFilename = /^([^/\\:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
@@ -90,7 +91,7 @@ $(async () => {
     // source list filter
     $('#byTagname input, #byFiletype input, #byKeyword input')
         .on('input', function() {
-            if (source.length < 5000) { checkActiveFilter(); outputSourceList(); }
+            if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); }
         });
     $('#filter-dup')
         .on('input', function() {
@@ -252,7 +253,7 @@ $(async () => {
                     resolve();
                 };
 
-                if ($('#source-list .source-item').length < 5000)
+                if ($('#source-list .source-item').length < MAX_FILTER_CNT)
                     new Promise(output);
                 else {
                     const $loading = $('#loading-cover');
@@ -275,7 +276,7 @@ $(async () => {
                 );
             });
             // filter button
-            if (source.length > 5000) {
+            if (source.length >= MAX_FILTER_CNT) {
                 $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
                     .parent().removeClass('d-none');
             }
@@ -1213,7 +1214,7 @@ function outputSourceList()
         resolve();
     };
 
-    if (source.length < 5000)
+    if (source.length < MAX_FILTER_CNT)
         new Promise(output);
     else {
         const $loading = $('#loading-cover');
