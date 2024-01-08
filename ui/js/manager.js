@@ -1358,9 +1358,9 @@ function filterDuplicateSourceList(filteredSource)
 
 function checkActiveFilter()
 {
-    $('button[data-bs-target="#byTagname"]').toggleClass('bg-dark', $('#filter-tagnamelist').val().trim().length != 0);
-    $('button[data-bs-target="#byFiletype"]').toggleClass('bg-dark', $('#byFiletype input:checked').length != 0);
-    $('button[data-bs-target="#byKeyword"]').toggleClass('bg-dark', $('#filter-expression').val().length != 0);
+    $('a.collapse-toggle-link[href="#byTagname"]').attr('data-filtered', $('#filter-tagnamelist').val().trim().length != 0 ? 'true' : '');
+    $('a.collapse-toggle-link[href="#byFiletype"]').attr('data-filtered', $('#byFiletype input:checked').length != 0 ? 'true' : '');
+    $('a.collapse-toggle-link[href="#byKeyword"]').attr('data-filtered', $('#filter-expression').val().length != 0 ? 'true' : '');
 }
 
 function checkDownloadOptions()
