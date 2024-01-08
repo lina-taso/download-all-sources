@@ -25,6 +25,9 @@ html, body {
 .collapse-toggle-link {
     text-decoration-line: none;
 }
+.collapse-toggle-link[aria-expanded="true"] {
+    font-weight: bold;
+}
 .collapse-toggle-link::before {
     display: inline-block; /* for rotation */
     margin-right: .5em;
@@ -35,8 +38,10 @@ html, body {
 .collapse-toggle-link[aria-expanded="true"]::before {
     transform: rotate(90deg);
 }
-.collapse-toggle-link[aria-expanded="true"] {
-    font-weight: bold;
+.collapse-toggle-link[data-filtered="true"]::after {
+    margin-left: .1em;
+    font-family: "Font Awesome 6 Free"; font-weight: 400;
+    content: '\f058';
 }
 .card-header[data-bs-toggle="collapse"] {
     text-decoration-line: none;
