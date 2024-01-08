@@ -26,9 +26,9 @@ html, body {
     text-decoration-line: none;
 }
 .collapse-toggle-link::before {
-    display: inline-block;
+    display: inline-block; /* for rotation */
     margin-right: .5em;
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-family: "Font Awesome 6 Free"; font-weight: 900;
     content: '\f054';
     transition: transform 0.35s ease;
 }
@@ -46,9 +46,8 @@ html, body {
     color: var(--bs-body-color);
 }
 .card-header[data-bs-toggle="collapse"]::before {
-    display: inline-block;
     margin-right: .5em;
-    font-family: "Font Awesome 5 Free";
+    font-family: "Font Awesome 6 Free"; font-weight: 900;
     content: '\f2d1';
 }
 
@@ -105,7 +104,7 @@ html, body {
 }
 .download-item .item-status > :first-child {
     display: inline-block;
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-family: "Font Awesome 6 Free"; font-weight: 900;
     font-style: normal;
     font-variant: normal;
     text-rendering: auto;
@@ -279,7 +278,7 @@ html, body {
 #sort-url::after,
 #sort-filetype::after,
 #sort-tag::after {
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
+    font-family: "Font Awesome 6 Free"; font-weight: 900;
     padding-left: .5em;
 }
 #sort-url[data-order=""]::after,
@@ -300,7 +299,7 @@ html, body {
 
 .source-item::before {
     position: absolute;
-    font-family: "Font Awesome 5 Free"; font-weight: 400;
+    font-family: "Font Awesome 6 Free"; font-weight: 400;
     top: .3em;
     content: '\f15b';
 }
