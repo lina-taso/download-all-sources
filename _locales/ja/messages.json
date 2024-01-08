@@ -352,12 +352,6 @@
     "confirm_stop_waiting" : {
         "message" : "DL待ちのアイテムを全てキャンセルしますか？"
     },
-    "show_filename_tags" : {
-        "message" : "ファイル名タグを表示"
-    },
-    "show_location_tags" : {
-        "message" : "ディレクトリ名タグを表示"
-    },
 
     //
     // Options UI

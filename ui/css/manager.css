@@ -20,6 +20,11 @@ html, body {
 .tooltip {
     white-space: pre-wrap;
 }
+
+/* collapse toggle */
+.collapse-toggle-link {
+    text-decoration-line: none;
+}
 .collapse-toggle-link::before {
     display: inline-block;
     margin-right: .5em;
@@ -32,6 +37,19 @@ html, body {
 }
 .collapse-toggle-link[aria-expanded="true"] {
     font-weight: bold;
+}
+.card-header[data-bs-toggle="collapse"] {
+    text-decoration-line: none;
+    font-weight: bold;
+}
+.card-header[data-bs-toggle="collapse"]:not(:hover) {
+    color: var(--bs-body-color);
+}
+.card-header[data-bs-toggle="collapse"]::before {
+    display: inline-block;
+    margin-right: .5em;
+    font-family: "Font Awesome 5 Free";
+    content: '\f2d1';
 }
 
 /* localization */
@@ -252,12 +270,6 @@ html, body {
 #source-download-button1::after,
 #source-download-button2::after {
     content: ' (' attr(data-count) ')';
-}
-#source .card-header::before {
-    display: inline-block;
-    margin-right: .5em;
-    font-family: "Font Awesome 5 Free"; font-weight: 900;
-    content: '\f2d1';
 }
 #sort-url,
 #sort-filetype,
