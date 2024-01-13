@@ -25,6 +25,9 @@ const progressInterval = 2000,
       allowLocationD= /^[^:,;*?"<>|]*$/,
       denyFilename  = /^[. ]+|[. ]+$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
+      // referer tag pattern
+      refTagFilename= /:refdom:/,
+      refTagLocation= /:refdom:|:refpath:/,
       defaultTitle  = 'no-title';
 
 // valuables
@@ -54,81 +57,28 @@ $(async () => {
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
     $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
     // finished list
-    $('#finished-delete-button')
-        .on('click', function() {
-            $('#finished-list').children('.download-item').each(function() {
-                bg.deleteQueue(this.id.split('-')[1]);
-                $(this).remove();
-            });
-        });
+    $('#finished-delete-button').on('click', deleteFinished);
     // item
     $('.item-resume-button').on('click', resumeDownload);
     $('.item-redo-button').on('click', reDownload);
-    $('.item-delete-button')
-        .on('click', function() {
-            bg.deleteQueue(this.dataset.dlid);
-            $('#item-' + this.dataset.dlid).remove();
-        });
+    $('.item-delete-button').on('click', deleteItem);
 
     // source list item
-    $('#source-list')
-        .on('click', '.source-item', function(e) {
-            // disable clicking checkbox
-            if (e.target === $(this).find('.source-url-input')[0]) return;
-            $(this).find('.source-url-input').prop('checked', !$(this).find('.source-url-input').prop('checked')).change();
-        });
+    $('#source-list').on('click', '.source-item', checkSourceItem);
     // source list sort
-    $('#sort-url, #sort-filetype, #sort-tag')
-        .on('click', function() {
-            const targets = ['sort-url', 'sort-filetype', 'sort-tag'];
-            if (this.dataset.order == 'asc') this.dataset.order = 'desc';
-            else if (this.dataset.order == 'desc') this.dataset.order = '';
-            else this.dataset.order = 'asc';
-            for (let target of targets)
-                if (this.id != target) $('#' + target).attr('data-order', '');
-            outputSourceList();
-        });
+    $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
     // source list filter
     $('#byTagname input, #byFiletype input, #byKeyword input')
-        .on('input', function() {
-            if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); }
-        });
+        .on('input', function() { if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); } });
     $('#filter-dup')
-        .on('input', function() {
-            checkActiveFilter(); outputSourceList();
-        });
+        .on('input', function() { checkActiveFilter(); outputSourceList(); });
     // source list filter button
     $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
-        .on('click', function() {
-            checkActiveFilter(); outputSourceList();
-        });
-    // checkbox validation
-    $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
+        .on('click', function() { checkActiveFilter(); outputSourceList(); });
 
-    // modal
+    // new download modal
     $('#new-download')
-        .on('show.bs.modal', async function() {
-            // default-referer from new button
-            if (!baseurl) {
-                $('#dl-single-referer-default').prop('checked', false).trigger('input');
-                $('#dl-single-referer-default-group').css('display', 'none');
-            }
-
-            // initial value
-            const config = await bg.config.getPref();
-            // initial authentication
-            $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
-            // initial referer
-            $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '');
-            // initial filename
-            $('#dl-single-filename, #dl-multiple-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '').trigger('input');
-            // initial location
-            $('#dl-single-location, #dl-multiple-location').val(config['remember-new-location'] ? config['new-location-value'] : '').trigger('input');
-            // initial option1
-            $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['remember-new-option1'] ? config['new-option1-value'] : false).trigger('input');
-            // initial option2
-            $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['remember-new-option2'] ? config['new-option2-value'] : false).trigger('input');
-        })
+        .on('show.bs.modal', newDownloadModal)
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); })
         .on('hide.bs.modal', function() { baseurl = null; });
     // in new download modal
@@ -140,49 +90,21 @@ $(async () => {
             else
                 $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
         });
-    // modal
+    // source download modal
+    $('#source-download')
+        .on('show.bs.modal', sourceDownloadModal)
+        .on('shown.bs.modal', outputSourceList)
+        .on('hidden.bs.modal', sourceDownloadModalHidden);
+    // detail modal
     $('#download-detail')
-        .on('show.bs.modal', function(e) {
-            const button = e.relatedTarget;
-            // update dlid
-            $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-                .attr('data-dlid', button.dataset.dlid);
-            // update detail
-            updateDetail(true);
-            $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
-        })
-        .on('hidden.bs.modal', function() {
-            // to stop animation
-            $(this).attr('data-status', '');
-            clearInterval($(this).attr('data-timer'));
-        });
+        .on('show.bs.modal', detailModal)
+        .on('hidden.bs.modal', detailModalHidden);
     // in detail modal
     $('#detail-resume-button').on('click', resumeDownload);
     $('#detail-redo-button').on('click', reDownload);
     $('#detail-redo-button-manual').on('click', reDownloadManual);
-    $('#detail-next-button, #detail-prev-button')
-        .on('click', function() {
-            let $target;
-
-            if (this.id == 'detail-next-button')
-                $target = $('#item-' + this.dataset.dlid).next('.download-item');
-            else
-                $target = $('#item-' + this.dataset.dlid).prev('.download-item');
-
-            if ($target.length != 0) {
-                // update dlid
-                $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-                    .attr('data-dlid', $target.attr('id').split('-')[1]);
-                // update detail
-                updateDetail(true);
-            }
-        });
-    $('#detail-status-detail').append(() => {
-        const box   = [],
-              $tile = $('<div class="detail-tile" data-status="" />');
-        [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
-        return box;
-    });
+    $('#detail-next-button, #detail-prev-button').on('click', switchDetail);
+    $('#detail-status-detail').append(detailTile);
     $('#detail-info-filename-edit, #detail-info-location-edit')
         .on('click', function() {
             $(this).parent().prev().attr('data-editing', 'true');
@@ -233,286 +155,36 @@ $(async () => {
             const valid = allowLocationD.test(location) && !denyLocation.test(location);
             $(this).toggleClass('is-invalid', !valid);
         });
-    // modal
-    $('#source-download')
-        .on('show.bs.modal', async () => {
-            // only once
-            $('#source-all').on('input', function() {
-                const output = (resolve, reject) => {
-                    if (this.checked)
-                        $('#source-list .source-url-input').prop('checked', true);
-                    else
-                        $('#source-list .source-url-input').prop('checked', false);
 
-                    // count downloads
-                    $('#source-download-button1, #source-download-button2').attr(
-                        'data-count',
-                        $('#source-list .source-url-input:checked').length
-                    );
-
-                    resolve();
-                };
-
-                if ($('#source-list .source-item').length < MAX_FILTER_CNT)
-                    new Promise(output);
-                else {
-                    const $loading = $('#loading-cover');
-                    // loading start
-                    $loading.on('transitionend', async function() {
-                        $(this).off('transitionend');
-
-                        await new Promise(output);
-                        // loading end
-                        $loading.removeClass('show');
-
-                    }).addClass('show');
-                }
-            });
-            $('#source-list').on('change', '.source-url-input', function() {
-                // count downloads
-                $('#source-download-button1, #source-download-button2').attr(
-                    'data-count',
-                    $('#source-list .source-url-input:checked').length
-                );
-            });
-            // filter button
-            if (source.length >= MAX_FILTER_CNT) {
-                $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
-                    .parent().removeClass('d-none');
-            }
-
-            // default-referer
-            $('#dl-source-referer-default').on('input', function() {
-                if (this.checked)
-                    $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
-                else
-                    $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
-            });
-            // initial value
-            const config = await bg.config.getPref();
-            // filter-filetypes
-            filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
-            filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
-            filter3 = new RegExp('^(' + config['filetype3-extension'] + ')$'),
-            filter4 = new RegExp('^(' + config['filetype4-extension'] + ')$'),
-            filter5 = new RegExp('^(' + config['filetype5-extension'] + ')$'),
-            filter6 = new RegExp('^(' + config['filetype6-extension'] + ')$');
-            // initial source-tagname (checked by checkActiveFilter)
-            if (config['remember-source-tagname'])
-                $('#filter-tagnamelist').val(config['source-tagname-value']);
-            // initial source-filetype (checked by checkActiveFilter)
-            if (config['remember-source-filetype'])
-                config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
-            // initial source-keyword (checked by checkActiveFilter)
-            if (config['remember-source-keyword']) {
-                $('#filter-expression').val(config['source-keyword-value']);
-                $('#filter-regex').prop('checked', config['source-regex-value']);
-            }
-            // initial source-authentication
-            $('#dl-source-user, #dl-source-pass').val('');
-            // initial source-referer
-            if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
-                $('#dl-source-referer-default').prop('checked', true).trigger('input');
-            else if (config['remember-source-referer']) {
-                $('#dl-source-referer-default').prop('checked', false);
-                $('#dl-source-referer').val(config['source-referer-value']);
-            }
-            // initial source-filename
-            $('#dl-source-filename').val(config['remember-source-filename'] ? config['source-filename-value'] : '').trigger('input');
-            // initial source-location
-            $('#dl-source-location').val(config['remember-source-location'] ? config['source-location-value'] : '').trigger('input');
-            // initial option1
-            $('#dl-source-option1').prop('checked', config['remember-source-option1'] ? config['source-option1-value'] : false).trigger('input');
-            // initial option2
-            $('#dl-source-option2').prop('checked', config['remember-source-option2'] ? config['source-option2-value'] : false).trigger('input');
-            // tab color
-            checkActiveFilter();
-        })
-        .on('shown.bs.modal', async () => {
-            outputSourceList();
-        })
-        .on('hidden.bs.modal', function() {
-            baseurl = null;
-            $(this).remove();
-        });
-    // modal
+    // confirm dialog
     $('#confirm-dialog')
-        .on('show.bs.modal', function(e) {
-            const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
-
-            switch (e.relatedTarget.dataset.action) {
-            case 'stop':
-                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
-                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-                    .off('click')
-                    .on('click', stopDownload);
-                break;
-            case 'pause':
-                bg.downloadQueue[dlid].resumeEnabled
-                    ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
-                    : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
-                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
-                    .off('click')
-                    .on('click', pauseDownload);
-                break;
-            case 'stop-downloading':
-                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
-                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-                    .off('click')
-                    .on('click', () => {
-                        $('#downloading-list').children('.download-item').each(function() {
-                            bg.stopDownload(this.id.split('-')[1]);
-                        });
-                    });
-                break;
-            case 'stop-waiting':
-                $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
-                $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-                    .off('click')
-                    .on('click', () => {
-                        $('#waiting-list').children('.download-item').each(function() {
-                            bg.stopDownload(this.id.split('-')[1]);
-                        });
-                    });
-                break;
-            }
-        })
-        .on('shown.bs.modal', function() {
-            $(this).find('[data-focus=true]').focus();
-        });
+        .on('show.bs.modal', confirmDialog)
+        .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
 
     // url validation
     $('#dl-single-url')
-        .on('input', function() {
-            if (!this.value) {
-                $(this).toggleClass('is-invalid', false);
-                return;
-            }
-            try {
-                new URL(this.value);
-                if (!allowProtocol.test(this.value))
-                    $(this).toggleClass('is-invalid', true);
-                else
-                    $(this).toggleClass('is-invalid', false);
-            }
-            catch (e) {
-                $(this).toggleClass('is-invalid', true);
-            }
-        });
+        .on('input', validateUrl);
+    // urls validation
     $('#dl-multiple-url')
-        .on('input', function() {
-            if (!this.value) {
-                $(this).toggleClass('is-invalid', false);
-                return;
-            }
-            try {
-                ($(this).val().split('\n')).forEach((line) => {
-                    new URL(line);
-                    if (!allowProtocol.test(line))
-                        $(this).toggleClass('is-invalid', true);
-                    else
-                        $(this).toggleClass('is-invalid', false);
-                });
-            }
-            catch (e) {
-                $(this).toggleClass('is-invalid', true);
-            }
-        });
+        .on('input', validateUrls);
     // authentication validation
     $('#dl-single-user, #dl-single-pass')
-        .on('input', function() {
-            $('#dl-single-user').toggleClass('is-invalid', $('#dl-single-user').val() == '' && $('#dl-single-pass').val() != '');
-        });
+        .on('input', () => validateAuthentication($('#dl-single-user'), $('#dl-single-pass')));
     $('#dl-multiple-user, #dl-multiple-pass')
-        .on('input', function() {
-            $('#dl-multiple-user').toggleClass('is-invalid', $('#dl-multiple-user').val() == '' && $('#dl-multiple-pass').val() != '');
-        });
+        .on('input', () => validateAuthentication($('#dl-multiple-user'), $('#dl-multiple-pass')));
     $('#dl-source-user, #dl-source-pass')
-        .on('input', function() {
-            $('#dl-source-user').toggleClass('is-invalid', $('#dl-source-user').val() == '' && $('#dl-source-pass').val() != '');
-        });
+        .on('input', () => validateAuthentication($('#dl-source-user'), $('#dl-source-pass')));
     // referer validation
     $('#dl-single-referer, #dl-multiple-referer, #dl-source-referer')
-        .on('input', function() {
-            const $filename = $('#' + this.id.replace('referer', 'filename')),
-                  $location = $('#' + this.id.replace('referer', 'location'));
-
-            if (!this.value) {
-                const valid = !/:refdom:/.test($filename.val()) || !/:refdom:|:refpath:/.test($location.val());
-                $(this).toggleClass('is-invalid', !valid);
-                $filename.trigger('input'), $location.trigger('input');
-                return;
-            }
-            try {
-                new URL(this.value);
-                $(this).toggleClass('is-invalid', false);
-                $filename.trigger('input'), $location.trigger('input');
-            }
-            catch (e) {
-                const valid = !(
-                    /:refdom:/.test($filename.val()) && $filename.addClass('is-invalid') ||
-                    /:refdom:|:refpath:/.test($location.val()) && $location.addClass('is-invalid'));
-                $(this).toggleClass('is-invalid', !valid);
-            }
-        });
+        .on('input', validateReferer);
     // filename validation
     $('#dl-single-filename, #dl-multiple-filename, #dl-source-filename')
-        .on('input', function() {
-            const $referer     = $('#' + this.id.replace('filename', 'referer')),
-                  allowPattern = this.id != 'dl-source-filename' ? allowFilename : allowFilenameS,
-                  valid        =
-                  // referer tag is not included, referer is valid if empty
-                  ( !/:refdom:/.test(this.value) && ($referer.val() || !$referer.val() && $referer.removeClass('is-invalid')) ||
-                    // referer tag is included, referer is invalid if empty
-                    !$referer.val() && !$referer.addClass('is-invalid') || $referer.val() && !$referer.hasClass('is-invalid') ) &&
-                  // pattern validation
-                  allowPattern.test(this.value) && !denyFilename.test(this.value);
-
-            $(this).toggleClass('is-invalid', !valid);
-            // sample
-            if (valid) $('#' + this.id + '-sample').text(
-                bg.replaceTags({
-                    path       : this.value,
-                    targetUrl  : 'http://www.example.com/path/name/',
-                    refererUrl : $referer.val(),
-                    tag        : 'tag',
-                    title      : 'title',
-                    name       : 'filename',
-                    ext        : 'ext',
-                    mime       : 'sample/mime-type'
-                }, true));
-            else $('#' + this.id + '-sample').text('');
-        });
+        .on('input', validateFilename);
     // location validation
     $('#dl-single-location, #dl-multiple-location, #dl-source-location')
-        .on('input', async function() {
-            const defaultLocation = await bg.config.getPref('download-location'),
-                  location        = bg.normalizeLocation(defaultLocation + this.value),
-                  $referer        = $('#' + this.id.replace('location', 'referer')),
-                  allowPattern    = this.id != 'dl-source-location' ? allowLocation : allowLocationS,
-                  valid           =
-                  // referer tag is not included, referer is valid if empty
-                  ( !/:refdom:|:refpath:/.test(this.value) && ($referer.val() || !$referer.val() && $referer.removeClass('is-invalid')) ||
-                    // referer tag is included, referer is invalid if empty
-                    !$referer.val() && !$referer.addClass('is-invalid') || $referer.val() && !$referer.hasClass('is-invalid') ) &&
-                  // pattern validation
-                  allowPattern.test(location) && !denyLocation.test(location);
-
-            $(this).toggleClass('is-invalid', !valid);
-            // sample
-            if (valid) $('#' + this.id + '-sample').text(
-                bg.replaceTags({
-                    path       : location,
-                    targetUrl  : 'http://www.example.com/path/name/',
-                    refererUrl : $referer.val(),
-                    tag        : 'tag',
-                    title      : 'title',
-                    name       : 'filename',
-                    ext        : 'ext',
-                    mime       : 'sample/mime-type'
-                }));
-            else $('#' + this.id + '-sample').text('');
-        });
+        .on('input', validateLocation);
+    // checkbox validation
+    $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
 
     // tag insertion
     $('.tags')
@@ -744,7 +416,8 @@ function reDownloadManual()
     $('#new-download').on('shown.bs.modal', setParameters);
     $('#new-download').modal('show');
 
-    function setParameters() {
+    function setParameters()
+    {
         $('#single-tab').tab('show');
         $('#dl-single-url').val(queue.originalUrlInput);
         $('#dl-single-user').val(queue.option.authentication[0]);
@@ -761,6 +434,20 @@ function reDownloadManual()
     }
 }
 
+function deleteFinished()
+{
+    $('#finished-list').children('.download-item').each(function() {
+        bg.deleteQueue(this.id.split('-')[1]);
+        $(this).remove();
+    });
+}
+
+function deleteItem()
+{
+    bg.deleteQueue(this.dataset.dlid);
+    $('#item-' + this.dataset.dlid).remove();
+}
+
 function stopDownload()
 {
     bg.stopDownload($('#confirm-dialog').attr('data-dlid'));
@@ -774,6 +461,32 @@ function pauseDownload()
 function resumeDownload()
 {
     bg.resumeDownload(this.dataset.dlid);
+}
+
+function switchDetail()
+{
+    let $target;
+
+    if (this.id == 'detail-next-button')
+        $target = $('#item-' + this.dataset.dlid).next('.download-item');
+    else
+        $target = $('#item-' + this.dataset.dlid).prev('.download-item');
+
+    if ($target.length != 0) {
+        // update dlid
+        $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
+            .attr('data-dlid', $target.attr('id').split('-')[1]);
+        // update detail
+        updateDetail(true);
+    }
+}
+
+function detailTile()
+{
+    const box   = [],
+          $tile = $('<div class="detail-tile" data-status="" />');
+    [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
+    return box;
 }
 
 function updateDetail(init)
@@ -907,6 +620,190 @@ function createGraph()
             }
         }
     });
+}
+
+async function newDownloadModal()
+{
+    if (!baseurl) {
+        // initial url
+        $('#dl-single-url, #dl-multiple-url').val('').trigger('input');
+        // default-referer from new button
+        $('#dl-single-referer-default').prop('checked', false).trigger('input');
+        $('#dl-single-referer-default-group').css('display', 'none');
+    }
+
+    // initial value
+    const config = await bg.config.getPref();
+    // initial authentication
+    $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
+    // initial filename
+    $('#dl-single-filename, #dl-multiple-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '');
+    // initial location
+    $('#dl-single-location, #dl-multiple-location').val(config['remember-new-location'] ? config['new-location-value'] : '');
+    // initial referer
+    $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '').trigger('input');
+    // initial option1
+    $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['remember-new-option1'] ? config['new-option1-value'] : false).trigger('input');
+    // initial option2
+    $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['remember-new-option2'] ? config['new-option2-value'] : false).trigger('input');
+}
+
+async function sourceDownloadModal()
+{
+    // only once
+    $('#source-all').on('input', function() {
+        const output = (resolve, reject) => {
+            $('#source-list .source-url-input').prop('checked', this.checked);
+
+            // count downloads
+            $('#source-download-button1, #source-download-button2').attr(
+                'data-count',
+                $('#source-list .source-url-input:checked').length
+            );
+
+            resolve();
+        };
+
+        if ($('#source-list .source-item').length < MAX_FILTER_CNT)
+            new Promise(output);
+        else {
+            const $loading = $('#loading-cover');
+            // loading start
+            $loading.on('transitionend', async function() {
+                $(this).off('transitionend');
+
+                await new Promise(output);
+                // loading end
+                $loading.removeClass('show');
+
+            }).addClass('show');
+        }
+    });
+    $('#source-list').on('change', '.source-url-input', function() {
+        // count downloads
+        $('#source-download-button1, #source-download-button2').attr(
+            'data-count',
+            $('#source-list .source-url-input:checked').length
+        );
+    });
+    // filter button
+    if (source.length >= MAX_FILTER_CNT) {
+        $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+            .parent().removeClass('d-none');
+    }
+
+    // default-referer
+    $('#dl-source-referer-default').on('input', function() {
+        if (this.checked)
+            $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
+        else
+            $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
+    });
+    // initial value
+    const config = await bg.config.getPref();
+    // filter-filetypes
+    filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
+    filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
+    filter3 = new RegExp('^(' + config['filetype3-extension'] + ')$'),
+    filter4 = new RegExp('^(' + config['filetype4-extension'] + ')$'),
+    filter5 = new RegExp('^(' + config['filetype5-extension'] + ')$'),
+    filter6 = new RegExp('^(' + config['filetype6-extension'] + ')$');
+    // initial source-tagname (checked by checkActiveFilter)
+    if (config['remember-source-tagname'])
+        $('#filter-tagnamelist').val(config['source-tagname-value']);
+    // initial source-filetype (checked by checkActiveFilter)
+    if (config['remember-source-filetype'])
+        config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
+    // initial source-keyword (checked by checkActiveFilter)
+    if (config['remember-source-keyword']) {
+        $('#filter-expression').val(config['source-keyword-value']);
+        $('#filter-regex').prop('checked', config['source-regex-value']);
+    }
+    // initial source-authentication
+    $('#dl-source-user, #dl-source-pass').val('');
+    // initial source-referer
+    if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
+        $('#dl-source-referer-default').prop('checked', true).trigger('input');
+    else if (config['remember-source-referer']) {
+        $('#dl-source-referer-default').prop('checked', false);
+        $('#dl-source-referer').val(config['source-referer-value']);
+    }
+    // initial source-filename
+    $('#dl-source-filename').val(config['remember-source-filename'] ? config['source-filename-value'] : '').trigger('input');
+    // initial source-location
+    $('#dl-source-location').val(config['remember-source-location'] ? config['source-location-value'] : '').trigger('input');
+    // initial option1
+    $('#dl-source-option1').prop('checked', config['remember-source-option1'] ? config['source-option1-value'] : false).trigger('input');
+    // initial option2
+    $('#dl-source-option2').prop('checked', config['remember-source-option2'] ? config['source-option2-value'] : false).trigger('input');
+    // tab color
+    checkActiveFilter();
+}
+
+function sourceDownloadModalHidden()
+{
+    baseurl = null;
+    $(this).remove();
+}
+
+function detailModal(e)
+{
+    const button = e.relatedTarget;
+    // update dlid
+    $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
+        .attr('data-dlid', button.dataset.dlid);
+    // update detail
+    updateDetail(true);
+    $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
+}
+
+function detailModalHidden()
+{
+    // to stop animation
+    $(this).attr('data-status', '');
+    clearInterval($(this).attr('data-timer'));
+}
+
+function confirmDialog(e)
+{
+    const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
+
+    switch (e.relatedTarget.dataset.action) {
+    case 'stop':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopDownload);
+        break;
+    case 'pause':
+        bg.downloadQueue[dlid].resumeEnabled
+            ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
+            : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
+            .off('click')
+            .on('click', pauseDownload);
+        break;
+    case 'stop-downloading':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', () => {
+                $('#downloading-list').children('.download-item').each(function() {
+                    bg.stopDownload(this.id.split('-')[1]);
+                });
+            });
+        break;
+    case 'stop-waiting':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', () => {
+                $('#waiting-list').children('.download-item').each(function() {
+                    bg.stopDownload(this.id.split('-')[1]);
+                });
+            });
+        break;
+    }
 }
 
 function updateGraph(Bps)
@@ -1168,6 +1065,24 @@ function updateSourceList()
     }
 }
 
+function checkSourceItem(e)
+{
+    // disable clicking checkbox
+    if (e.target === $(this).find('.source-url-input')[0]) return;
+    $(this).find('.source-url-input').prop('checked', !$(this).find('.source-url-input').prop('checked')).change();
+}
+
+function sortSourceItems()
+{
+    const targets = ['sort-url', 'sort-filetype', 'sort-tag'];
+    if (this.dataset.order == 'asc') this.dataset.order = 'desc';
+    else if (this.dataset.order == 'desc') this.dataset.order = '';
+    else this.dataset.order = 'asc';
+    for (let target of targets)
+        if (this.id != target) $('#' + target).attr('data-order', '');
+    outputSourceList();
+}
+
 function outputSourceList()
 {
     const docfrag = new DocumentFragment();
@@ -1361,6 +1276,127 @@ function checkActiveFilter()
     $('a.collapse-toggle-link[href="#byTagname"]').attr('data-filtered', $('#filter-tagnamelist').val().trim().length != 0 ? 'true' : '');
     $('a.collapse-toggle-link[href="#byFiletype"]').attr('data-filtered', $('#byFiletype input:checked').length != 0 ? 'true' : '');
     $('a.collapse-toggle-link[href="#byKeyword"]').attr('data-filtered', $('#filter-expression').val().length != 0 ? 'true' : '');
+}
+
+function validateAuthentication($user, $pass)
+{
+    $user.toggleClass('is-invalid', $user.val() == '' && $pass.val() != '');
+}
+
+function validateUrl()
+{
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        return;
+    }
+    try {
+        new URL(this.value);
+        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+    }
+}
+
+function validateUrls()
+{
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        return;
+    }
+    try {
+        ($(this).val().split('\n')).forEach((line) => {
+            new URL(line);
+            $(this).toggleClass('is-invalid', !allowProtocol.test(line));
+        });
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+    }
+}
+
+function validateReferer()
+{
+    const $filename = $('#' + this.id.replace('referer', 'filename')),
+          $location = $('#' + this.id.replace('referer', 'location'));
+
+    // empty referer
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        $filename.trigger('input'), $location.trigger('input');
+        return;
+    }
+    try {
+        new URL(this.value);
+        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
+        $filename.trigger('input'), $location.trigger('input');
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+        $filename.trigger('input'), $location.trigger('input');
+    }
+}
+
+function validateFilename()
+{
+    const $referer     = $('#' + this.id.replace('filename', 'referer')),
+          $location    = $('#' + this.id.replace('filename', 'location')),
+          allowPattern = this.id != 'dl-source-filename' ? allowFilename : allowFilenameS,
+          valid        =
+          refTagFilename.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
+          || !refTagFilename.test(this.value)
+          && allowPattern.test(this.value) && !denyFilename.test(this.value);
+
+    // referer validation
+    refTagFilename.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
+    !refTagFilename.test(this.value) && !refTagLocation.test($location.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
+
+    $(this).toggleClass('is-invalid', !valid);
+    // sample
+    if (valid) $('#' + this.id + '-sample').text(
+        bg.replaceTags({
+            path       : this.value,
+            targetUrl  : 'http://www.example.com/path/name/',
+            refererUrl : $referer.val(),
+            tag        : 'tag',
+            title      : 'title',
+            name       : 'filename',
+            ext        : 'ext',
+            mime       : 'sample/mime-type'
+        }, true));
+    else $('#' + this.id + '-sample').text('');
+}
+
+async function validateLocation()
+{
+    const defaultLocation = await bg.config.getPref('download-location'),
+          location        = bg.normalizeLocation(defaultLocation + this.value),
+          $referer        = $('#' + this.id.replace('location', 'referer')),
+          $filename       = $('#' + this.id.replace('location', 'filename')),
+          allowPattern    = this.id != 'dl-source-location' ? allowLocation : allowLocationS,
+          valid           =
+          refTagLocation.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
+          || !refTagLocation.test(this.value)
+          && allowPattern.test(location) && !denyLocation.test(location);
+
+    // referer validation
+    refTagLocation.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
+    !refTagLocation.test(this.value) && !refTagFilename.test($filename.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
+
+    $(this).toggleClass('is-invalid', !valid);
+    // sample
+    if (valid) $('#' + this.id + '-sample').text(
+        bg.replaceTags({
+            path       : location,
+            targetUrl  : 'http://www.example.com/path/name/',
+            refererUrl : $referer.val(),
+            tag        : 'tag',
+            title      : 'title',
+            name       : 'filename',
+            ext        : 'ext',
+            mime       : 'sample/mime-type'
+        }));
+    else $('#' + this.id + '-sample').text('');
 }
 
 function checkDownloadOptions()
