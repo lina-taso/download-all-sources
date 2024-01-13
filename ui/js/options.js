@@ -128,7 +128,9 @@ $(async () => {
                     }
                     else {
                         $(this).closest('.authentication-parameter').find('.authentication-user, .authentication-pass').prop('disabled', false);
-                        $(this).closest('.authentication-parameter').find('.authentication-user').addClass('is-invalid');
+                        if ($(this).closest('.authentication-parameter').find('.authentication-url').val()) {
+                            $(this).closest('.authentication-parameter').find('.authentication-user').addClass('is-invalid');
+                        }
                     }
                 }
 
