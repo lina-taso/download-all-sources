@@ -63,19 +63,6 @@ $(async () => {
     $('.item-redo-button').on('click', reDownload);
     $('.item-delete-button').on('click', deleteItem);
 
-    // source list item
-    $('#source-list').on('click', '.source-item', checkSourceItem);
-    // source list sort
-    $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
-    // source list filter
-    $('#byTagname input, #byFiletype input, #byKeyword input')
-        .on('input', function() { if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); } });
-    $('#filter-dup')
-        .on('input', function() { checkActiveFilter(); outputSourceList(); });
-    // source list filter button
-    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
-        .on('click', function() { checkActiveFilter(); outputSourceList(); });
-
     // new download modal
     $('#new-download')
         .on('show.bs.modal', newDownloadModal)
@@ -650,17 +637,12 @@ async function newDownloadModal()
 
 async function sourceDownloadModal()
 {
-    // only once
     $('#source-all').on('input', function() {
         const output = (resolve, reject) => {
             $('#source-list .source-url-input').prop('checked', this.checked);
-
             // count downloads
-            $('#source-download-button1, #source-download-button2').attr(
-                'data-count',
-                $('#source-list .source-url-input:checked').length
-            );
-
+            const count = $('#source-list .source-url-input:checked').length;
+            $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
             resolve();
         };
 
@@ -681,11 +663,23 @@ async function sourceDownloadModal()
     });
     $('#source-list').on('change', '.source-url-input', function() {
         // count downloads
-        $('#source-download-button1, #source-download-button2').attr(
-            'data-count',
-            $('#source-list .source-url-input:checked').length
-        );
+        const count = $('#source-list .source-url-input:checked').length;
+        $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
     });
+    // source list item
+    $('#source-list').on('click', '.source-item', checkSourceItem);
+    // source list sort
+    $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
+    // source list filter
+    $('#byTagname input, #byFiletype input, #byKeyword input')
+        .on('input', function() { if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); } });
+    // hide duclication
+    $('#filter-dup')
+        .on('input', function() { checkActiveFilter(); outputSourceList(); });
+    // source list filter button
+    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+        .on('click', function() { checkActiveFilter(); outputSourceList(); });
+
     // filter button
     if (source.length >= MAX_FILTER_CNT) {
         $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
@@ -1097,7 +1091,7 @@ function outputSourceList()
 
         // all checkbox uncheck
         $('#source-all').prop('checked', false);
-        $('#source-download-button1, #source-download-button2').attr('data-count', 0);
+        $('#source-download-button1, #source-download-button2').attr('data-count', 0).prop('disabled', true);
 
         // clear list
         docfrag.appendChild($('#source-list').children()[0]);
