@@ -906,8 +906,10 @@ function updateList()
             );
             break;
         case 'finished':
-            $item.find('.item-speed').text(calcBps({ now : queue.loaded.now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
-            $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
+            if (queue.startTime) {
+                $item.find('.item-speed').text(calcBps({ now : queue.loaded.now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
+                $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
+            }
             break;
         case 'paused':
         case 'downloaded':
