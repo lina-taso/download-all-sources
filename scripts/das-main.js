@@ -681,7 +681,8 @@ function stopDownload(dlid)
 {
     const queue = downloadQueue[dlid];
 
-    if (queue.status == 'downloading')
+    switch (queue.status) {
+    case 'downloading':
         // abort all xhr
         queue.data.forEach(datum => {
             switch (datum.status) {
@@ -694,6 +695,12 @@ function stopDownload(dlid)
                 break;
             }
         });
+        break;
+    case 'downloaded':
+        // abort fxdownload
+        browser.downloads.cancel(queue.fxid);
+        break;
+    }
     queue.data.forEach(datum => datum.blob = undefined);
 
     queue.status  = 'finished';
@@ -862,6 +869,7 @@ async function downloadCompleted(dlid, blob)
 
     // update queue
     queue.status = 'downloaded';
+    queue.fxid   = itemid;
 
     fxDownloadQueue[itemid] = {
         objurl   : objurl,
@@ -947,7 +955,6 @@ function downloadFailed2(dlid, reason)
 async function fxDownloadChanged(item)
 {
     if (!fxDownloadQueue[item.id]) return;
-
     const fxqueue = fxDownloadQueue[item.id],
           dlid    = fxqueue.dlid,
           queue   = downloadQueue[dlid];
@@ -963,9 +970,8 @@ async function fxDownloadChanged(item)
         queue.reason  = queue.reason || item.state.current;
         queue.endTime = (new Date()).getTime();
 
-        if (config.getPref('enable-openfile'))
-            queue.fxid    = item.id;
-        else {
+        if (!config.getPref('enable-openfile')) {
+            queue.fxid = null;
             // clear from fx download list
             await browser.downloads.erase({ id : item.id });
         }
