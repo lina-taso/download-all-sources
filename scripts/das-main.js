@@ -14,6 +14,7 @@ const DEFAULT_FILENAME  = 'download',
       DEFAULT_EXTENSION = 'no-ext',
       DEFAULT_MIME      = 'application/octet-stream',
       DEFAULT_MIME_MAP  = { 'sample/mime-type' : 'mext' },
+      DENY_FILESTRING   = /[\\/:*?"<>|]/g,
       RETRY_WAIT        = 5000,
       TILE_SIZE         = 400;
 
@@ -829,13 +830,13 @@ async function downloadCompleted(dlid, blob)
 
     // specified filename
     if (queue.filename) {
-        let tempFilename = queue.filename.replace(/^[. ]+/, '').replace(/[. ]$/, '');
+        let tempFilename = queue.filename.replaceAll(DENY_FILESTRING, '_').replace(/^[. ]+/, '').replace(/[. ]$/, '');
         if (!tempFilename) tempFilename = DEFAULT_FILENAME;
         if (queue.filename !== tempFilename) queue.autoFilename = tempFilename;
     }
     // url's leafname
     else if (queue.responseFilename) {
-        let tempFilename = queue.responseFilename.replace(/^[. ]+/, '').replace(/[. ]$/, '');
+        let tempFilename = queue.responseFilename.replaceAll(DENY_FILESTRING, '_').replace(/^[. ]+/, '').replace(/[. ]$/, '');
         if (!tempFilename) tempFilename = DEFAULT_FILENAME;
         if (queue.responseFilename !== tempFilename) queue.autoFilename = tempFilename;
     }
