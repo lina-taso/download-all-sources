@@ -1000,7 +1000,7 @@ function updateList()
     }
     function calcRemain(loadedObj, total)
     {
-        if (!loadedObj.now || !total) return 'unknown';
+        if (!loadedObj.now || !total || !loadedObj.Bps) return 'unknown';
 
         const remain = (total - loadedObj.now) / loadedObj.Bps;
 
