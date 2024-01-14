@@ -63,7 +63,7 @@
                                 <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row align-items-center">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
-                                            <i id="downloading-stop-button" class="fa-regular fa-stop-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-downloading"></i>
+                                            <i id="downloading-stop-button" class="fa-regular fa-stop-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-downloading" data-toggle="tooltip" data-bs-placement="bottom" data-titlestring="header_stop_downloading"></i>
                                         </div>
                                         <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
                                         <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
@@ -80,7 +80,7 @@
                                 <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
-                                            <i id="waiting-stop-button" class="fa-regular fa-times-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-waiting"></i>
+                                            <i id="waiting-stop-button" class="fa-regular fa-times-circle" data-bs-toggle="modal" data-bs-target="#confirm-dialog" data-action="stop-waiting" data-toggle="tooltip" data-bs-placement="bottom" data-titlestring="header_stop_waiting"></i>
                                         </div>
                                         <div class="col-lg-5 col-md-6 col-10" data-string="list_filename"></div>
                                         <div class="col-lg-2 d-none d-lg-block text-center" data-string="list_filesize"></div>
@@ -97,7 +97,7 @@
                                 <li class="list-group-item list-group-item-dark fw-bold sticky-top">
                                     <div class="row">
                                         <div class="col-lg-1 col-md-2 col-2 d-flex align-items-center">
-                                            <i id="finished-delete-button" class="fa-solid fa-trash"></i>
+                                            <i id="finished-delete-button" class="fa-solid fa-trash" data-toggle="tooltip" data-bs-placement="bottom" data-titlestring="header_delete_finished"></i>
                                             <i id="completed-delete-button" class="fa-solid fa-trash" data-toggle="tooltip" data-bs-placement="bottom" data-titlestring="header_delete_completed">
                                                 <i class="fa-solid fa-check"></i>
                                             </i>
@@ -268,14 +268,14 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-single-option1">
                                             <label class="form-check-label" for="dl-single-option1" data-string="new_download_single_option1"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option1_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option1_description"></i>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-single-option2">
                                             <label class="form-check-label" for="dl-single-option2" data-string="new_download_single_option2"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option2_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_single_option2_description"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -400,14 +400,14 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-multiple-option1">
                                             <label class="form-check-label" for="dl-multiple-option1" data-string="new_download_multiple_option1"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option1_description"></i>
                                         </div>
                                     </div>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-multiple-option2">
                                             <label class="form-check-label" for="dl-multiple-option2" data-string="new_download_multiple_option2"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="new_download_multiple_option2_description"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -439,8 +439,8 @@
                                     data-bs-toggle="tab" role="tab" aria-controls="info" aria-selected="false" data-string="download_detail_info"></button>
                             <!-- next/prev button -->
                             <div class="btn-group ms-auto" role="group">
-                                <button id="detail-prev-button" type="button" class="btn btn-outline-secondary mb-2" data-bs-toggle="tooltip" data-titlestring="download_detail_previtem_description"><i class="fa-solid fa-angle-up"></i></button>
-                                <button id="detail-next-button" type="button" class="btn btn-outline-secondary mb-2" data-bs-toggle="tooltip" data-titlestring="download_detail_nextitem_description"><i class="fa-solid fa-angle-down"></i></button>
+                                <button id="detail-prev-button" type="button" class="btn btn-outline-secondary mb-2" data-toggle="tooltip" data-titlestring="download_detail_previtem_description"><i class="fa-solid fa-angle-up"></i></button>
+                                <button id="detail-next-button" type="button" class="btn btn-outline-secondary mb-2" data-toggle="tooltip" data-titlestring="download_detail_nextitem_description"><i class="fa-solid fa-angle-down"></i></button>
                             </div>
                         </div>
                         <div class="tab-content">
@@ -482,7 +482,7 @@
                                         <input id="detail-status-url" class="form-control-plaintext" value="" readonly>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="detail-status-url-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_final_url_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
+                                        <button id="detail-status-url-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_final_url_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -536,7 +536,7 @@
                                         <input id="detail-info-url" class="form-control-plaintext" value="" readonly>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-url-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_url_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
+                                        <button id="detail-info-url-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_url_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -551,7 +551,7 @@
                                         <input id="detail-info-referer" class="form-control-plaintext" value="" readonly>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-referer-open" class="btn btn-link openlink-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_referer_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
+                                        <button id="detail-info-referer-open" class="btn btn-link openlink-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_referer_description" data-link=""><i class="fa-solid fa-external-link-alt fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -560,9 +560,9 @@
                                         <input id="detail-info-filename" class="form-control-plaintext" value="" readonly>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-filename-edit" class="btn btn-link editfilename-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editfilename_description" data-fxid=""><i class="fa-solid fa-pen fa-fw"></i></button>
-                                        <button id="detail-info-filename-apply" class="btn btn-link applyfilename-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applyfilename_description" data-fxid=""><i class="fa-solid fa-check fa-fw"></i></button>
-                                        <button id="detail-info-filename-open" class="btn btn-link openfile-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_filename_description" data-fxid=""><i class="fa-solid fa-file fa-fw"></i></button>
+                                        <button id="detail-info-filename-edit" class="btn btn-link editfilename-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editfilename_description" data-fxid=""><i class="fa-solid fa-pen fa-fw"></i></button>
+                                        <button id="detail-info-filename-apply" class="btn btn-link applyfilename-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applyfilename_description" data-fxid=""><i class="fa-solid fa-check fa-fw"></i></button>
+                                        <button id="detail-info-filename-open" class="btn btn-link openfile-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_filename_description" data-fxid=""><i class="fa-solid fa-file fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -571,9 +571,9 @@
                                         <input id="detail-info-location" class="form-control-plaintext" value="" data-string-placeholder="download_detail_location_placeholder" placeholder="" readonly>
                                     </div>
                                     <div class="col-auto">
-                                        <button id="detail-info-location-edit" class="btn btn-link editlocation-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editlocation_description" data-fxid=""><i class="fa-solid fa-pen fa-fw"></i></button>
-                                        <button id="detail-info-location-apply" class="btn btn-link applylocation-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applylocation_description" data-fxid=""><i class="fa-solid fa-check fa-fw"></i></button>
-                                        <button id="detail-info-location-open" class="btn btn-link openlocation-button" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_location_description" data-fxid=""><i class="fa-solid fa-folder-open fa-fw"></i></button>
+                                        <button id="detail-info-location-edit" class="btn btn-link editlocation-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_editlocation_description" data-fxid=""><i class="fa-solid fa-pen fa-fw"></i></button>
+                                        <button id="detail-info-location-apply" class="btn btn-link applylocation-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_applylocation_description" data-fxid=""><i class="fa-solid fa-check fa-fw"></i></button>
+                                        <button id="detail-info-location-open" class="btn btn-link openlocation-button" data-toggle="tooltip" data-bs-placement="top" data-titlestring="download_detail_location_description" data-fxid=""><i class="fa-solid fa-folder-open fa-fw"></i></button>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -854,12 +854,12 @@
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="dl-source-option1">
                                             <label class="form-check-label" for="dl-source-option1" data-string="source_download_option_option1"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option1_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option1_description"></i>
                                         </div>
                                         <div class="form-check form-check-inline">
                                             <input class="form-check-input" type="checkbox" id="dl-source-option2">
                                             <label class="form-check-label" for="dl-source-option2" data-string="source_download_option_option2"></label>
-                                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option2_description"></i>
+                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option2_description"></i>
                                         </div>
                                     </div>
                                 </div>

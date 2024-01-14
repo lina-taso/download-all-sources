@@ -49,7 +49,7 @@ $(async () => {
     $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
     $('.openlocation-button, .item-openlocation-button').on('click', async function() { this.dataset.fxid && browser.downloads.show( parseInt(this.dataset.fxid)); });
     // all tooltip enabled
-    $('[data-bs-toggle=tooltip]').tooltip({ title : function() {
+    $('[data-toggle=tooltip]').tooltip({ title : function() {
         return browser.i18n.getMessage(this.dataset.titlestring);
     }});
     // download buttons
