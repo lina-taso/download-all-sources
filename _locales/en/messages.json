@@ -52,6 +52,18 @@
     "list_elapsed" : {
         "message" : "Elapsed"
     },
+    "header_stop_downloading" : {
+        "message" : "Stop all downloading"
+    },
+    "header_stop_waiting" : {
+        "message" : "Stop all waiting"
+    },
+    "header_delete_finished" : {
+        "message" : "Delete all finished"
+    },
+    "header_delete_completed" : {
+        "message" : "Delete all completed"
+    },
     "footer_total_speed" : {
         "message" : "Total Speed:"
     },

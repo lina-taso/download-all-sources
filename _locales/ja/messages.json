@@ -52,6 +52,18 @@
     "list_elapsed" : {
         "message" : "経過時間"
     },
+    "header_stop_downloading" : {
+        "message" : "ダウンロード中を全て停止"
+    },
+    "header_stop_waiting" : {
+        "message" : "DL待ちを全て停止"
+    },
+    "header_delete_finished" : {
+        "message" : "完了を全て削除"
+    },
+    "header_delete_completed" : {
+        "message" : "成功を全て削除"
+    },
     "footer_total_speed" : {
         "message" : "合計速度:"
     },

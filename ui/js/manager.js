@@ -58,6 +58,7 @@ $(async () => {
     $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
     // finished list
     $('#finished-delete-button').on('click', deleteFinished);
+    $('#completed-delete-button').on('click', deleteCompleted);
     // item
     $('.item-resume-button').on('click', resumeDownload);
     $('.item-redo-button').on('click', reDownload);
@@ -423,9 +424,17 @@ function reDownloadManual()
 
 function deleteFinished()
 {
-    $('#finished-list').children('.download-item').each(function() {
-        bg.deleteQueue(this.id.split('-')[1]);
-        $(this).remove();
+    bg.searchQueue({ status : 'finished' }).forEach((queue) => {
+        bg.deleteQueue(queue.id);
+        $('#item-' + queue.id).remove();
+    });
+}
+
+function deleteCompleted()
+{
+    bg.searchQueue({ status : 'finished' , reason : 'complete' }).forEach((queue) => {
+        bg.deleteQueue(queue.id);
+        $('#item-' + queue.id).remove();
     });
 }
 
@@ -443,6 +452,25 @@ function stopDownload()
 function pauseDownload()
 {
     bg.pauseDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function stopDownloading()
+{
+    bg.searchQueue({ status : 'downloading' })
+        .concat(bg.searchQueue({ status : 'paused' }))
+        .concat(bg.searchQueue({ status : 'downloaded' }))
+        .forEach((queue) => {
+            bg.stopDownload(queue.id);
+            $('#item-' + queue.id).remove();
+        });
+}
+
+function stopWaiting()
+{
+    bg.searchQueue({ status : 'waiting' }).forEach((queue) => {
+        bg.stopDownload(queue.id);
+        $('#item-' + queue.id).remove();
+    });
 }
 
 function resumeDownload()
@@ -781,21 +809,13 @@ function confirmDialog(e)
         $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
         $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
             .off('click')
-            .on('click', () => {
-                $('#downloading-list').children('.download-item').each(function() {
-                    bg.stopDownload(this.id.split('-')[1]);
-                });
-            });
+            .on('click', stopDownloading);
         break;
     case 'stop-waiting':
         $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
         $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
             .off('click')
-            .on('click', () => {
-                $('#waiting-list').children('.download-item').each(function() {
-                    bg.stopDownload(this.id.split('-')[1]);
-                });
-            });
+            .on('click', stopWaiting);
         break;
     }
 }
