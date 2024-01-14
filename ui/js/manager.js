@@ -848,7 +848,7 @@ function updateList()
                 else {
                     $item.appendTo($('#finished-list'));
                     // chart
-                    $item[0].chart.destroy();
+                    $item[0].chart && $item[0].chart.destroy();
                     delete $item[0].chart;
                 }
                 break;
