@@ -5,8 +5,8 @@
  * @license Mozilla Public License, version 2.0
  */
 
-browser.runtime.onStartup.addListener(startup);
-browser.runtime.onInstalled.addListener(install);
+browser.runtime.onStartup.addListener(onstartup);
+browser.runtime.onInstalled.addListener(oninstall);
 browser.browserAction.onClicked.addListener(onclicked);
 
 const firstrun_url = 'https://www2.filewo.net/wordpress/category/products/download-all-sources/',
@@ -38,11 +38,11 @@ for(let attr of ['src', 'href']) {
 urls};`;
 
 
-function startup()
+function onstartup()
 {
 }
 
-function install(details)
+function oninstall(details)
 {
     if (details.reason == 'install'
         || details.reason == 'update') {
