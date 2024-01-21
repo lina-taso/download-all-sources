@@ -107,7 +107,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         status           : status,
         reason           : '',
         data             : [],
-        option           : JSON.parse(JSON.stringify(option)),
+        option           : structuredClone(option),
         resumeEnabled    : false,
         originalUrl      : new URL(url),
         originalUrlInput : url,
@@ -121,7 +121,7 @@ async function downloadFile(url, requestHeaders, locs, names, option)
         responseUrl      : null,
         responseFilename : '',
         contentType      : '',
-        requestHeaders   : JSON.parse(JSON.stringify(requestHeaders)),
+        requestHeaders   : structuredClone(requestHeaders),
         // if total is 0, download is not started or total size is unknown
         total            : 0,
         get loaded() {
