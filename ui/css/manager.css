@@ -58,7 +58,7 @@ html, body {
 
 /* localization */
 [data-string] {
-    white-space: pre-line;
+    white-space: pre-wrap;
 }
 
 /* list header */
@@ -214,8 +214,9 @@ html, body {
 }
 
 /* confirm modal */
-#confirm-dialog .modal-body {
-    white-space: pre-wrap;
+#confirm-dialog > .modal-dialog,
+#confirm-dialog-restore > .modal-dialog {
+    box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
 }
 
 /* download-detail modal */
