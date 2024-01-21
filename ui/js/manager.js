@@ -419,9 +419,10 @@ function pauseDownload()
 
 function stopDownloading()
 {
-    bg.searchQueue({ status : 'downloading' })
-        .concat(bg.searchQueue({ status : 'paused' }))
-        .concat(bg.searchQueue({ status : 'downloaded' }))
+    bg.searchQueue({ status : 'downloading' }).concat(
+        bg.searchQueue({ status : 'paused' }),
+        bg.searchQueue({ status : 'downloaded' })
+    )
         .forEach((queue) => {
             bg.stopDownload(queue.id);
             $('#item-' + queue.id).remove();
