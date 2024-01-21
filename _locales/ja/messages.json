@@ -364,6 +364,12 @@
     "confirm_stop_waiting" : {
         "message" : "DL待ちのアイテムを全てキャンセルしますか？"
     },
+    "confirm_restore_title" : {
+        "message" : "ダウンロードアイテムが復元されました"
+    },
+    "confirm_restore" : {
+        "message" : "前回Download All Sources終了時に完了していなかったダウンロードアイテムがDL待ちリストに復元されました。再開ボタンを押すか、新しく別のダウンロードアイテムを追加すると、復元したアイテムのダウンロードを開始します。\nなお、ダウンロードは最初から始まります。\n\n* 設定から復元時に自動的に再開するようにすることもできます。"
+    },
 
     //
     // Options UI
@@ -394,6 +400,9 @@
     },
     "options_enable_openfile_description" : {
         "message" : "[注]\nこのオプションを有効にすると、ダウンロードしたアイテムがFirefoxの履歴から削除されなくなります。"
+    },
+    "options_autostart_on_restore" : {
+        "message" : "未完了のダウンロードアイテムを復元すると同時に自動的にダウンロードを再開する"
     },
     "options_multithread" : {
         "message" : "マルチスレッドダウンロードの設定"
@@ -611,5 +620,8 @@
     },
     "button_cancel" : {
         "message" : "キャンセル"
+    },
+    "button_stop_waiting" : {
+        "message" : "DL待ちを全て停止"
     }
 }

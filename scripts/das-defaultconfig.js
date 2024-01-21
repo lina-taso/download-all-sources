@@ -7,10 +7,8 @@ var defaultconfig = {
     'split-count' : 1,
     'split-size' : 50,
     'split-ex-size' : 50,
-    'server-parameter' : {
-    },
-    'authentication-parameter' : {
-    },
+    'server-parameter' : { },
+    'authentication-parameter' : { },
     'remember-new-referer' : false,
     'new-referer-value' : '',
     'new-referer-default-value' : true,
@@ -104,6 +102,8 @@ var defaultconfig = {
         "video/ogg" : "ogv",
         "video/webm" : "webm",
         "video/x-msvideo" : "avi"
-    }
+    },
+    "downloadQueue" : [],
+    "autostart-on-restore" : false
 };
 Object.freeze(defaultconfig);

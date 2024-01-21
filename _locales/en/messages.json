@@ -364,11 +364,11 @@
     "confirm_stop_waiting" : {
         "message" : "Cancel all waiting items?"
     },
-    "show_filename_tags" : {
-        "message" : "Show tags for filename"
+    "confirm_restore_title" : {
+        "message" : "Download items has been restored"
     },
-    "show_location_tags" : {
-        "message" : "Show tags for location"
+    "confirm_restore" : {
+        "message" : "Imcomplete download items when Download All Sources was last closed has been restored to the Waiting list. These restored items will start downloading by clicking Resume button or Adding another new download item.\nPlease note that the download will start from the beginning.\n\n* You can also set to resume at the same time as restoring items from the options page."
     },
 
     //
@@ -400,6 +400,9 @@
     },
     "options_enable_openfile_description" : {
         "message" : "[NOTE]\nIf this option is enabled, this addon will not erase items from the Firefox's download history."
+    },
+    "options_autostart_on_restore" : {
+        "message" : "Automatically resume downloads at the same time as restoring imcomplete downloaded items"
     },
     "options_multithread" : {
         "message" : "Multi-thread parameters"
@@ -617,5 +620,8 @@
     },
     "button_cancel" : {
         "message" : "Cancel"
+    },
+    "button_stop_waiting" : {
+        "message" : "Stop all waiting"
     }
 }

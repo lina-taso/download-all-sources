@@ -20,7 +20,8 @@ const DEFAULT_FILENAME  = 'download',
 
 var lastid = 0,
     downloadQueue   = [],
-    fxDownloadQueue = [];
+    fxDownloadQueue = [],
+    queueRestored = false;
 
 let updateavailable = false;
 
@@ -50,11 +51,12 @@ var config = {
 
 (async () => {
     await config.update();
+    restoreQueue();
 })();
 
 
 // download file
-async function downloadFile(url, requestHeaders, locs, names, option)
+async function downloadFile(url, requestHeaders, locs, names, option, restore)
 {
     const dlid = lastid++;
 
@@ -63,8 +65,14 @@ async function downloadFile(url, requestHeaders, locs, names, option)
     const domain = (new URL(url)).hostname;
     let count;
 
+    // restore
+    if (restore && !config.getPref('autostart-on-restore')) {
+        queueRestored = true;
+        status = 'waiting';
+        DEBUG && console.log({ dlid : dlid, message : `download queue restored. waiting by config.`});
+    }
     // whole
-    if ((count = searchQueue({ status : 'downloading' }).length) >= config.getPref('simultaneous-whole')) {
+    else if ((count = searchQueue({ status : 'downloading' }).length) >= config.getPref('simultaneous-whole')) {
         status = 'waiting';
         DEBUG && console.log({ dlid : dlid, message : `whole downloading count: ${count}. waiting.`});
     }
@@ -259,6 +267,8 @@ async function downloadFile(url, requestHeaders, locs, names, option)
 
     // update badge
     updateBadge();
+    // save queue
+    saveQueue();
 }
 
 function createXhr(dlid, index, start, end)
@@ -745,6 +755,7 @@ function resumeDownload(dlid)
 
     // update badge
     updateBadge();
+    // no save queue
 }
 
 function deleteQueue(dlid)
@@ -1034,16 +1045,65 @@ async function fxDownloadErased(itemid)
 
 async function configChanged(changes, area)
 {
+    DEBUG && console.log({ message : 'config changed.', changed : changes });
     if (area != 'local') return;
     await config.update();
-    // waiting queue
-    checkWaiting();
+
+    const keys   = Object.keys(changes),
+          target = ['simultaneous-whole', 'simultaneous-per-server', 'server-parameter'];
+
+    for (let key of keys) {
+        if (target.includes(key)) {
+            // counter config changed
+            checkWaiting();
+            break;
+        }
+    }
+}
+
+function saveQueue()
+{
+    const queue = searchQueue({ status : 'downloading' }).concat(
+        searchQueue({ status : 'paused' }),
+        searchQueue({ status : 'downloaded' }),
+        searchQueue({ status : 'waiting' })
+    ),
+          saveQueue = [];
+
+    for (let item of queue) {
+        saveQueue.push({
+            url            : item.originalUrlInput,
+            requestHeaders : structuredClone(item.requestHeaders),
+            locs           : { location : item.location, originaiLocation : item.originalLocation },
+            names          : { filename : item.filename, originalFilename : item.originalFilename },
+            option         : structuredClone(item.option)
+        });
+    }
+
+    config.setPref('downloadQueue', saveQueue);
+}
+
+function restoreQueue()
+{
+    const queue = config.getPref('downloadQueue');
+    for (let item of queue) {
+        downloadFile(
+            item.url,
+            item.requestHeaders,
+            item.locs,
+            item.names,
+            item.option,
+            true
+        );
+    }
 }
 
 function checkWaiting()
 {
     // update badge
     updateBadge();
+    // save queue
+    saveQueue();
 
     const waiting = searchQueue({ status : 'waiting' });
     let count;

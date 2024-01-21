@@ -149,6 +149,13 @@ $(async () => {
         .on('show.bs.modal', confirmDialog)
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
 
+    // confirm dialog (restore)
+    $('#confirm-dialog-restore')
+        .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); });
+    $('#confirm-dialog-restore .modal-action-button').on('click', function() { bg.checkWaiting(); bg.queueRestored = false; });
+    $('#confirm-dialog-restore .btn-warning').on('click', function() { stopWaiting(); bg.queueRestored = false; });
+    if (bg.queueRestored) $('#confirm-dialog-restore').modal('show');
+
     // url validation
     $('#dl-single-url')
         .on('input', validateUrl);
