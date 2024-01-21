@@ -368,7 +368,7 @@
         "message" : "Download items has been restored"
     },
     "confirm_restore" : {
-        "message" : "Imcomplete download items when Download All Sources was last closed has been restored to the Waiting list. These restored items will start downloading by clicking Resume button or Adding another new download item.\nPlease note that the download will start from the beginning.\n\n* You can also set to resume at the same time as restoring items from the options page."
+        "message" : "Imcomplete download items when Download All Sources was last closed has been restored to the Waiting list. These restored items will start downloading immediately by clicking Resume button.\nPlease note that the download will start from the beginning.\n\n* You can also set to resume at the same time as restoring items from the options page."
     },
 
     //
