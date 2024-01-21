@@ -182,44 +182,7 @@ $(async () => {
         });
 
     // hash anchor (auto tab showing)
-    switch (document.location.hash) {
-    case '#downloading':
-    case '#waiting':
-    case '#finished':
-        $('[href="'+document.location.hash+'"]').tab('show');
-        break;
-    case '#new':
-        baseurl = bg.lastSource.baseurl;
-        $('#new-download').on('shown.bs.modal', setParameters);
-        $('#new-download').modal('show');
-
-        async function setParameters() {
-            const config = await bg.config.getPref();
-
-            $('#dl-single-url').val(bg.lastSource.link);
-            // default-referer
-            if (!config['remember-new-referer'] || config['remember-new-referer'] && config['new-referer-default-value'])
-                $('#dl-single-referer-default').prop('checked', true).trigger('input');
-            else if (config['remember-new-referer']) {
-                $('#dl-single-referer-default').prop('checked', false);
-                $('#dl-single-referer').val(config['new-referer-value']);
-            }
-            bg.lastSource = {};
-
-            $('#new-download').off('shown.bs.modal', setParameters);
-        }
-
-        break;
-    case '#source':
-        baseurl = bg.lastSource.baseurl;
-        updateSourceList();
-        bg.lastSource = {};
-        $('#source-download').modal('show');
-        break;
-    default:
-    };
-    // location bar
-    history.replaceState('', '', document.location.pathname);
+    hashRouter();
 });
 
 async function download()
@@ -1426,6 +1389,49 @@ function checkDownloadOptions()
     $('#dl-source-option1').is(':checked')
         ? $('#dl-source-option2').prop({ disabled : true, checked : false })
         : $('#dl-source-option2').prop({ disabled : false });
+}
+
+function hashRouter()
+{
+    switch (document.location.hash) {
+    case '#downloading':
+    case '#waiting':
+    case '#finished':
+        $('[href="'+document.location.hash+'"]').tab('show');
+        break;
+    case '#new':
+        baseurl = bg.lastSource.baseurl;
+        $('#new-download').on('shown.bs.modal', setParameters);
+        $('#new-download').modal('show');
+
+        async function setParameters() {
+            const config = await bg.config.getPref();
+
+            $('#dl-single-url').val(bg.lastSource.link);
+            // default-referer
+            if (!config['remember-new-referer'] || config['remember-new-referer'] && config['new-referer-default-value'])
+                $('#dl-single-referer-default').prop('checked', true).trigger('input');
+            else if (config['remember-new-referer']) {
+                $('#dl-single-referer-default').prop('checked', false);
+                $('#dl-single-referer').val(config['new-referer-value']);
+            }
+            bg.lastSource = {};
+
+            $('#new-download').off('shown.bs.modal', setParameters);
+        }
+
+        break;
+    case '#source':
+        baseurl = bg.lastSource.baseurl;
+        updateSourceList();
+        bg.lastSource = {};
+        $('#source-download').modal('show');
+        break;
+    default:
+    };
+
+    // location bar
+    history.replaceState('', '', document.location.pathname);
 }
 
 async function localization()
