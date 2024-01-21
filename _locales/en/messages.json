@@ -56,7 +56,7 @@
         "message" : "Stop all downloading"
     },
     "header_stop_waiting" : {
-        "message" : "Stop all waiting"
+        "message" : "Cancel all waiting"
     },
     "header_delete_finished" : {
         "message" : "Delete all finished"
@@ -161,7 +161,7 @@
         "message" : "Download Detail"
     },
     "download_detail_status" : {
-        "message" : "Queue Status"
+        "message" : "Item Status"
     },
     "download_detail_info" : {
         "message" : "Registered Info"

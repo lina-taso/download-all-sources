@@ -56,7 +56,7 @@
         "message" : "ダウンロード中を全て停止"
     },
     "header_stop_waiting" : {
-        "message" : "DL待ちを全て停止"
+        "message" : "DL待ちを全てキャンセル"
     },
     "header_delete_finished" : {
         "message" : "完了を全て削除"
@@ -161,7 +161,7 @@
         "message" : "ダウンロード詳細"
     },
     "download_detail_status" : {
-        "message" : "キューのステータス"
+        "message" : "アイテムのステータス"
     },
     "download_detail_info" : {
         "message" : "登録情報"
