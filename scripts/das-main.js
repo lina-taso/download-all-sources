@@ -21,7 +21,8 @@ const DEFAULT_FILENAME  = 'download',
 var lastid = 0,
     downloadQueue   = [],
     fxDownloadQueue = [],
-    queueRestored = false;
+    queueRestored = false,
+    checkWaitingInterval = null;
 
 let updateavailable = false;
 
@@ -1100,54 +1101,73 @@ function restoreQueue()
 
 function checkWaiting()
 {
-    // update badge
-    updateBadge();
-    // save queue
-    saveQueue();
+    // interval
+    if (checkWaitingInterval) {
+        DEBUG && console.log({ message : 'update check waiting interval.' });
 
-    const waiting = searchQueue({ status : 'waiting' });
-    let count;
+        clearTimeout(checkWaitingInterval);
+        checkWaitingInterval = setTimeout(run, 200);
+    }
+    else {
+        DEBUG && console.log({ message : 'set check waiting interval.' });
+        checkWaitingInterval = setTimeout(run, 200);
+    }
 
-    ROOT: for (let q of waiting) {
-        // whole
-        if ((count = searchQueue({ status : 'downloading' }).length) >= config.getPref('simultaneous-whole')) {
-            DEBUG && console.log({ message : `whole downloading count: ${count}. no download started.`});
-            return;
-        }
+    function run()
+    {
+        // update badge
+        updateBadge();
+        // save queue
+        saveQueue();
 
-        const params = config.getPref('server-parameter'),
-              subdomains = q.originalDomain.split('.');
+        const waiting = searchQueue({ status : 'waiting' });
+        let count;
 
-        // server specified
-        if (params[q.originalDomain]) {
-            if ((count = searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length) >= params[q.originalDomain]['simultaneous']) {
-                DEBUG && console.log({ dlid : q.id, message : `server ${q.originalDomain} specified download count: ${count}. skipped.`});
+        ROOT: for (let q of waiting) {
+            // whole
+            if ((count = searchQueue({ status : 'downloading' }).length) >= config.getPref('simultaneous-whole')) {
+                DEBUG && console.log({ message : `whole downloading count: ${count}. no download started.`});
+                return;
+            }
+
+            const params = config.getPref('server-parameter'),
+                  subdomains = q.originalDomain.split('.');
+
+            // server specified
+            if (params[q.originalDomain]) {
+                if ((count = searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length) >= params[q.originalDomain]['simultaneous']) {
+                    DEBUG && console.log({ dlid : q.id, message : `server ${q.originalDomain} specified download count: ${count}. skipped.`});
+                    continue;
+                }
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    if ((count = searchQueue({ status : 'downloading', originalDomain : targetdomain }).length) >= params[targetdomain]['simultaneous']) {
+                        DEBUG && console.log({ dlid : q.id, message : `server subdomain ${targetdomain} specified download count: ${count}. skipped.`});
+                        continue ROOT;
+                    }
+                    break;
+                }
+            }
+            // same domain name
+            if ((count = searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length) >= config.getPref('simultaneous-per-server')) {
+                DEBUG && console.log({ dlid : q.id, message : `same server download count: ${count}. skipped.`});
                 continue;
             }
-        }
-        // server specified (starting with .)
-        while (subdomains.shift()) {
-            const targetdomain = '.' + subdomains.join('.');
-            if (params[targetdomain]) {
-                if ((count = searchQueue({ status : 'downloading', originalDomain : targetdomain }).length) >= params[targetdomain]['simultaneous']) {
-                    DEBUG && console.log({ dlid : q.id, message : `server subdomain ${targetdomain} specified download count: ${count}. skipped.`});
-                    continue ROOT;
-                }
-                break;
-            }
-        }
-        // same domain name
-        if ((count = searchQueue({ status : 'downloading', originalDomain : q.originalDomain }).length) >= config.getPref('simultaneous-per-server')) {
-            DEBUG && console.log({ dlid : q.id, message : `same server download count: ${count}. skipped.`});
-            continue;
+
+            // run
+            let now = (new Date()).getTime();
+            downloadQueue[q.id].status = 'downloading',
+            downloadQueue[q.id].data.push(createXhr(q.id, 0));
+            downloadQueue[q.id].startTime = now;
+            downloadQueue[q.id].prevTime  = now;
         }
 
-        // run
-        let now = (new Date()).getTime();
-        downloadQueue[q.id].status = 'downloading',
-        downloadQueue[q.id].data.push(createXhr(q.id, 0));
-        downloadQueue[q.id].startTime = now;
-        downloadQueue[q.id].prevTime  = now;
+        // interval
+        checkWaitingInterval = null;
+        DEBUG && console.log({ message : 'check waiting done.' });
     }
 }
 
