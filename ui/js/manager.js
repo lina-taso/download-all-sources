@@ -666,7 +666,9 @@ async function sourceDownloadModal()
         $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
     });
     // source list item
-    $('#source-list').on('click', '.source-item', checkSourceItem);
+    $('#source-list')
+        .on('click', '.source-item', checkSourceItem)
+        .on('mousedown', '.source-item', (e) => { if (e. originalEvent.shiftKey) return false; else return true; });
     // source list sort
     $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
     // source list filter
@@ -1056,7 +1058,32 @@ function checkSourceItem(e)
 {
     // disable clicking checkbox
     if (e.target === $(this).find('.source-url-input')[0]) return;
-    $(this).find('.source-url-input').prop('checked', !$(this).find('.source-url-input').prop('checked')).change();
+
+    // shift clicked
+    if (e.originalEvent.shiftKey) {
+        const now  = $(this).index(),
+              last = $(this).siblings('[data-last-selected=true]').index();
+        if (last < 0) {
+            // input toggle
+            $(this).find('.source-url-input').prop('checked', (i, v) => !v).change();
+        }
+        else if (now < last) {
+            // input toggle
+            $(this).parent().children().slice(now, last).find('.source-url-input').prop('checked', (i, v) => !v).change();
+        }
+        else {
+            // input toggle
+            $(this).parent().children().slice(last+1, now+1).find('.source-url-input').prop('checked', (i, v) => !v).change();
+        }
+    }
+    // shift not clicked
+    else {
+        // input toggle
+        $(this).find('.source-url-input').prop('checked', (i, v) => !v).change();
+    }
+
+    // last checked
+    $(this).attr('data-last-selected', true).siblings().attr('data-last-selected', false);
 }
 
 function sortSourceItems()
