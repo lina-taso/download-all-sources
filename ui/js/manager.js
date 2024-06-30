@@ -70,7 +70,10 @@ $(async () => {
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); })
         .on('hide.bs.modal', function() { baseurl = null; });
     // in new download modal
-    $('#dl-single-url').on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); });
+    $('#dl-single-url')
+        .on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); })
+        .on('focus', function() { $(this).next().show(400); })
+        .on('blur', function() { $(this).next().hide(400); });
     $('#dl-single-referer-default')
         .on('input', function() {
             if (this.checked)
