@@ -213,6 +213,17 @@ html, body {
     height: 100%;
 }
 
+/* toast */
+#toast-container {
+    position: fixed;
+    width: 100%;
+    bottom: 4rem;
+    display: flex;
+    justify-content: center;
+    z-index: 1056;
+    pointer-events: none;
+}
+
 /* confirm modal */
 #confirm-dialog > .modal-dialog,
 #confirm-dialog-restore > .modal-dialog {

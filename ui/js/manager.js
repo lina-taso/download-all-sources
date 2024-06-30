@@ -639,37 +639,17 @@ async function newDownloadModal()
 
 async function sourceDownloadModal()
 {
-    $('#source-all').on('input', function() {
-        const output = (resolve, reject) => {
-            $('#source-list .source-url-input').prop('checked', this.checked);
-            // count downloads
-            const count = $('#source-list .source-url-input:checked').length;
-            $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
-            resolve();
-        };
-
-        if ($('#source-list .source-item').length < MAX_FILTER_CNT)
-            new Promise(output);
-        else {
-            const $loading = $('#loading-cover');
-            // loading start
-            $loading.on('transitionend', async function() {
-                $(this).off('transitionend');
-
-                await new Promise(output);
-                // loading end
-                $loading.removeClass('show');
-
-            }).addClass('show');
-        }
-    });
+    $('#source-all')
+        .on('keypress', keypressSourceInput)
+        .on('focus', focusSourceInput)
+        .on('blur', blurSourceInput)
+        .on('change', changeSourceAll);
     // source list item
     $('#source-list')
-        .on('change', '.source-url-input', function() {
-            // count downloads
-            const count = $('#source-list .source-url-input:checked').length;
-            $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
-        })
+        .on('keypress', '.source-url-input', keypressSourceInput)
+        .on('focus', '.source-url-input', focusSourceInput)
+        .on('blur', '.source-url-input', blurSourceInput)
+        .on('change', '.source-url-input', changeSourceItem)
         .on('click', '.source-item', checkSourceItem)
         .on('mousedown', '.source-item', (e) => {
             if (e. originalEvent.shiftKey) return false;
@@ -1058,6 +1038,58 @@ function updateSourceList()
                                       { tag   : list[url].tag[i],
                                         title : list[url].title[i] }));
     }
+}
+
+function keypressSourceInput(e)
+{
+    if ($('#source-download-button1').prop('disabled')) return;
+    e.originalEvent.key == 'Enter' && sourceDownload();
+}
+
+function focusSourceInput()
+{
+    if ($('#source-download-button1').prop('disabled'))
+        $('#toast').fadeOut(400);
+    else
+        $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('source_download_enter2download_description'));
+}
+
+function blurSourceInput()
+{
+    $('#toast').delay(400).fadeOut(400);
+}
+
+function changeSourceAll()
+{
+    const output = (resolve, reject) => {
+        $('#source-list .source-url-input').prop('checked', this.checked);
+        // count downloads
+        const count = $('#source-list .source-url-input:checked').length;
+        $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
+        focusSourceInput();
+        resolve();
+    };
+
+    if ($('#source-list .source-item').length < MAX_FILTER_CNT)
+        new Promise(output);
+    else {
+        const $loading = $('#loading-cover');
+        // loading start
+        $loading.on('transitionend', async function() {
+            $(this).off('transitionend');
+
+            await new Promise(output);
+            // loading end
+            $loading.removeClass('show');
+        }).addClass('show');
+    }
+}
+
+function changeSourceItem()
+{
+    // count downloads
+    const count = $('#source-list .source-url-input:checked').length;
+    $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
 }
 
 function checkSourceItem(e)
