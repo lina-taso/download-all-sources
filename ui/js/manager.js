@@ -72,8 +72,8 @@ $(async () => {
     // in new download modal
     $('#dl-single-url')
         .on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); })
-        .on('focus', function() { $(this).next().show(400); })
-        .on('blur', function() { $(this).next().hide(400); });
+        .on('focus', function() { $(this).next().stop(true, true).show(400); })
+        .on('blur', function() { $(this).next().delay(400).hide(400); });
     $('#dl-single-referer-default')
         .on('input', function() {
             if (this.checked)
