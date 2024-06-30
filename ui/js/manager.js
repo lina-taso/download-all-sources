@@ -663,15 +663,18 @@ async function sourceDownloadModal()
             }).addClass('show');
         }
     });
-    $('#source-list').on('change', '.source-url-input', function() {
-        // count downloads
-        const count = $('#source-list .source-url-input:checked').length;
-        $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
-    });
     // source list item
     $('#source-list')
+        .on('change', '.source-url-input', function() {
+            // count downloads
+            const count = $('#source-list .source-url-input:checked').length;
+            $('#source-download-button1, #source-download-button2').attr('data-count', count).prop('disabled', count == 0);
+        })
         .on('click', '.source-item', checkSourceItem)
-        .on('mousedown', '.source-item', (e) => { if (e. originalEvent.shiftKey) return false; else return true; });
+        .on('mousedown', '.source-item', (e) => {
+            if (e. originalEvent.shiftKey) return false;
+            else return true;
+        });
     // source list sort
     $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
     // source list filter
@@ -1059,8 +1062,9 @@ function updateSourceList()
 
 function checkSourceItem(e)
 {
-    // disable clicking checkbox
-    if (e.target === $(this).find('.source-url-input')[0]) return;
+    // if clicking checkbox, re-toggle
+    if (e.target === $(this).find('.source-url-input')[0])
+        $(e.target).prop('checked', (i, v) => !v).change();
 
     // shift clicked
     if (e.originalEvent.shiftKey) {
@@ -1087,6 +1091,8 @@ function checkSourceItem(e)
 
     // last checked
     $(this).attr('data-last-selected', true).siblings().attr('data-last-selected', false);
+    // foucs checkbox
+    $(this).find('.source-url-input').focus();
 }
 
 function sortSourceItems()
