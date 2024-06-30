@@ -73,7 +73,7 @@ $(async () => {
     $('#dl-single-url')
         .on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); })
         .on('focus', function() { $(this).next().stop(true, true).show(400); })
-        .on('blur', function() { $(this).next().delay(400).hide(400); });
+        .on('blur', function() { $(this).next().delay(200).hide(400); });
     $('#dl-single-referer-default')
         .on('input', function() {
             if (this.checked)
@@ -1056,7 +1056,7 @@ function focusSourceInput()
 
 function blurSourceInput()
 {
-    $('#toast').delay(400).fadeOut(400);
+    $('#toast').delay(200).fadeOut(400);
 }
 
 function changeSourceAll()
