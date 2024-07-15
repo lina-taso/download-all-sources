@@ -197,7 +197,7 @@
         "message" : "最終ユーザ名"
     },
     "download_detail_final_user_placeholder" : {
-        "message" : "（認証なし）"
+        "message" : "(認証なし)"
     },
     "download_detail_mime" : {
         "message" : "MIMEタイプ"
@@ -227,7 +227,7 @@
         "message" : "ユーザ名"
     },
     "download_detail_user_placeholder" : {
-        "message" : "（ユーザ名未入力）"
+        "message" : "(ユーザ名未入力)"
     },
     "download_detail_referer" : {
         "message" : "リファラ"
@@ -251,7 +251,7 @@
         "message" : "ディレクトリ"
     },
     "download_detail_location_placeholder" : {
-        "message" : "（標準のダウンロードディレクトリ）"
+        "message" : "(標準のダウンロードディレクトリ)"
     },
     "download_detail_editlocation_description" : {
         "message" : "ディレクトリ名を変更する"
@@ -287,7 +287,7 @@
         "message" : "オプション"
     },
     "source_download_filter_tagnamelist" : {
-        "message" : "タグ（|（パイプ）区切りで複数指定可）"
+        "message" : "タグ (パイプ (|) 区切り)"
     },
     "source_download_filter_expression" : {
         "message" : "フィルタ文字列"
@@ -450,7 +450,7 @@
         "message" : "URL"
     },
     "options_authentication_url_description" : {
-        "message" : "/で終わらない場合は完全一致（ファイル指定用）。\n/で終わる場合はディレクトリ配下全てが対象（最長一致）。"
+        "message" : "/で終わらない場合は完全一致 (ファイル指定用) 。\n/で終わる場合はディレクトリ配下全てが対象 (最長一致) 。"
     },
     "options_authentication_user" : {
         "message" : "ユーザ名"
@@ -513,7 +513,7 @@
         "message" : "ファイルタイプ"
     },
     "options_filetype_ext" : {
-        "message" : "| (パイプ) 区切りの拡張子"
+        "message" : "拡張子 (パイプ (|) 区切り)"
     },
     "options_filetype_reset" : {
         "message" : "リセット"
@@ -580,7 +580,7 @@
         "message" : "拡張子を除いたファイル名 (filename.ext -> filename)"
     },
     "tag_ext" : {
-        "message" : "ドットから始まる最終URLのファイル拡張子 (.ext)"
+        "message" : "最終URLのドット付きファイル拡張子 (.ext)"
     },
     "tag_ext2" : {
         "message" : "最終URLのファイル拡張子 (ext)\n* 空の時は'no-ext'に置き換えます"
@@ -589,7 +589,7 @@
         "message" : "Content-Typeレスポンスヘッダーに記載されたMIMEタイプ (sample/mime-type)"
     },
     "tag_mext" : {
-        "message" : "MIMEタイプに対応する拡張子 (.mext)\n* MIMEタイプと拡張子のマッピングはアドオン設定画面で編集できます"
+        "message" : "MIMEタイプに対応するドット付き拡張子 (.mext)\n* MIMEタイプと拡張子のマッピングはアドオン設定画面で編集できます"
     },
     "tag_mext2" : {
         "message" : "MIMEタイプに対応する拡張子 (mext)\n* MIMEタイプと拡張子のマッピングはアドオン設定画面で編集できます\n* マッピングが定義されていない時は'no-ext'に置き換えます"

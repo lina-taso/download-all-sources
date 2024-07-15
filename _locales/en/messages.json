@@ -287,7 +287,7 @@
         "message" : "Download option"
     },
     "source_download_filter_tagnamelist" : {
-        "message" : "Tagname list (| (pipe) separated list)"
+        "message" : "Tagnames list (pipe (|) separated)"
     },
     "source_download_filter_expression" : {
         "message" : "Filter expression"
@@ -429,7 +429,7 @@
         "message" : "Domain name"
     },
     "options_server_fqdn_description" : {
-        "message" : "If starting with . matches backwards."
+        "message" : "If starting with . matches backwards"
     },
     "options_server_simultaneous" : {
         "message" : "Max simultaneous download count"
@@ -513,7 +513,7 @@
         "message" : "Filetype"
     },
     "options_filetype_ext" : {
-        "message" : "| (Pipe) separated extensions"
+        "message" : "Extensions list (pipe (|) separated)"
     },
     "options_filetype_reset" : {
         "message" : "Reset"
@@ -580,7 +580,7 @@
         "message" : "Filename of final URL without extension (filename.ext -> filename)"
     },
     "tag_ext" : {
-        "message" : "File extension of final URL starting with a dot (.ext)"
+        "message" : "Dotted file extension of final URL (.ext)"
     },
     "tag_ext2" : {
         "message" : "File extension of final URL (ext)\n* Replace to 'no-ext' when empty"
@@ -589,13 +589,13 @@
         "message" : "MIME Type in the Content-Type response header (sample/mime-type)"
     },
     "tag_mext" : {
-        "message" : "Extension corresponding to MIME Type (.mext)\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
+        "message" : "Dotted extension corresponding to MIME Type (.mext)\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
     },
     "tag_mext2" : {
-        "message" : "Extension corresponding to MIME Type (.mext)\n* Replace to 'no-ext' when no mapping defined\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
+        "message" : "Extension corresponding to MIME Type (mext)\n* Replace to 'no-ext' when no mapping defined\n* You can edit the mappings the MIME Type and the extension in the add-on options page"
     },
     "tag_delimiter" : {
-        "message" : "Directory delimiter\nEven if you run Windows, '\\' is available for delimiter but also '/' is too."
+        "message" : "Directory delimiter\nEven if you run Windows, '\\' is available for delimiter but also '/' is too"
     },
     "button_close" : {
         "message" : "Close"
