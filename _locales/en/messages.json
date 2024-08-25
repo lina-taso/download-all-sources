@@ -82,9 +82,6 @@
     "new_download_single_url" : {
         "message" : "Download URL"
     },
-    "new_download_single_url_description" : {
-        "message" : "Press Enter key to start download"
-    },
     "new_download_single_authentication" : {
         "message" : "BASIC Authentication [Optional]"
     },
@@ -331,9 +328,6 @@
     "source_download_option_option2_description" : {
         "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
-    "source_download_enter2download_description" : {
-        "message" : "Press Enter key to start download"
-    },
     "source_download_filter_dup" : {
         "message" : "Hide duplicate URLs"
     },
@@ -372,6 +366,9 @@
     },
     "confirm_restore" : {
         "message" : "Imcomplete download items when Download All Sources was last closed has been restored to the Waiting list. These restored items will start downloading immediately by clicking Resume button.\nPlease note that the download will start from the beginning.\n\n* You can also set to resume at the same time as restoring items from the options page."
+    },
+    "toast_enter_to_download" : {
+        "message" : "Press Enter key to start download."
     },
 
     //

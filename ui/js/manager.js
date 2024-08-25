@@ -70,10 +70,10 @@ $(async () => {
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); })
         .on('hide.bs.modal', function() { baseurl = null; });
     // in new download modal
-    $('#dl-single-url')
-        .on('keypress', (e) => { e.originalEvent.key == 'Enter' && download(); })
-        .on('focus', function() { $(this).next().stop(true, true).show(400); })
-        .on('blur', function() { $(this).next().delay(200).hide(400); });
+    $('#new-download input:not([type]), #new-download input[type=password]')
+        .on('keypress', keypressNewDownloadInput)
+        .on('focus', focusNewDownloadInput)
+        .on('blur', blurNewDownloadInput);
     $('#dl-single-referer-default')
         .on('input', function() {
             if (this.checked)
@@ -860,6 +860,10 @@ async function newDownloadModal()
 
 async function sourceDownloadModal()
 {
+    $('#source-download input:not([type]), #source-download input[type=password]')
+        .on('keypress', keypressSourceInput)
+        .on('focus', focusSourceInput)
+        .on('blur', blurSourceInput);
     $('#source-all')
         .on('keypress', keypressSourceInput)
         .on('focus', focusSourceInput)
@@ -1103,6 +1107,22 @@ function checkDownloadOptions()
         : $('#dl-source-option2').prop({ disabled : false });
 }
 
+/******************************
+  New download modal functions
+ ******************************/
+function keypressNewDownloadInput(e)
+{
+    e.originalEvent.key == 'Enter' && download();
+}
+function focusNewDownloadInput()
+{
+    $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('toast_enter_to_download'));
+}
+function blurNewDownloadInput()
+{
+    $('#toast').delay(200).fadeOut(400);
+}
+
 /*********************************
   Source download modal functions
  *********************************/
@@ -1132,7 +1152,7 @@ function focusSourceInput()
     if ($('#source-download-button1').prop('disabled'))
         $('#toast').fadeOut(400);
     else
-        $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('source_download_enter2download_description'));
+        $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('toast_enter_to_download'));
 }
 
 function blurSourceInput()
