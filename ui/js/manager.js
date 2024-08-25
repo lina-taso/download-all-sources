@@ -195,590 +195,9 @@ $(async () => {
     hashRouter();
 });
 
-async function download()
-{
-    const target = $('#new-download-modal-tab > [aria-selected=true]').attr('aria-controls'),
-          config = await bg.config.getPref();
-
-    switch (target) {
-    case 'single':
-        const targetUrl = $('#dl-single-url').val();
-        // check invalid
-        if (!targetUrl || $('#single').find('.is-invalid').length) return;
-        // download
-        bg.downloadFile(
-            targetUrl,
-            [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
-            { location :
-              bg.replaceTags({ // location
-                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
-                  targetUrl  : targetUrl,
-                  refererUrl : $('#dl-single-referer').val()
-              }),
-              originalLocation : $('#dl-single-location').val() },
-            { filename :
-              bg.replaceTags({ // filename
-                  path       : $('#dl-single-filename').val(),
-                  targetUrl  : targetUrl,
-                  refererUrl : $('#dl-single-referer').val()
-              }, true),
-              originalFilename : $('#dl-single-filename').val() },
-            { authentication      : [ $('#dl-single-user').val(), $('#dl-single-pass').val() ],
-              disableResuming    : $('#dl-single-option1').is(':checked'),
-              ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
-        );
-
-        // config save
-        if (config['remember-new-referer']) {
-            if ($('#dl-single-referer-default').prop('checked'))
-                bg.config.setPref('new-referer-default-value', true);
-            else {
-                bg.config.setPref('new-referer-default-value', false);
-                bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
-            }
-        }
-        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
-        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
-        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').prop('checked'));
-        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').prop('checked'));
-        break;
-
-    case 'multiple':
-        // check invalid
-        if ($('#multiple').find('.is-invalid').length) return;
-        // download
-        $('#dl-multiple-url').val().split('\n').filter(v => v).forEach((url) => {
-            bg.downloadFile(
-                url,
-                [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
-                { location :
-                  bg.replaceTags({ // location
-                      path       : bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
-                      targetUrl  : url,
-                      refererUrl : $('#dl-multiple-referer').val()
-                  }),
-                  originalLocation : $('#dl-multiple-location').val() },
-                { filename :
-                  bg.replaceTags({ // filename
-                      path      : $('#dl-multiple-filename').val(),
-                      targetUrl : url,
-                      refererUrl : $('#dl-multiple-referer').val()
-                  }, true),
-                  originalFilename : $('#dl-multiple-filename').val() },
-                { authentication      : [ $('#dl-multiple-user').val(), $('#dl-multiple-pass').val() ],
-                  disableResuming    : $('#dl-multiple-option1').is(':checked'),
-                  ignoreSizemismatch : $('#dl-multiple-option2').is(':checked') }
-            );
-        });
-
-        // config save
-        if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
-        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-multiple-filename').val());
-        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
-        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-multiple-option1').prop('checked'));
-        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-multiple-option2').prop('checked'));
-        break;
-    }
-
-    $('#new-download input, #new-download textarea').val('');
-    $('#new-download').modal('hide');
-
-}
-
-async function sourceDownload()
-{
-    const config = await bg.config.getPref();
-
-    // check invalid
-    if ($('#source').find('.is-invalid').length) return;
-    // download
-    $('#source-list .source-item .source-url input:checked').each(function() {
-        const targetUrl = this.value,
-              tag = $(this).closest('.row').children('.source-tag').text(),
-              title = $(this).closest('.row').children('.source-title').text() || defaultTitle;
-        bg.downloadFile(
-            targetUrl,
-            [{ name : 'X-DAS-Referer', value : $('#dl-source-referer').val() }],
-            { location :
-              bg.replaceTags({ // location
-                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
-                  targetUrl  : targetUrl,
-                  refererUrl : baseurl,
-                  tag        : tag
-              }),
-              originalLocation : $('#dl-source-location').val() },
-            { filename :
-              bg.replaceTags({ // filename
-                  path       : $('#dl-source-filename').val(),
-                  targetUrl  : targetUrl,
-                  refererUrl : baseurl,
-                  tag        : tag,
-                  title      : title
-              }, true),
-              originalFilename : $('#dl-source-filename').val() },
-            { authentication      : [ $('#dl-source-user').val(), $('#dl-source-pass').val() ],
-              disableResuming    : $('#dl-source-option1').is(':checked'),
-              ignoreSizemismatch : $('#dl-source-option2').is(':checked') }
-        );
-    });
-
-    // config save
-    if (config['remember-source-tagname'])
-        bg.config.setPref('source-tagname-value', $('#filter-tagnamelist').val().trim());
-    if (config['remember-source-filetype']) bg.config.setPref('source-filetype-value', (() => {
-        let result = [];
-        $('.filter-type-checkbox:checked').each(function() { result.push(this.id.replace(/^filter-/, '')); });
-        return result;
-    })());
-    if (config['remember-source-keyword']) {
-        bg.config.setPref('source-keyword-value', $('#filter-expression').val());
-        bg.config.setPref('source-regex-value', $('#filter-regex').prop('checked'));
-    }
-    if (config['remember-source-referer']) {
-        if ($('#dl-source-referer-default').prop('checked'))
-            bg.config.setPref('source-referer-default-value', true);
-        else {
-            bg.config.setPref('source-referer-default-value', false);
-            bg.config.setPref('source-referer-value', $('#dl-source-referer').val());
-        }
-    }
-    if (config['remember-source-filename']) bg.config.setPref('source-filename-value', $('#dl-source-filename').val());
-    if (config['remember-source-location']) bg.config.setPref('source-location-value', $('#dl-source-location').val());
-    if (config['remember-source-option1']) bg.config.setPref('source-option1-value', $('#dl-source-option1').prop('checked'));
-    if (config['remember-source-option2']) bg.config.setPref('source-option2-value', $('#dl-source-option2').prop('checked'));
-
-    $('#source-download').modal('hide');
-}
-
-function reDownload()
-{
-    const dlid  = this.dataset.dlid,
-          queue = bg.downloadQueue[dlid];
-
-    bg.downloadFile(
-        queue.originalUrlInput,
-        queue.requestHeaders,
-        { location         : queue.location,
-          originalLocation : queue.originalLocation },
-        { filename         : queue.filename,
-          originalFilename : queue.originalFilename },
-        queue.option
-    );
-
-    $('#download-detail').modal('hide');
-}
-
-function reDownloadManual()
-{
-    const dlid  = this.dataset.dlid,
-          queue = bg.downloadQueue[dlid];
-
-    $('#download-detail').modal('hide');
-    $('#new-download').on('shown.bs.modal', setParameters);
-    $('#new-download').modal('show');
-
-    function setParameters()
-    {
-        $('#single-tab').tab('show');
-        $('#dl-single-url').val(queue.originalUrlInput);
-        $('#dl-single-user').val(queue.option.authentication[0]);
-        $('#dl-single-pass').val(queue.option.authentication[1]);
-        if (queue.option.authentication[0]) $('#new-download-single-authentication').collapse('show');
-        const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
-        $('#dl-single-referer').val(referer.value).trigger('input');
-        $('#dl-single-location').val(queue.originalLocation).trigger('input');
-        $('#dl-single-filename').val(queue.originalFilename).trigger('input');
-        $('#dl-single-option1').prop('checked', queue.option.disableResuming).trigger('input');
-        $('#dl-single-option2').prop('checked', queue.option.ignoreSizemismatch).trigger('input');
-
-        $('#new-download').off('shown.bs.modal', setParameters);
-    }
-}
-
-function deleteFinished()
-{
-    bg.searchQueue({ status : 'finished' }).forEach((queue) => {
-        bg.deleteQueue(queue.id);
-        $('#item-' + queue.id).remove();
-    });
-}
-
-function deleteCompleted()
-{
-    bg.searchQueue({ status : 'finished' , reason : 'complete' }).forEach((queue) => {
-        bg.deleteQueue(queue.id);
-        $('#item-' + queue.id).remove();
-    });
-}
-
-function deleteItem()
-{
-    bg.deleteQueue(this.dataset.dlid);
-    $('#item-' + this.dataset.dlid).remove();
-}
-
-function stopDownload()
-{
-    bg.stopDownload($('#confirm-dialog').attr('data-dlid'));
-}
-
-function pauseDownload()
-{
-    bg.pauseDownload($('#confirm-dialog').attr('data-dlid'));
-}
-
-function stopDownloading()
-{
-    bg.searchQueue({ status : 'downloading' }).concat(
-        bg.searchQueue({ status : 'paused' }),
-        bg.searchQueue({ status : 'downloaded' })
-    )
-        .forEach((queue) => {
-            bg.stopDownload(queue.id);
-            $('#item-' + queue.id).remove();
-        });
-}
-
-function stopWaiting()
-{
-    bg.searchQueue({ status : 'waiting' }).forEach((queue) => {
-        bg.stopDownload(queue.id);
-        $('#item-' + queue.id).remove();
-    });
-}
-
-function resumeDownload()
-{
-    bg.resumeDownload(this.dataset.dlid);
-}
-
-function switchDetail()
-{
-    let $target;
-
-    if (this.id == 'detail-next-button')
-        $target = $('#item-' + this.dataset.dlid).next('.download-item');
-    else
-        $target = $('#item-' + this.dataset.dlid).prev('.download-item');
-
-    if ($target.length != 0) {
-        // update dlid
-        $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-            .attr('data-dlid', $target.attr('id').split('-')[1]);
-        // update detail
-        updateDetail(true);
-    }
-}
-
-function detailTile()
-{
-    const box   = [],
-          $tile = $('<div class="detail-tile" data-status="" />');
-    [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
-    return box;
-}
-
-function updateDetail(init)
-{
-    const dlid      = $('#download-detail').attr('data-dlid'),
-          queue     = bg.downloadQueue[dlid],
-          loadedObj = queue.loaded;
-
-    // init
-    if (init) {
-        $('#detail-status-dlid').val(dlid);
-        $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
-        $('#detail-info-url').val(queue.originalUrlInput);
-        $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
-        let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
-        $('#detail-info-user').val(queue.option.authentication[0]);
-        $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
-        $('#detail-info-referer-open').attr('data-link', referer.value);
-        $('#detail-info-filename').parent().attr('data-editing', '');
-        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
-            .val(() => {
-                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
-                return queue.filename || queue.responseFilename || '';
-            });
-        $('#detail-info-location').parent().attr('data-editing', '');
-        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
-            .val(queue.location);
-        $('#detail-info-option1').prop('checked', queue.option.disableResuming);
-        $('#detail-info-option2').prop('checked', queue.option.ignoreSizemismatch);
-    }
-
-    // download finished
-    if (!/waiting|downloading|paused/.test(queue.status)) {
-        $('#detail-info-filename').parent().attr('data-editing', '');
-        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
-            .val(() => {
-                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
-                return queue.filename || queue.responseFilename || '';
-            });
-        $('#detail-info-location').parent().attr('data-editing', '');
-        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
-            .val(queue.location);
-    }
-
-    $('#download-detail').attr('data-status', queue.status);
-    $('#detail-status-status').val(queue.status);
-    $('#detail-status-reason').val(queue.reason);
-    $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
-    $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
-    $('#detail-status-url').val(queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
-    $('#detail-status-url-open').attr('data-link', queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
-    $('#detail-status-user').val(queue.responseUrl && queue.responseUrl.username);
-    $('#detail-status-mime').val(queue.contentType);
-    if (queue.total) {
-        let progress = parseInt(loadedObj.now / queue.total * 100);
-        $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
-        $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
-    }
-    else {
-        $('#detail-status-progress').css('width', '100%').text('unknown');
-        $('#detail-status-total').val('unknown');
-    }
-    $('#detail-status-current').val(loadedObj.now.toLocaleString('en-US'));
-
-    // finished
-    $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
-    $('#detail-info-location-open').attr('data-fxid', queue.fxid);
-
-    // tile
-    queue.detail.forEach((val, index) => {
-        $('#detail-status-detail').children().eq(index).attr('data-status', val || '');
-    });
-}
-
-function createGraph()
-{
-    const ctx = $('#total-speed-graph')[0];
-    totalGraph = new Chart(ctx, {
-        type : 'line',
-        data : {
-            labels : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
-            datasets : [{
-                data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
-                tension : 0.2,
-                fill : true,
-                borderColor : '#ffc10780',
-                backgroundColor : '#ffc10740'
-            }]
-        },
-        options : {
-            responsive : true,
-            resizeDelay : 100,
-            maintainAspectRatio : false,
-            elements : {
-                point : {
-                    pointStyle : false
-                }
-            },
-            interaction : {
-                mode : 'index',
-                intersect : false
-            },
-            plugins : {
-                legend : { display : false },
-                tooltip : {
-                    usePointStyle : true,
-                    callbacks : {
-                        title : () => '',
-                        label : (context) => { return context.parsed.y + ' MB/s'; },
-                        labelPointStyle : () => { return { pointStyle : 'line' }; }
-                    }
-                }
-            },
-            scales : {
-                x : {
-                    display : false,
-                    min : 1,
-                    grid : { display : false }
-                },
-                y : {
-                    display : false,
-                    min : 0,
-                    grid : { display : false },
-                    beforeCalculateLabelRotation : (axis) => {
-                        // change all itemGraph range
-                        $('#downloading-list > .download-item').each((i, e) => {
-                            if (e.chart) e.chart.options.scales.y.max = axis._valueRange;
-                        });
-                    }
-                }
-            }
-        }
-    });
-}
-
-async function newDownloadModal()
-{
-    if (!baseurl) {
-        // initial url
-        $('#dl-single-url, #dl-multiple-url').val('').trigger('input');
-        // default-referer from new button
-        $('#dl-single-referer-default').prop('checked', false).trigger('input');
-        $('#dl-single-referer-default-group').css('display', 'none');
-    }
-
-    // initial value
-    const config = await bg.config.getPref();
-    // initial authentication
-    $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
-    // initial filename
-    $('#dl-single-filename, #dl-multiple-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '');
-    // initial location
-    $('#dl-single-location, #dl-multiple-location').val(config['remember-new-location'] ? config['new-location-value'] : '');
-    // initial referer
-    $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '').trigger('input');
-    // initial option1
-    $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['remember-new-option1'] ? config['new-option1-value'] : false).trigger('input');
-    // initial option2
-    $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['remember-new-option2'] ? config['new-option2-value'] : false).trigger('input');
-}
-
-async function sourceDownloadModal()
-{
-    $('#source-all')
-        .on('keypress', keypressSourceInput)
-        .on('focus', focusSourceInput)
-        .on('blur', blurSourceInput)
-        .on('change', changeSourceAll);
-    // source list item
-    $('#source-list')
-        .on('keypress', '.source-url-input', keypressSourceInput)
-        .on('focus', '.source-url-input', focusSourceInput)
-        .on('blur', '.source-url-input', blurSourceInput)
-        .on('change', '.source-url-input', changeSourceItem)
-        .on('click', '.source-item', checkSourceItem)
-        .on('mousedown', '.source-item', (e) => {
-            if (e. originalEvent.shiftKey) return false;
-            else return true;
-        });
-    // source list sort
-    $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
-    // source list filter
-    $('#byTagname input, #byFiletype input, #byKeyword input')
-        .on('input', function() { if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); } });
-    // hide duclication
-    $('#filter-dup')
-        .on('input', function() { checkActiveFilter(); outputSourceList(); });
-    // source list filter button
-    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
-        .on('click', function() { checkActiveFilter(); outputSourceList(); });
-
-    // filter button
-    if (source.length >= MAX_FILTER_CNT) {
-        $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
-            .parent().removeClass('d-none');
-    }
-
-    // default-referer
-    $('#dl-source-referer-default').on('input', function() {
-        if (this.checked)
-            $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
-        else
-            $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
-    });
-    // initial value
-    const config = await bg.config.getPref();
-    // filter-filetypes
-    filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
-    filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
-    filter3 = new RegExp('^(' + config['filetype3-extension'] + ')$'),
-    filter4 = new RegExp('^(' + config['filetype4-extension'] + ')$'),
-    filter5 = new RegExp('^(' + config['filetype5-extension'] + ')$'),
-    filter6 = new RegExp('^(' + config['filetype6-extension'] + ')$');
-    // initial source-tagname (checked by checkActiveFilter)
-    if (config['remember-source-tagname'])
-        $('#filter-tagnamelist').val(config['source-tagname-value']);
-    // initial source-filetype (checked by checkActiveFilter)
-    if (config['remember-source-filetype'])
-        config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
-    // initial source-keyword (checked by checkActiveFilter)
-    if (config['remember-source-keyword']) {
-        $('#filter-expression').val(config['source-keyword-value']);
-        $('#filter-regex').prop('checked', config['source-regex-value']);
-    }
-    // initial source-authentication
-    $('#dl-source-user, #dl-source-pass').val('');
-    // initial source-referer
-    if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
-        $('#dl-source-referer-default').prop('checked', true).trigger('input');
-    else if (config['remember-source-referer']) {
-        $('#dl-source-referer-default').prop('checked', false);
-        $('#dl-source-referer').val(config['source-referer-value']);
-    }
-    // initial source-filename
-    $('#dl-source-filename').val(config['remember-source-filename'] ? config['source-filename-value'] : '').trigger('input');
-    // initial source-location
-    $('#dl-source-location').val(config['remember-source-location'] ? config['source-location-value'] : '').trigger('input');
-    // initial option1
-    $('#dl-source-option1').prop('checked', config['remember-source-option1'] ? config['source-option1-value'] : false).trigger('input');
-    // initial option2
-    $('#dl-source-option2').prop('checked', config['remember-source-option2'] ? config['source-option2-value'] : false).trigger('input');
-    // tab color
-    checkActiveFilter();
-}
-
-function sourceDownloadModalHidden()
-{
-    baseurl = null;
-    $(this).remove();
-}
-
-function detailModal(e)
-{
-    const button = e.relatedTarget;
-    // update dlid
-    $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-        .attr('data-dlid', button.dataset.dlid);
-    // update detail
-    updateDetail(true);
-    $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
-}
-
-function detailModalHidden()
-{
-    // to stop animation
-    $(this).attr('data-status', '');
-    clearInterval($(this).attr('data-timer'));
-}
-
-function confirmDialog(e)
-{
-    const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
-
-    switch (e.relatedTarget.dataset.action) {
-    case 'stop':
-        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-            .off('click')
-            .on('click', stopDownload);
-        break;
-    case 'pause':
-        bg.downloadQueue[dlid].resumeEnabled
-            ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
-            : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
-            .off('click')
-            .on('click', pauseDownload);
-        break;
-    case 'stop-downloading':
-        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-            .off('click')
-            .on('click', stopDownloading);
-        break;
-    case 'stop-waiting':
-        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-            .off('click')
-            .on('click', stopWaiting);
-        break;
-    }
-}
-
+/**********************
+  Manager UI functions
+ **********************/
 function updateGraph(Bps)
 {
     totalGraph.data.datasets[0].data.shift();
@@ -1025,6 +444,668 @@ function updateList()
     }
 }
 
+function createGraph()
+{
+    const ctx = $('#total-speed-graph')[0];
+    totalGraph = new Chart(ctx, {
+        type : 'line',
+        data : {
+            labels : [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20],
+            datasets : [{
+                data : [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+                tension : 0.2,
+                fill : true,
+                borderColor : '#ffc10780',
+                backgroundColor : '#ffc10740'
+            }]
+        },
+        options : {
+            responsive : true,
+            resizeDelay : 100,
+            maintainAspectRatio : false,
+            elements : {
+                point : {
+                    pointStyle : false
+                }
+            },
+            interaction : {
+                mode : 'index',
+                intersect : false
+            },
+            plugins : {
+                legend : { display : false },
+                tooltip : {
+                    usePointStyle : true,
+                    callbacks : {
+                        title : () => '',
+                        label : (context) => { return context.parsed.y + ' MB/s'; },
+                        labelPointStyle : () => { return { pointStyle : 'line' }; }
+                    }
+                }
+            },
+            scales : {
+                x : {
+                    display : false,
+                    min : 1,
+                    grid : { display : false }
+                },
+                y : {
+                    display : false,
+                    min : 0,
+                    grid : { display : false },
+                    beforeCalculateLabelRotation : (axis) => {
+                        // change all itemGraph range
+                        $('#downloading-list > .download-item').each((i, e) => {
+                            if (e.chart) e.chart.options.scales.y.max = axis._valueRange;
+                        });
+                    }
+                }
+            }
+        }
+    });
+}
+
+function hashRouter()
+{
+    switch (document.location.hash) {
+    case '#downloading':
+    case '#waiting':
+    case '#finished':
+        $('[href="'+document.location.hash+'"]').tab('show');
+        break;
+    case '#new':
+        baseurl = bg.lastSource.baseurl;
+        $('#new-download').on('shown.bs.modal', setParameters);
+        $('#new-download').modal('show');
+
+        async function setParameters() {
+            const config = await bg.config.getPref();
+
+            $('#dl-single-url').val(bg.lastSource.link);
+            // default-referer
+            if (!config['remember-new-referer'] || config['remember-new-referer'] && config['new-referer-default-value'])
+                $('#dl-single-referer-default').prop('checked', true).trigger('input');
+            else if (config['remember-new-referer']) {
+                $('#dl-single-referer-default').prop('checked', false);
+                $('#dl-single-referer').val(config['new-referer-value']);
+            }
+            bg.lastSource = {};
+
+            $('#new-download').off('shown.bs.modal', setParameters);
+        }
+
+        break;
+    case '#source':
+        baseurl = bg.lastSource.baseurl;
+        updateSourceList();
+        bg.lastSource = {};
+        $('#source-download').modal('show');
+        break;
+    default:
+    };
+
+    // location bar
+    history.replaceState('', '', document.location.pathname);
+}
+
+async function localization()
+{
+    const config = await bg.config.getPref();
+
+    $('[data-string]').each(function() {
+        $(this).text(browser.i18n.getMessage(this.dataset.string));
+    });
+    $('[data-string-placeholder]').each(function() {
+        $(this).attr('placeholder', browser.i18n.getMessage(this.dataset.stringPlaceholder));
+    });
+    $('[data-configstring]').each(function() {
+        $(this).text(config[this.dataset.configstring]);
+    });
+}
+
+/********************
+  Download functions
+ ********************/
+async function download()
+{
+    const target = $('#new-download-modal-tab > [aria-selected=true]').attr('aria-controls'),
+          config = await bg.config.getPref();
+
+    switch (target) {
+    case 'single':
+        const targetUrl = $('#dl-single-url').val();
+        // check invalid
+        if (!targetUrl || $('#single').find('.is-invalid').length) return;
+        // download
+        bg.downloadFile(
+            targetUrl,
+            [{ name : 'X-DAS-Referer', value : $('#dl-single-referer').val() }],
+            { location :
+              bg.replaceTags({ // location
+                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-single-location').val()),
+                  targetUrl  : targetUrl,
+                  refererUrl : $('#dl-single-referer').val()
+              }),
+              originalLocation : $('#dl-single-location').val() },
+            { filename :
+              bg.replaceTags({ // filename
+                  path       : $('#dl-single-filename').val(),
+                  targetUrl  : targetUrl,
+                  refererUrl : $('#dl-single-referer').val()
+              }, true),
+              originalFilename : $('#dl-single-filename').val() },
+            { authentication      : [ $('#dl-single-user').val(), $('#dl-single-pass').val() ],
+              disableResuming    : $('#dl-single-option1').is(':checked'),
+              ignoreSizemismatch : $('#dl-single-option2').is(':checked') }
+        );
+
+        // config save
+        if (config['remember-new-referer']) {
+            if ($('#dl-single-referer-default').prop('checked'))
+                bg.config.setPref('new-referer-default-value', true);
+            else {
+                bg.config.setPref('new-referer-default-value', false);
+                bg.config.setPref('new-referer-value', $('#dl-single-referer').val());
+            }
+        }
+        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-single-filename').val());
+        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-single-location').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-single-option1').prop('checked'));
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-single-option2').prop('checked'));
+        break;
+
+    case 'multiple':
+        // check invalid
+        if ($('#multiple').find('.is-invalid').length) return;
+        // download
+        $('#dl-multiple-url').val().split('\n').filter(v => v).forEach((url) => {
+            bg.downloadFile(
+                url,
+                [{ name : 'X-DAS-Referer', value : $('#dl-multiple-referer').val() }],
+                { location :
+                  bg.replaceTags({ // location
+                      path       : bg.normalizeLocation(config['download-location'] + $('#dl-multiple-location').val()),
+                      targetUrl  : url,
+                      refererUrl : $('#dl-multiple-referer').val()
+                  }),
+                  originalLocation : $('#dl-multiple-location').val() },
+                { filename :
+                  bg.replaceTags({ // filename
+                      path      : $('#dl-multiple-filename').val(),
+                      targetUrl : url,
+                      refererUrl : $('#dl-multiple-referer').val()
+                  }, true),
+                  originalFilename : $('#dl-multiple-filename').val() },
+                { authentication      : [ $('#dl-multiple-user').val(), $('#dl-multiple-pass').val() ],
+                  disableResuming    : $('#dl-multiple-option1').is(':checked'),
+                  ignoreSizemismatch : $('#dl-multiple-option2').is(':checked') }
+            );
+        });
+
+        // config save
+        if (config['remember-new-referer']) bg.config.setPref('new-referer-value', $('#dl-multiple-referer').val());
+        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-multiple-filename').val());
+        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-multiple-location').val());
+        if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-multiple-option1').prop('checked'));
+        if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-multiple-option2').prop('checked'));
+        break;
+    }
+
+    $('#new-download input, #new-download textarea').val('');
+    $('#new-download').modal('hide');
+
+}
+
+async function sourceDownload()
+{
+    const config = await bg.config.getPref();
+
+    // check invalid
+    if ($('#source').find('.is-invalid').length) return;
+    // download
+    $('#source-list .source-item .source-url input:checked').each(function() {
+        const targetUrl = this.value,
+              tag = $(this).closest('.row').children('.source-tag').text(),
+              title = $(this).closest('.row').children('.source-title').text() || defaultTitle;
+        bg.downloadFile(
+            targetUrl,
+            [{ name : 'X-DAS-Referer', value : $('#dl-source-referer').val() }],
+            { location :
+              bg.replaceTags({ // location
+                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
+                  targetUrl  : targetUrl,
+                  refererUrl : baseurl,
+                  tag        : tag
+              }),
+              originalLocation : $('#dl-source-location').val() },
+            { filename :
+              bg.replaceTags({ // filename
+                  path       : $('#dl-source-filename').val(),
+                  targetUrl  : targetUrl,
+                  refererUrl : baseurl,
+                  tag        : tag,
+                  title      : title
+              }, true),
+              originalFilename : $('#dl-source-filename').val() },
+            { authentication      : [ $('#dl-source-user').val(), $('#dl-source-pass').val() ],
+              disableResuming    : $('#dl-source-option1').is(':checked'),
+              ignoreSizemismatch : $('#dl-source-option2').is(':checked') }
+        );
+    });
+
+    // config save
+    if (config['remember-source-tagname'])
+        bg.config.setPref('source-tagname-value', $('#filter-tagnamelist').val().trim());
+    if (config['remember-source-filetype']) bg.config.setPref('source-filetype-value', (() => {
+        let result = [];
+        $('.filter-type-checkbox:checked').each(function() { result.push(this.id.replace(/^filter-/, '')); });
+        return result;
+    })());
+    if (config['remember-source-keyword']) {
+        bg.config.setPref('source-keyword-value', $('#filter-expression').val());
+        bg.config.setPref('source-regex-value', $('#filter-regex').prop('checked'));
+    }
+    if (config['remember-source-referer']) {
+        if ($('#dl-source-referer-default').prop('checked'))
+            bg.config.setPref('source-referer-default-value', true);
+        else {
+            bg.config.setPref('source-referer-default-value', false);
+            bg.config.setPref('source-referer-value', $('#dl-source-referer').val());
+        }
+    }
+    if (config['remember-source-filename']) bg.config.setPref('source-filename-value', $('#dl-source-filename').val());
+    if (config['remember-source-location']) bg.config.setPref('source-location-value', $('#dl-source-location').val());
+    if (config['remember-source-option1']) bg.config.setPref('source-option1-value', $('#dl-source-option1').prop('checked'));
+    if (config['remember-source-option2']) bg.config.setPref('source-option2-value', $('#dl-source-option2').prop('checked'));
+
+    $('#source-download').modal('hide');
+}
+
+/****************************
+  Re download item functions
+ ****************************/
+function reDownload()
+{
+    const dlid  = this.dataset.dlid,
+          queue = bg.downloadQueue[dlid];
+
+    bg.downloadFile(
+        queue.originalUrlInput,
+        queue.requestHeaders,
+        { location         : queue.location,
+          originalLocation : queue.originalLocation },
+        { filename         : queue.filename,
+          originalFilename : queue.originalFilename },
+        queue.option
+    );
+
+    $('#download-detail').modal('hide');
+}
+
+function reDownloadManual()
+{
+    const dlid  = this.dataset.dlid,
+          queue = bg.downloadQueue[dlid];
+
+    $('#download-detail').modal('hide');
+    $('#new-download').on('shown.bs.modal', setParameters);
+    $('#new-download').modal('show');
+
+    function setParameters()
+    {
+        $('#single-tab').tab('show');
+        $('#dl-single-url').val(queue.originalUrlInput);
+        $('#dl-single-user').val(queue.option.authentication[0]);
+        $('#dl-single-pass').val(queue.option.authentication[1]);
+        if (queue.option.authentication[0]) $('#new-download-single-authentication').collapse('show');
+        const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
+        $('#dl-single-referer').val(referer.value).trigger('input');
+        $('#dl-single-location').val(queue.originalLocation).trigger('input');
+        $('#dl-single-filename').val(queue.originalFilename).trigger('input');
+        $('#dl-single-option1').prop('checked', queue.option.disableResuming).trigger('input');
+        $('#dl-single-option2').prop('checked', queue.option.ignoreSizemismatch).trigger('input');
+
+        $('#new-download').off('shown.bs.modal', setParameters);
+    }
+}
+
+/**************************
+  Item operation functions
+ **************************/
+function deleteFinished()
+{
+    bg.searchQueue({ status : 'finished' }).forEach((queue) => {
+        bg.deleteQueue(queue.id);
+        $('#item-' + queue.id).remove();
+    });
+}
+
+function deleteCompleted()
+{
+    bg.searchQueue({ status : 'finished' , reason : 'complete' }).forEach((queue) => {
+        bg.deleteQueue(queue.id);
+        $('#item-' + queue.id).remove();
+    });
+}
+
+function deleteItem()
+{
+    bg.deleteQueue(this.dataset.dlid);
+    $('#item-' + this.dataset.dlid).remove();
+}
+
+function stopDownload()
+{
+    bg.stopDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function pauseDownload()
+{
+    bg.pauseDownload($('#confirm-dialog').attr('data-dlid'));
+}
+
+function stopDownloading()
+{
+    bg.searchQueue({ status : 'downloading' }).concat(
+        bg.searchQueue({ status : 'paused' }),
+        bg.searchQueue({ status : 'downloaded' })
+    )
+        .forEach((queue) => {
+            bg.stopDownload(queue.id);
+            $('#item-' + queue.id).remove();
+        });
+}
+
+function stopWaiting()
+{
+    bg.searchQueue({ status : 'waiting' }).forEach((queue) => {
+        bg.stopDownload(queue.id);
+        $('#item-' + queue.id).remove();
+    });
+}
+
+function resumeDownload()
+{
+    bg.resumeDownload(this.dataset.dlid);
+}
+
+/*************************
+  Modal opening functions
+ ************************/
+async function newDownloadModal()
+{
+    if (!baseurl) {
+        // initial url
+        $('#dl-single-url, #dl-multiple-url').val('').trigger('input');
+        // default-referer from new button
+        $('#dl-single-referer-default').prop('checked', false).trigger('input');
+        $('#dl-single-referer-default-group').css('display', 'none');
+    }
+
+    // initial value
+    const config = await bg.config.getPref();
+    // initial authentication
+    $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
+    // initial filename
+    $('#dl-single-filename, #dl-multiple-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '');
+    // initial location
+    $('#dl-single-location, #dl-multiple-location').val(config['remember-new-location'] ? config['new-location-value'] : '');
+    // initial referer
+    $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '').trigger('input');
+    // initial option1
+    $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['remember-new-option1'] ? config['new-option1-value'] : false).trigger('input');
+    // initial option2
+    $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['remember-new-option2'] ? config['new-option2-value'] : false).trigger('input');
+}
+
+async function sourceDownloadModal()
+{
+    $('#source-all')
+        .on('keypress', keypressSourceInput)
+        .on('focus', focusSourceInput)
+        .on('blur', blurSourceInput)
+        .on('change', changeSourceAll);
+    // source list item
+    $('#source-list')
+        .on('keypress', '.source-url-input', keypressSourceInput)
+        .on('focus', '.source-url-input', focusSourceInput)
+        .on('blur', '.source-url-input', blurSourceInput)
+        .on('change', '.source-url-input', changeSourceItem)
+        .on('click', '.source-item', checkSourceItem)
+        .on('mousedown', '.source-item', (e) => {
+            if (e. originalEvent.shiftKey) return false;
+            else return true;
+        });
+    // source list sort
+    $('#sort-url, #sort-filetype, #sort-tag').on('click', sortSourceItems);
+    // source list filter
+    $('#byTagname input, #byFiletype input, #byKeyword input')
+        .on('input', function() { if (source.length < MAX_FILTER_CNT) { checkActiveFilter(); outputSourceList(); } });
+    // hide duclication
+    $('#filter-dup')
+        .on('input', function() { checkActiveFilter(); outputSourceList(); });
+    // source list filter button
+    $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+        .on('click', function() { checkActiveFilter(); outputSourceList(); });
+
+    // filter button
+    if (source.length >= MAX_FILTER_CNT) {
+        $('#filter-tagnamelist-button, #filter-type-button, #filter-expression-button')
+            .parent().removeClass('d-none');
+    }
+
+    // default-referer
+    $('#dl-source-referer-default').on('input', function() {
+        if (this.checked)
+            $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
+        else
+            $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
+    });
+    // initial value
+    const config = await bg.config.getPref();
+    // filter-filetypes
+    filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
+    filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
+    filter3 = new RegExp('^(' + config['filetype3-extension'] + ')$'),
+    filter4 = new RegExp('^(' + config['filetype4-extension'] + ')$'),
+    filter5 = new RegExp('^(' + config['filetype5-extension'] + ')$'),
+    filter6 = new RegExp('^(' + config['filetype6-extension'] + ')$');
+    // initial source-tagname (checked by checkActiveFilter)
+    if (config['remember-source-tagname'])
+        $('#filter-tagnamelist').val(config['source-tagname-value']);
+    // initial source-filetype (checked by checkActiveFilter)
+    if (config['remember-source-filetype'])
+        config['source-filetype-value'].forEach((type) => { $('#filter-' + type).prop('checked', true); });
+    // initial source-keyword (checked by checkActiveFilter)
+    if (config['remember-source-keyword']) {
+        $('#filter-expression').val(config['source-keyword-value']);
+        $('#filter-regex').prop('checked', config['source-regex-value']);
+    }
+    // initial source-authentication
+    $('#dl-source-user, #dl-source-pass').val('');
+    // initial source-referer
+    if (!config['remember-source-referer'] || config['remember-source-referer'] && config['source-referer-default-value'])
+        $('#dl-source-referer-default').prop('checked', true).trigger('input');
+    else if (config['remember-source-referer']) {
+        $('#dl-source-referer-default').prop('checked', false);
+        $('#dl-source-referer').val(config['source-referer-value']);
+    }
+    // initial source-filename
+    $('#dl-source-filename').val(config['remember-source-filename'] ? config['source-filename-value'] : '').trigger('input');
+    // initial source-location
+    $('#dl-source-location').val(config['remember-source-location'] ? config['source-location-value'] : '').trigger('input');
+    // initial option1
+    $('#dl-source-option1').prop('checked', config['remember-source-option1'] ? config['source-option1-value'] : false).trigger('input');
+    // initial option2
+    $('#dl-source-option2').prop('checked', config['remember-source-option2'] ? config['source-option2-value'] : false).trigger('input');
+    // tab color
+    checkActiveFilter();
+}
+
+function sourceDownloadModalHidden()
+{
+    baseurl = null;
+    $(this).remove();
+}
+
+function detailModal(e)
+{
+    const button = e.relatedTarget;
+    // update dlid
+    $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
+        .attr('data-dlid', button.dataset.dlid);
+    // update detail
+    updateDetail(true);
+    $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
+}
+
+function detailModalHidden()
+{
+    // to stop animation
+    $(this).attr('data-status', '');
+    clearInterval($(this).attr('data-timer'));
+}
+
+/**********************
+  Validation functions
+ **********************/
+function validateAuthentication($user, $pass)
+{
+    $user.toggleClass('is-invalid', $user.val() == '' && $pass.val() != '');
+}
+
+function validateUrl()
+{
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        return;
+    }
+    try {
+        new URL(this.value);
+        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+    }
+}
+
+function validateUrls()
+{
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        return;
+    }
+    try {
+        ($(this).val().split('\n')).forEach((line) => {
+            new URL(line);
+            $(this).toggleClass('is-invalid', !allowProtocol.test(line));
+        });
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+    }
+}
+
+function validateReferer()
+{
+    const $filename = $('#' + this.id.replace('referer', 'filename')),
+          $location = $('#' + this.id.replace('referer', 'location'));
+
+    // empty referer
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        $filename.trigger('input'), $location.trigger('input');
+        return;
+    }
+    try {
+        new URL(this.value);
+        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
+        $filename.trigger('input'), $location.trigger('input');
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+        $filename.trigger('input'), $location.trigger('input');
+    }
+}
+
+function validateFilename()
+{
+    const $referer     = $('#' + this.id.replace('filename', 'referer')),
+          $location    = $('#' + this.id.replace('filename', 'location')),
+          allowPattern = this.id != 'dl-source-filename' ? allowFilename : allowFilenameS,
+          valid        =
+          refTagFilename.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
+          || !refTagFilename.test(this.value)
+          && allowPattern.test(this.value) && !denyFilename.test(this.value);
+
+    // referer validation
+    refTagFilename.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
+    !refTagFilename.test(this.value) && !refTagLocation.test($location.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
+
+    $(this).toggleClass('is-invalid', !valid);
+    // sample
+    if (valid) $('#' + this.id + '-sample').text(
+        bg.replaceTags({
+            path       : this.value,
+            targetUrl  : 'http://www.example.com/path/name/',
+            refererUrl : $referer.val(),
+            tag        : 'tag',
+            title      : 'title',
+            name       : 'filename',
+            ext        : 'ext',
+            mime       : 'sample/mime-type'
+        }, true));
+    else $('#' + this.id + '-sample').text('');
+}
+
+async function validateLocation()
+{
+    const defaultLocation = await bg.config.getPref('download-location'),
+          location        = bg.normalizeLocation(defaultLocation + this.value),
+          $referer        = $('#' + this.id.replace('location', 'referer')),
+          $filename       = $('#' + this.id.replace('location', 'filename')),
+          allowPattern    = this.id != 'dl-source-location' ? allowLocation : allowLocationS,
+          valid           =
+          refTagLocation.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
+          || !refTagLocation.test(this.value)
+          && allowPattern.test(location) && !denyLocation.test(location);
+
+    // referer validation
+    refTagLocation.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
+    !refTagLocation.test(this.value) && !refTagFilename.test($filename.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
+
+    $(this).toggleClass('is-invalid', !valid);
+    // sample
+    if (valid) $('#' + this.id + '-sample').text(
+        bg.replaceTags({
+            path       : location,
+            targetUrl  : 'http://www.example.com/path/name/',
+            refererUrl : $referer.val(),
+            tag        : 'tag',
+            title      : 'title',
+            name       : 'filename',
+            ext        : 'ext',
+            mime       : 'sample/mime-type'
+        }));
+    else $('#' + this.id + '-sample').text('');
+}
+
+function checkDownloadOptions()
+{
+    $('#dl-single-option1').is(':checked')
+        ? $('#dl-single-option2').prop({ disabled : true, checked : false })
+        : $('#dl-single-option2').prop({ disabled : false });
+    $('#dl-multiple-option1').is(':checked')
+        ? $('#dl-multiple-option2').prop({ disabled : true, checked : false })
+        : $('#dl-multiple-option2').prop({ disabled : false });
+    $('#dl-source-option1').is(':checked')
+        ? $('#dl-source-option2').prop({ disabled : true, checked : false })
+        : $('#dl-source-option2').prop({ disabled : false });
+}
+
+/*********************************
+  Source download modal functions
+ *********************************/
 function updateSourceList()
 {
     const list = bg.lastSource.list,
@@ -1333,194 +1414,140 @@ function checkActiveFilter()
     $('a.collapse-toggle-link[href="#byKeyword"]').attr('data-filtered', $('#filter-expression').val().length != 0 ? 'true' : '');
 }
 
-function validateAuthentication($user, $pass)
+/************************
+  Detail modal functions
+ ************************/
+function switchDetail()
 {
-    $user.toggleClass('is-invalid', $user.val() == '' && $pass.val() != '');
-}
+    let $target;
 
-function validateUrl()
-{
-    if (!this.value) {
-        $(this).toggleClass('is-invalid', false);
-        return;
-    }
-    try {
-        new URL(this.value);
-        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
-    }
-    catch (e) {
-        $(this).toggleClass('is-invalid', true);
-    }
-}
+    if (this.id == 'detail-next-button')
+        $target = $('#item-' + this.dataset.dlid).next('.download-item');
+    else
+        $target = $('#item-' + this.dataset.dlid).prev('.download-item');
 
-function validateUrls()
-{
-    if (!this.value) {
-        $(this).toggleClass('is-invalid', false);
-        return;
-    }
-    try {
-        ($(this).val().split('\n')).forEach((line) => {
-            new URL(line);
-            $(this).toggleClass('is-invalid', !allowProtocol.test(line));
-        });
-    }
-    catch (e) {
-        $(this).toggleClass('is-invalid', true);
+    if ($target.length != 0) {
+        // update dlid
+        $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
+            .attr('data-dlid', $target.attr('id').split('-')[1]);
+        // update detail
+        updateDetail(true);
     }
 }
 
-function validateReferer()
+function detailTile()
 {
-    const $filename = $('#' + this.id.replace('referer', 'filename')),
-          $location = $('#' + this.id.replace('referer', 'location'));
+    const box   = [],
+          $tile = $('<div class="detail-tile" data-status="" />');
+    [...Array(TILE_SIZE)].forEach(() => { box.push($tile.clone()); });
+    return box;
+}
 
-    // empty referer
-    if (!this.value) {
-        $(this).toggleClass('is-invalid', false);
-        $filename.trigger('input'), $location.trigger('input');
-        return;
+function updateDetail(init)
+{
+    const dlid      = $('#download-detail').attr('data-dlid'),
+          queue     = bg.downloadQueue[dlid],
+          loadedObj = queue.loaded;
+
+    // init
+    if (init) {
+        $('#detail-status-dlid').val(dlid);
+        $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
+        $('#detail-info-url').val(queue.originalUrlInput);
+        $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
+        let referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
+        $('#detail-info-user').val(queue.option.authentication[0]);
+        $('#detail-info-referer').val(referer.value ? referer.value : '(none)');
+        $('#detail-info-referer-open').attr('data-link', referer.value);
+        $('#detail-info-filename').parent().attr('data-editing', '');
+        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(() => {
+                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
+                return queue.filename || queue.responseFilename || '';
+            });
+        $('#detail-info-location').parent().attr('data-editing', '');
+        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(queue.location);
+        $('#detail-info-option1').prop('checked', queue.option.disableResuming);
+        $('#detail-info-option2').prop('checked', queue.option.ignoreSizemismatch);
     }
-    try {
-        new URL(this.value);
-        $(this).toggleClass('is-invalid', !allowProtocol.test(this.value));
-        $filename.trigger('input'), $location.trigger('input');
+
+    // download finished
+    if (!/waiting|downloading|paused/.test(queue.status)) {
+        $('#detail-info-filename').parent().attr('data-editing', '');
+        $('#detail-info-filename').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(() => {
+                if (queue.autoFilename) return queue.autoFilename + ' (auto)';
+                return queue.filename || queue.responseFilename || '';
+            });
+        $('#detail-info-location').parent().attr('data-editing', '');
+        $('#detail-info-location').addClass('form-control-plaintext').removeClass('form-control is-invalid')
+            .val(queue.location);
     }
-    catch (e) {
-        $(this).toggleClass('is-invalid', true);
-        $filename.trigger('input'), $location.trigger('input');
+
+    $('#download-detail').attr('data-status', queue.status);
+    $('#detail-status-status').val(queue.status);
+    $('#detail-status-reason').val(queue.reason);
+    $('#detail-status-start').val(queue.startTime ? new Date(queue.startTime).toLocaleString() : '');
+    $('#detail-status-end').val(queue.endTime ? new Date(queue.endTime).toLocaleString() : '');
+    $('#detail-status-url').val(queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-url-open').attr('data-link', queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
+    $('#detail-status-user').val(queue.responseUrl && queue.responseUrl.username);
+    $('#detail-status-mime').val(queue.contentType);
+    if (queue.total) {
+        let progress = parseInt(loadedObj.now / queue.total * 100);
+        $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
+        $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
     }
-}
+    else {
+        $('#detail-status-progress').css('width', '100%').text('unknown');
+        $('#detail-status-total').val('unknown');
+    }
+    $('#detail-status-current').val(loadedObj.now.toLocaleString('en-US'));
 
-function validateFilename()
-{
-    const $referer     = $('#' + this.id.replace('filename', 'referer')),
-          $location    = $('#' + this.id.replace('filename', 'location')),
-          allowPattern = this.id != 'dl-source-filename' ? allowFilename : allowFilenameS,
-          valid        =
-          refTagFilename.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
-          || !refTagFilename.test(this.value)
-          && allowPattern.test(this.value) && !denyFilename.test(this.value);
+    // finished
+    $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
+    $('#detail-info-location-open').attr('data-fxid', queue.fxid);
 
-    // referer validation
-    refTagFilename.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
-    !refTagFilename.test(this.value) && !refTagLocation.test($location.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
-
-    $(this).toggleClass('is-invalid', !valid);
-    // sample
-    if (valid) $('#' + this.id + '-sample').text(
-        bg.replaceTags({
-            path       : this.value,
-            targetUrl  : 'http://www.example.com/path/name/',
-            refererUrl : $referer.val(),
-            tag        : 'tag',
-            title      : 'title',
-            name       : 'filename',
-            ext        : 'ext',
-            mime       : 'sample/mime-type'
-        }, true));
-    else $('#' + this.id + '-sample').text('');
-}
-
-async function validateLocation()
-{
-    const defaultLocation = await bg.config.getPref('download-location'),
-          location        = bg.normalizeLocation(defaultLocation + this.value),
-          $referer        = $('#' + this.id.replace('location', 'referer')),
-          $filename       = $('#' + this.id.replace('location', 'filename')),
-          allowPattern    = this.id != 'dl-source-location' ? allowLocation : allowLocationS,
-          valid           =
-          refTagLocation.test(this.value) && $referer.val() && !$referer.hasClass('is-invalid')
-          || !refTagLocation.test(this.value)
-          && allowPattern.test(location) && !denyLocation.test(location);
-
-    // referer validation
-    refTagLocation.test(this.value) && !$referer.val() && $referer.toggleClass('is-invalid', true);
-    !refTagLocation.test(this.value) && !refTagFilename.test($filename.val()) && !$referer.val() && $referer.toggleClass('is-invalid', false);
-
-    $(this).toggleClass('is-invalid', !valid);
-    // sample
-    if (valid) $('#' + this.id + '-sample').text(
-        bg.replaceTags({
-            path       : location,
-            targetUrl  : 'http://www.example.com/path/name/',
-            refererUrl : $referer.val(),
-            tag        : 'tag',
-            title      : 'title',
-            name       : 'filename',
-            ext        : 'ext',
-            mime       : 'sample/mime-type'
-        }));
-    else $('#' + this.id + '-sample').text('');
-}
-
-function checkDownloadOptions()
-{
-    $('#dl-single-option1').is(':checked')
-        ? $('#dl-single-option2').prop({ disabled : true, checked : false })
-        : $('#dl-single-option2').prop({ disabled : false });
-    $('#dl-multiple-option1').is(':checked')
-        ? $('#dl-multiple-option2').prop({ disabled : true, checked : false })
-        : $('#dl-multiple-option2').prop({ disabled : false });
-    $('#dl-source-option1').is(':checked')
-        ? $('#dl-source-option2').prop({ disabled : true, checked : false })
-        : $('#dl-source-option2').prop({ disabled : false });
-}
-
-function hashRouter()
-{
-    switch (document.location.hash) {
-    case '#downloading':
-    case '#waiting':
-    case '#finished':
-        $('[href="'+document.location.hash+'"]').tab('show');
-        break;
-    case '#new':
-        baseurl = bg.lastSource.baseurl;
-        $('#new-download').on('shown.bs.modal', setParameters);
-        $('#new-download').modal('show');
-
-        async function setParameters() {
-            const config = await bg.config.getPref();
-
-            $('#dl-single-url').val(bg.lastSource.link);
-            // default-referer
-            if (!config['remember-new-referer'] || config['remember-new-referer'] && config['new-referer-default-value'])
-                $('#dl-single-referer-default').prop('checked', true).trigger('input');
-            else if (config['remember-new-referer']) {
-                $('#dl-single-referer-default').prop('checked', false);
-                $('#dl-single-referer').val(config['new-referer-value']);
-            }
-            bg.lastSource = {};
-
-            $('#new-download').off('shown.bs.modal', setParameters);
-        }
-
-        break;
-    case '#source':
-        baseurl = bg.lastSource.baseurl;
-        updateSourceList();
-        bg.lastSource = {};
-        $('#source-download').modal('show');
-        break;
-    default:
-    };
-
-    // location bar
-    history.replaceState('', '', document.location.pathname);
-}
-
-async function localization()
-{
-    const config = await bg.config.getPref();
-
-    $('[data-string]').each(function() {
-        $(this).text(browser.i18n.getMessage(this.dataset.string));
+    // tile
+    queue.detail.forEach((val, index) => {
+        $('#detail-status-detail').children().eq(index).attr('data-status', val || '');
     });
-    $('[data-string-placeholder]').each(function() {
-        $(this).attr('placeholder', browser.i18n.getMessage(this.dataset.stringPlaceholder));
-    });
-    $('[data-configstring]').each(function() {
-        $(this).text(config[this.dataset.configstring]);
-    });
+}
+
+/******************
+  Dialog functions
+ ******************/
+function confirmDialog(e)
+{
+    const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
+
+    switch (e.relatedTarget.dataset.action) {
+    case 'stop':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopDownload);
+        break;
+    case 'pause':
+        bg.downloadQueue[dlid].resumeEnabled
+            ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
+            : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
+            .off('click')
+            .on('click', pauseDownload);
+        break;
+    case 'stop-downloading':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopDownloading);
+        break;
+    case 'stop-waiting':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopWaiting);
+        break;
+    }
 }
