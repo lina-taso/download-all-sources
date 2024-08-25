@@ -49,9 +49,9 @@ $(async () => {
     $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
     $('.openlocation-button, .item-openlocation-button').on('click', async function() { this.dataset.fxid && browser.downloads.show( parseInt(this.dataset.fxid)); });
     // all tooltip enabled
-    $('[data-toggle=tooltip]').tooltip({ title : function() {
-        return browser.i18n.getMessage(this.dataset.titlestring);
-    }});
+    $('[data-toggle=tooltip]').each(function() {
+        new bootstrap.Tooltip(this, { title : browser.i18n.getMessage(this.dataset.titlestring) });
+    });
     // download buttons
     $('#download-button').on('click', download);
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
@@ -187,8 +187,8 @@ $(async () => {
     // tag insertion
     $('.tags')
         .on('click', 'dt > a[href="#"]', function(e) {
-            $(e.delegateTarget).prev().children('input')[0].value += this.text;
-            $(e.delegateTarget).prev().children('input').eq(0).trigger('input');
+            $(e.delegateTarget).siblings('input')[0].value += this.text;
+            $(e.delegateTarget).siblings('input').eq(0).trigger('input');
         });
 
     // hash anchor (auto tab showing)

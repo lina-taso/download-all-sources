@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <title>Download All Sources Manager</title>
         <script src="js/jquery.min.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+        <script src="js/bootstrap.bundle.min.js"></script>
         <script src="js/chart.umd.js"></script>
         <script src="js/manager.js"></script>
         <link rel="stylesheet" href="css/all.min.css"> <!-- fontawesome -->
@@ -29,19 +29,19 @@
 
                     <!-- tab -->
                     <div class="list-group list-group-flush mb-3" role="tablist" aria-orientation="vertical">
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn active"
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 active"
                                 id="downloading-tab" href="#downloading"
                                 data-bs-toggle="tab" role="tab" aria-controls="downloading" aria-selected="true">
                             <span data-string="tab_downloading"></span>
                             <span class="badge bg-dark rounded-pill">0</span>
                         </button>
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
                                 id="waiting-tab" href="#waiting"
                                 data-bs-toggle="tab" role="tab" aria-controls="waiting" aria-selected="false">
                             <span data-string="tab_waiting"></span>
                             <span class="badge bg-dark rounded-pill">0</span>
                         </button>
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 btn"
+                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
                                 id="finished-tab" href="#finished"
                                 data-bs-toggle="tab" role="tab" aria-controls="finished" aria-selected="false">
                             <span data-string="tab_finished"></span>
@@ -113,13 +113,13 @@
                     </div>
                 </div>
             </div>
-            <nav class="navbar navbar-dark bg-dark fixed-bottom">
+            <nav class="navbar bg-dark bg-gradient fixed-bottom">
                 <div class="container-fluid">
                     <div id="total-speed-graph-container">
                         <canvas id="total-speed-graph"></canvas>
                     </div>
-                    <span class="navbar-text ms-auto me-2" data-string="footer_total_speed"></span>
-                    <span id="total-speed" class="navbar-text">-</span>
+                    <span class="navbar-text text-light ms-auto me-2" data-string="footer_total_speed"></span>
+                    <span id="total-speed" class="navbar-text text-light">-</span>
                 </div>
             </nav>
         </div>
@@ -147,23 +147,25 @@
                                 <div class="mb-3">
                                     <label class="form-label" for="dl-single-url" data-string="new_download_single_url"></label>
                                     <input id="dl-single-url" class="form-control" data-focus="true">
-                                    <div><small class="form-text text-muted" data-string="new_download_single_url_description"></small></div>
+                                    <div><small class="form-text text-body-secondary" data-string="new_download_single_url_description"></small></div>
                                 </div>
                                 <!-- authentication -->
-                                <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
-                                   href="#new-download-single-authentication" data-string="new_download_single_authentication"></a>
-                                <div id="new-download-single-authentication" class="row collapse">
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-single-user" data-string="new_download_single_user"></label>
-                                        <input id="dl-single-user" class="form-control" data-focus="true">
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-single-pass" data-string="new_download_single_pass"></label>
-                                        <input id="dl-single-pass" class="form-control" type="password" data-focus="true">
+                                <div class="mb-3">
+                                    <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
+                                       href="#new-download-single-authentication" data-string="new_download_single_authentication"></a>
+                                    <div id="new-download-single-authentication" class="row collapse">
+                                        <div class="col-6">
+                                            <label class="form-label" for="dl-single-user" data-string="new_download_single_user"></label>
+                                            <input id="dl-single-user" class="form-control" data-focus="true">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" for="dl-single-pass" data-string="new_download_single_pass"></label>
+                                            <input id="dl-single-pass" class="form-control" type="password" data-focus="true">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- referer -->
-                                <div class="my-3">
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-single-referer" data-string="new_download_single_referer"></label>
                                     <input id="dl-single-referer" class="form-control">
                                     <div id="dl-single-referer-default-group">
@@ -174,96 +176,96 @@
                                     </div>
                                 </div>
                                 <!-- filename -->
-                                <div>
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-single-filename" data-string="new_download_single_filename"></label>
                                     <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                        href="#dl-single-filename-tags" data-string="filename_tags"></a>
                                     <input id="dl-single-filename" class="form-control">
-                                    <small id="dl-single-filename-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-single-filename-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-single-filename-tags" data-string="filename_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                <dd class="col-9" data-string="tag_year"></dd>
-                                                <dt class="col-3"><a href="#">:M:</a></dt>
-                                                <dd class="col-9" data-string="tag_month"></dd>
-                                                <dt class="col-3"><a href="#">:D:</a></dt>
-                                                <dd class="col-9" data-string="tag_date"></dd>
-                                                <dt class="col-3"><a href="#">:h:</a></dt>
-                                                <dd class="col-9" data-string="tag_hour"></dd>
-                                                <dt class="col-3"><a href="#">:m:</a></dt>
-                                                <dd class="col-9" data-string="tag_minute"></dd>
-                                                <dt class="col-3"><a href="#">:s:</a></dt>
-                                                <dd class="col-9" data-string="tag_second"></dd>
-                                                <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                <dd class="col-9" data-string="tag_domain"></dd>
-                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                <dt class="col-3"><a href="#">:name:</a></dt>
-                                                <dd class="col-9" data-string="tag_name"></dd>
-                                                <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                <dd class="col-9" data-string="tag_ext"></dd>
-                                                <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                <dd class="col-9" data-string="tag_mext"></dd>
-                                            </dl>
+                                    <small id="dl-single-filename-sample" class="form-text text-body-secondary"></small>
+                                    <div class="tags collapse" id="dl-single-filename-tags">
+                                        <div class="card mt-2">
+                                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                               href="#dl-single-filename-tags" data-string="filename_tags"></a>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
+                                                    <dd class="col-9" data-string="tag_year"></dd>
+                                                    <dt class="col-3"><a href="#">:M:</a></dt>
+                                                    <dd class="col-9" data-string="tag_month"></dd>
+                                                    <dt class="col-3"><a href="#">:D:</a></dt>
+                                                    <dd class="col-9" data-string="tag_date"></dd>
+                                                    <dt class="col-3"><a href="#">:h:</a></dt>
+                                                    <dd class="col-9" data-string="tag_hour"></dd>
+                                                    <dt class="col-3"><a href="#">:m:</a></dt>
+                                                    <dd class="col-9" data-string="tag_minute"></dd>
+                                                    <dt class="col-3"><a href="#">:s:</a></dt>
+                                                    <dd class="col-9" data-string="tag_second"></dd>
+                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_domain"></dd>
+                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                    <dt class="col-3"><a href="#">:name:</a></dt>
+                                                    <dd class="col-9" data-string="tag_name"></dd>
+                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_ext"></dd>
+                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mext"></dd>
+                                                </dl>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- location -->
-                                <div>
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-single-location" data-string="new_download_single_location"></label>
                                     <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                        href="#dl-single-location-tags" data-string="location_tags"></a>
                                     <input id="dl-single-location" class="form-control">
-                                    <small id="dl-single-location-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-single-location-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-single-location-tags" data-string="location_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                <dd class="col-9" data-string="tag_year"></dd>
-                                                <dt class="col-3"><a href="#">:M:</a></dt>
-                                                <dd class="col-9" data-string="tag_month"></dd>
-                                                <dt class="col-3"><a href="#">:D:</a></dt>
-                                                <dd class="col-9" data-string="tag_date"></dd>
-                                                <dt class="col-3"><a href="#">:h:</a></dt>
-                                                <dd class="col-9" data-string="tag_hour"></dd>
-                                                <dt class="col-3"><a href="#">:m:</a></dt>
-                                                <dd class="col-9" data-string="tag_minute"></dd>
-                                                <dt class="col-3"><a href="#">:s:</a></dt>
-                                                <dd class="col-9" data-string="tag_second"></dd>
-                                                <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                <dd class="col-9" data-string="tag_domain"></dd>
-                                                <dt class="col-3"><a href="#">:path:</a></dt>
-                                                <dd class="col-9" data-string="tag_path"></dd>
-                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                <dt class="col-3"><a href="#">:refpath:</a></dt>
-                                                <dd class="col-9" data-string="tag_refpath"></dd>
-                                                <dt class="col-3"><a href="#">:name:</a></dt>
-                                                <dd class="col-9" data-string="tag_name"></dd>
-                                                <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                <dd class="col-9" data-string="tag_ext2"></dd>
-                                                <dt class="col-3"><a href="#">:mime:</a></dt>
-                                                <dd class="col-9" data-string="tag_mime"></dd>
-                                                <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                <dd class="col-9" data-string="tag_mext2"></dd>
-                                                <dt class="col-3">/</dt>
-                                                <dd class="col-9" data-string="tag_delimiter"></dd>
-                                            </dl>
+                                    <small id="dl-single-location-sample" class="form-text text-body-secondary"></small>
+                                    <div class="tags collapse" id="dl-single-location-tags">
+                                        <div class="card mt-2">
+                                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                               href="#dl-single-location-tags" data-string="location_tags"></a>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
+                                                    <dd class="col-9" data-string="tag_year"></dd>
+                                                    <dt class="col-3"><a href="#">:M:</a></dt>
+                                                    <dd class="col-9" data-string="tag_month"></dd>
+                                                    <dt class="col-3"><a href="#">:D:</a></dt>
+                                                    <dd class="col-9" data-string="tag_date"></dd>
+                                                    <dt class="col-3"><a href="#">:h:</a></dt>
+                                                    <dd class="col-9" data-string="tag_hour"></dd>
+                                                    <dt class="col-3"><a href="#">:m:</a></dt>
+                                                    <dd class="col-9" data-string="tag_minute"></dd>
+                                                    <dt class="col-3"><a href="#">:s:</a></dt>
+                                                    <dd class="col-9" data-string="tag_second"></dd>
+                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_domain"></dd>
+                                                    <dt class="col-3"><a href="#">:path:</a></dt>
+                                                    <dd class="col-9" data-string="tag_path"></dd>
+                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                    <dt class="col-3"><a href="#">:refpath:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refpath"></dd>
+                                                    <dt class="col-3"><a href="#">:name:</a></dt>
+                                                    <dd class="col-9" data-string="tag_name"></dd>
+                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_ext2"></dd>
+                                                    <dt class="col-3"><a href="#">:mime:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mime"></dd>
+                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mext2"></dd>
+                                                    <dt class="col-3">/</dt>
+                                                    <dd class="col-9" data-string="tag_delimiter"></dd>
+                                                </dl>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- option -->
-                                <label class="form-label" data-string="new_download_single_option"></label>
                                 <div class="mb-3 col row">
+                                    <label class="form-label" data-string="new_download_single_option"></label>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-single-option1">
@@ -288,114 +290,116 @@
                                     <textarea id="dl-multiple-url" class="form-control" rows="6"></textarea>
                                 </div>
                                 <!-- authentication -->
-                                <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
-                                   href="#new-download-multiple-authentication" data-string="new_download_multiple_authentication"></a>
-                                <div id="new-download-multiple-authentication" class="row collapse">
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-multiple-user" data-string="new_download_multiple_user"></label>
-                                        <input id="dl-multiple-user" class="form-control" data-focus="true">
-                                    </div>
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-multiple-pass" data-string="new_download_multiple_pass"></label>
-                                        <input id="dl-multiple-pass" class="form-control" type="password" data-focus="true">
+                                <div class="mb-3">
+                                    <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
+                                       href="#new-download-multiple-authentication" data-string="new_download_multiple_authentication"></a>
+                                    <div id="new-download-multiple-authentication" class="row collapse">
+                                        <div class="col-6">
+                                            <label class="form-label" for="dl-multiple-user" data-string="new_download_multiple_user"></label>
+                                            <input id="dl-multiple-user" class="form-control" data-focus="true">
+                                        </div>
+                                        <div class="col-6">
+                                            <label class="form-label" for="dl-multiple-pass" data-string="new_download_multiple_pass"></label>
+                                            <input id="dl-multiple-pass" class="form-control" type="password" data-focus="true">
+                                        </div>
                                     </div>
                                 </div>
                                 <!-- referer -->
-                                <div class="my-3">
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-multiple-referer" data-string="new_download_multiple_referer"></label>
                                     <input id="dl-multiple-referer" class="form-control">
                                 </div>
                                 <!-- filename -->
-                                <div>
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-multiple-filename" data-string="new_download_multiple_filename"></label>
                                     <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                        href="#dl-multiple-filename-tags" data-string="filename_tags"></a>
                                     <input id="dl-multiple-filename" class="form-control">
-                                    <small id="dl-multiple-filename-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-multiple-filename-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-multiple-filename-tags" data-string="filename_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                <dd class="col-9" data-string="tag_year"></dd>
-                                                <dt class="col-3"><a href="#">:M:</a></dt>
-                                                <dd class="col-9" data-string="tag_month"></dd>
-                                                <dt class="col-3"><a href="#">:D:</a></dt>
-                                                <dd class="col-9" data-string="tag_date"></dd>
-                                                <dt class="col-3"><a href="#">:h:</a></dt>
-                                                <dd class="col-9" data-string="tag_hour"></dd>
-                                                <dt class="col-3"><a href="#">:m:</a></dt>
-                                                <dd class="col-9" data-string="tag_minute"></dd>
-                                                <dt class="col-3"><a href="#">:s:</a></dt>
-                                                <dd class="col-9" data-string="tag_second"></dd>
-                                                <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                <dd class="col-9" data-string="tag_domain"></dd>
-                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                <dt class="col-3"><a href="#">:name:</a></dt>
-                                                <dd class="col-9" data-string="tag_name"></dd>
-                                                <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                <dd class="col-9" data-string="tag_ext"></dd>
-                                                <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                <dd class="col-9" data-string="tag_mext"></dd>
-                                            </dl>
+                                    <small id="dl-multiple-filename-sample" class="form-text text-body-secondary"></small>
+                                    <div class="tags collapse" id="dl-multiple-filename-tags">
+                                        <div class="card mt-2">
+                                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                               href="#dl-multiple-filename-tags" data-string="filename_tags"></a>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
+                                                    <dd class="col-9" data-string="tag_year"></dd>
+                                                    <dt class="col-3"><a href="#">:M:</a></dt>
+                                                    <dd class="col-9" data-string="tag_month"></dd>
+                                                    <dt class="col-3"><a href="#">:D:</a></dt>
+                                                    <dd class="col-9" data-string="tag_date"></dd>
+                                                    <dt class="col-3"><a href="#">:h:</a></dt>
+                                                    <dd class="col-9" data-string="tag_hour"></dd>
+                                                    <dt class="col-3"><a href="#">:m:</a></dt>
+                                                    <dd class="col-9" data-string="tag_minute"></dd>
+                                                    <dt class="col-3"><a href="#">:s:</a></dt>
+                                                    <dd class="col-9" data-string="tag_second"></dd>
+                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_domain"></dd>
+                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                    <dt class="col-3"><a href="#">:name:</a></dt>
+                                                    <dd class="col-9" data-string="tag_name"></dd>
+                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_ext"></dd>
+                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mext"></dd>
+                                                </dl>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- location -->
-                                <div>
+                                <div class="mb-3">
                                     <label class="form-label" for="dl-multiple-location" data-string="new_download_multiple_location"></label>
                                     <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                        href="#dl-multiple-location-tags" data-string="location_tags"></a>
                                     <input id="dl-multiple-location" class="form-control">
-                                    <small id="dl-multiple-location-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-multiple-location-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-multiple-location-tags" data-string="location_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                <dd class="col-9" data-string="tag_year"></dd>
-                                                <dt class="col-3"><a href="#">:M:</a></dt>
-                                                <dd class="col-9" data-string="tag_month"></dd>
-                                                <dt class="col-3"><a href="#">:D:</a></dt>
-                                                <dd class="col-9" data-string="tag_date"></dd>
-                                                <dt class="col-3"><a href="#">:h:</a></dt>
-                                                <dd class="col-9" data-string="tag_hour"></dd>
-                                                <dt class="col-3"><a href="#">:m:</a></dt>
-                                                <dd class="col-9" data-string="tag_minute"></dd>
-                                                <dt class="col-3"><a href="#">:s:</a></dt>
-                                                <dd class="col-9" data-string="tag_second"></dd>
-                                                <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                <dd class="col-9" data-string="tag_domain"></dd>
-                                                <dt class="col-3"><a href="#">:path:</a></dt>
-                                                <dd class="col-9" data-string="tag_path"></dd>
-                                                <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                <dt class="col-3"><a href="#">:refpath:</a></dt>
-                                                <dd class="col-9" data-string="tag_refpath"></dd>
-                                                <dt class="col-3"><a href="#">:name:</a></dt>
-                                                <dd class="col-9" data-string="tag_name"></dd>
-                                                <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                <dd class="col-9" data-string="tag_ext2"></dd>
-                                                <dt class="col-3"><a href="#">:mime:</a></dt>
-                                                <dd class="col-9" data-string="tag_mime"></dd>
-                                                <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                <dd class="col-9" data-string="tag_mext2"></dd>
-                                                <dt class="col-3">/</dt>
-                                                <dd class="col-9" data-string="tag_delimiter"></dd>
-                                            </dl>
+                                    <small id="dl-multiple-location-sample" class="form-text text-body-secondary"></small>
+                                    <div class="tags collapse" id="dl-multiple-location-tags">
+                                        <div class="card mt-2">
+                                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                               href="#dl-multiple-location-tags" data-string="location_tags"></a>
+                                            <div class="card-body">
+                                                <dl class="row">
+                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
+                                                    <dd class="col-9" data-string="tag_year"></dd>
+                                                    <dt class="col-3"><a href="#">:M:</a></dt>
+                                                    <dd class="col-9" data-string="tag_month"></dd>
+                                                    <dt class="col-3"><a href="#">:D:</a></dt>
+                                                    <dd class="col-9" data-string="tag_date"></dd>
+                                                    <dt class="col-3"><a href="#">:h:</a></dt>
+                                                    <dd class="col-9" data-string="tag_hour"></dd>
+                                                    <dt class="col-3"><a href="#">:m:</a></dt>
+                                                    <dd class="col-9" data-string="tag_minute"></dd>
+                                                    <dt class="col-3"><a href="#">:s:</a></dt>
+                                                    <dd class="col-9" data-string="tag_second"></dd>
+                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_domain"></dd>
+                                                    <dt class="col-3"><a href="#">:path:</a></dt>
+                                                    <dd class="col-9" data-string="tag_path"></dd>
+                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
+                                                    <dt class="col-3"><a href="#">:refpath:</a></dt>
+                                                    <dd class="col-9" data-string="tag_refpath"></dd>
+                                                    <dt class="col-3"><a href="#">:name:</a></dt>
+                                                    <dd class="col-9" data-string="tag_name"></dd>
+                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_ext2"></dd>
+                                                    <dt class="col-3"><a href="#">:mime:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mime"></dd>
+                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
+                                                    <dd class="col-9" data-string="tag_mext2"></dd>
+                                                    <dt class="col-3">/</dt>
+                                                    <dd class="col-9" data-string="tag_delimiter"></dd>
+                                                </dl>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- option -->
-                                <label class="form-label" data-string="new_download_multiple_option"></label>
                                 <div class="mb-3 col row">
+                                    <label class="form-label" data-string="new_download_multiple_option"></label>
                                     <div class="col-12 col-lg-6">
                                         <div class="form-check">
                                             <input class="form-check-input" type="checkbox" id="dl-multiple-option1">
@@ -494,8 +498,8 @@
                                 <div class="row">
                                     <label for="detail-status-progress" class="col-lg-3 col-md-4 col-12 col-form-label fw-bold" data-string="download_detail_progress"></label>
                                     <div class="col-lg-9 col-md-8 col-12 d-flex align-items-center">
-                                        <div class="progress flex-fill">
-                                            <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info overflow-visible" role="progressbar"></div>
+                                        <div class="progress flex-fill" role="progressbar">
+                                            <div id="detail-status-progress" class="progress-bar progress-bar-striped bg-info overflow-visible"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -639,227 +643,233 @@
                             <button type="button" class="btn btn-warning ms-auto" id="source-download-button1" data-count="0" data-string="button_download"></button>
                         </div>
                         <!-- filter box -->
-                        <div id="byTagname" class="card collapse mb-1">
-                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                               href="#byTagname" data-string="source_download_filter_tagname"></a>
-                            <div class="card-body">
-                                <label class="form-label" for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input id="filter-tagnamelist" class="form-control">
-                                    </div>
-                                    <div class="col-sm-auto d-grid d-none">
-                                        <button id="filter-tagnamelist-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                        <div id="byTagname" class="collapse mb-1">
+                            <div class="card">
+                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                   href="#byTagname" data-string="source_download_filter_tagname"></a>
+                                <div class="card-body">
+                                    <label class="form-label" for="filter-tagnamelist" data-string="source_download_filter_tagnamelist"></label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input id="filter-tagnamelist" class="form-control">
+                                        </div>
+                                        <div class="col-sm-auto d-grid d-none">
+                                            <button id="filter-tagnamelist-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="byFiletype" class="card collapse mb-1">
-                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                               href="#byFiletype" data-string="source_download_filter_filetype"></a>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col row">
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype1">
-                                                <label class="form-check-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
+                        <div id="byFiletype" class="collapse mb-1">
+                            <div class="card">
+                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                   href="#byFiletype" data-string="source_download_filter_filetype"></a>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col row">
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype1">
+                                                    <label class="form-check-label" for="filter-filetype1" data-configstring="filetype1-label"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype2">
+                                                    <label class="form-check-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype3">
+                                                    <label class="form-check-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype4">
+                                                    <label class="form-check-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype5">
+                                                    <label class="form-check-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12 col-md-4 col-xl-2 col-form-label">
+                                                <div class="form-check">
+                                                    <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype6">
+                                                    <label class="form-check-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype2">
-                                                <label class="form-check-label" for="filter-filetype2" data-configstring="filetype2-label"></label>
-                                            </div>
+                                        <div class="col-auto d-grid d-none">
+                                            <button id="filter-type-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
                                         </div>
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype3">
-                                                <label class="form-check-label" for="filter-filetype3" data-configstring="filetype3-label"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype4">
-                                                <label class="form-check-label" for="filter-filetype4" data-configstring="filetype4-label"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype5">
-                                                <label class="form-check-label" for="filter-filetype5" data-configstring="filetype5-label"></label>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 col-md-4 col-xl-2 col-form-label">
-                                            <div class="form-check">
-                                                <input class="filter-type-checkbox form-check-input" type="checkbox" id="filter-filetype6">
-                                                <label class="form-check-label" for="filter-filetype6" data-configstring="filetype6-label"></label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-auto d-grid d-none">
-                                        <button id="filter-type-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div id="byKeyword" class="card collapse mb-1">
-                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                               href="#byKeyword" data-string="source_download_filter_keyword"></a>
-                            <div class="card-body">
-                                <label class="form-label" for="filter-expression" data-string="source_download_filter_expression"></label>
-                                <div class="row">
-                                    <div class="col">
-                                        <input id="filter-expression" class="form-control">
+                        <div id="byKeyword" class="collapse mb-1">
+                            <div class="card">
+                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                   href="#byKeyword" data-string="source_download_filter_keyword"></a>
+                                <div class="card-body">
+                                    <label class="form-label" for="filter-expression" data-string="source_download_filter_expression"></label>
+                                    <div class="row">
+                                        <div class="col">
+                                            <input id="filter-expression" class="form-control">
+                                        </div>
+                                        <div class="col-sm-auto d-grid d-none">
+                                            <button id="filter-expression-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-auto d-grid d-none">
-                                        <button id="filter-expression-button" class="btn btn-secondary" type="button" data-string="button_filter"></button>
+                                    <div class="form-check mt-2">
+                                        <input class="form-check-input" type="checkbox" id="filter-regex">
+                                        <label class="form-check-label" for="filter-regex" data-string="source_download_filter_regex"></label>
                                     </div>
-                                </div>
-                                <div class="form-check mt-2">
-                                    <input class="form-check-input" type="checkbox" id="filter-regex">
-                                    <label class="form-check-label" for="filter-regex" data-string="source_download_filter_regex"></label>
                                 </div>
                             </div>
                         </div>
                         <!-- option box -->
-                        <div id="source-download-option" class="card collapse mb-1">
-                            <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                               href="#source-download-option" data-string="source_download_option"></a>
-                            <div class="card-body">
-                                <!-- authentication -->
-                                <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
-                                   href="#source-download-option-authentication" data-string="source_download_option_authentication"></a>
-                                <div id="source-download-option-authentication" class="row collapse">
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-source-user" data-string="source_download_option_user"></label>
-                                        <input id="dl-source-user" class="form-control" data-focus="true">
+                        <div id="source-download-option" class="collapse mb-1">
+                            <div class="card">
+                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                   href="#source-download-option" data-string="source_download_option"></a>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <!-- authentication -->
+                                        <a class="collapse-toggle-link d-block" data-bs-toggle="collapse" aria-expanded="false"
+                                           href="#source-download-option-authentication" data-string="source_download_option_authentication"></a>
+                                        <div id="source-download-option-authentication" class="row collapse">
+                                            <div class="col-6">
+                                                <label class="form-label" for="dl-source-user" data-string="source_download_option_user"></label>
+                                                <input id="dl-source-user" class="form-control" data-focus="true">
+                                            </div>
+                                            <div class="col-6">
+                                                <label class="form-label" for="dl-source-pass" data-string="source_download_option_pass"></label>
+                                                <input id="dl-source-pass" class="form-control" type="password" data-focus="true">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-6">
-                                        <label class="form-label" for="dl-source-pass" data-string="source_download_option_pass"></label>
-                                        <input id="dl-source-pass" class="form-control" type="password" data-focus="true">
+                                    <!-- referer -->
+                                    <div class="mb-3">
+                                        <label class="form-label" for="dl-source-referer" data-string="source_download_option_referer"></label>
+                                        <input id="dl-source-referer" class="form-control">
+                                        <div class="form-check mt-2">
+                                            <input class="form-check-input" type="checkbox" id="dl-source-referer-default">
+                                            <label class="form-check-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- referer -->
-                                <div class="my-3">
-                                    <label class="form-label" for="dl-source-referer" data-string="source_download_option_referer"></label>
-                                    <input id="dl-source-referer" class="form-control">
-                                    <div class="form-check mt-2">
-                                        <input class="form-check-input" type="checkbox" id="dl-source-referer-default">
-                                        <label class="form-check-label" for="dl-source-referer-default" data-string="source_download_option_referer_default"></label>
-                                    </div>
-                                </div>
-                                <!-- filename -->
-                                <div>
-                                    <div>
+                                    <!-- filename -->
+                                    <div class="mb-3">
                                         <label class="form-label" for="dl-source-filename" data-string="source_download_option_filename"></label>
                                         <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                            href="#dl-source-filename-tags" data-string="filename_tags"></a>
-                                    </div>
-                                    <input id="dl-source-filename" class="form-control">
-                                    <small id="dl-source-filename-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-source-filename-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-source-filename-tags" data-string="filename_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:title:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_title"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_ext"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_mext"></dd>
-                                            </dl>
+                                        <input id="dl-source-filename" class="form-control">
+                                        <small id="dl-source-filename-sample" class="form-text text-secondary"></small>
+                                        <div class="tags collapse" id="dl-source-filename-tags">
+                                            <div class="card mt-2">
+                                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                                   href="#dl-source-filename-tags" data-string="filename_tags"></a>
+                                                <div class="card-body">
+                                                    <dl class="row">
+                                                        <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:title:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_title"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_ext"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_mext"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- location -->
-                                <div>
-                                    <div>
+                                    <!-- location -->
+                                    <div class="mb-3">
                                         <label class="form-label" for="dl-source-location" data-string="source_download_option_location"></label>
                                         <a class="collapse-toggle-link ms-2" data-bs-toggle="collapse" aria-expanded="false"
                                            href="#dl-source-location-tags" data-string="location_tags"></a>
-                                    </div>
-                                    <input id="dl-source-location" class="form-control">
-                                    <small id="dl-source-location-sample" class="form-text text-muted"></small>
-                                </div>
-                                <div class="tags mb-3">
-                                    <div class="card collapse mt-2" id="dl-source-location-tags">
-                                        <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
-                                           href="#dl-source-location-tags" data-string="location_tags"></a>
-                                        <div class="card-body">
-                                            <dl class="row">
-                                                <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:path:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_path"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:refpath:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_refpath"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_ext2"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:mime:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_mime"></dd>
-                                                <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_mext2"></dd>
-                                                <dt class="col-lg-2 col-4">/</dt>
-                                                <dd class="col-lg-4 col-8" data-string="tag_delimiter"></dd>
-                                            </dl>
+                                        <input id="dl-source-location" class="form-control">
+                                        <small id="dl-source-location-sample" class="form-text text-secondary"></small>
+                                        <div class="tags collapse" id="dl-source-location-tags">
+                                            <div class="card mt-2">
+                                                <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
+                                                   href="#dl-source-location-tags" data-string="location_tags"></a>
+                                                <div class="card-body">
+                                                    <dl class="row">
+                                                        <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:path:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_path"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:refpath:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_refpath"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_ext2"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:mime:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_mime"></dd>
+                                                        <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_mext2"></dd>
+                                                        <dt class="col-lg-2 col-4">/</dt>
+                                                        <dd class="col-lg-4 col-8" data-string="tag_delimiter"></dd>
+                                                    </dl>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                                <!-- option -->
-                                <div>
-                                    <label class="form-label" data-string="source_download_option_option"></label>
+                                    <!-- option -->
                                     <div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="dl-source-option1">
-                                            <label class="form-check-label" for="dl-source-option1" data-string="source_download_option_option1"></label>
-                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option1_description"></i>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="dl-source-option2">
-                                            <label class="form-check-label" for="dl-source-option2" data-string="source_download_option_option2"></label>
-                                            <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option2_description"></i>
+                                        <label class="form-label" data-string="source_download_option_option"></label>
+                                        <div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="dl-source-option1">
+                                                <label class="form-check-label" for="dl-source-option1" data-string="source_download_option_option1"></label>
+                                                <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option1_description"></i>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="dl-source-option2">
+                                                <label class="form-check-label" for="dl-source-option2" data-string="source_download_option_option2"></label>
+                                                <i class="fa-solid fa-question pointer" data-toggle="tooltip" data-bs-placement="top" data-titlestring="source_download_option_option2_description"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -905,8 +915,8 @@
         </div>
 
         <!-- toast -->
-        <div id="toast-container" class="opacity-75">
-            <div id="toast" class="toast align-items-center text-light bg-secondary border-0">
+        <div id="toast-container">
+            <div id="toast" class="toast align-items-center text-bg-light border-0">
                 <div class="d-flex">
                     <div class="toast-body"></div>
                 </div>
@@ -971,7 +981,7 @@
                     </div>
                     <div class="item-filename col-lg-5 col-md-6 col-10 my-2">
                     </div>
-                    <div class="progress col-lg-2 d-none d-lg-flex px-0 my-2">
+                    <div class="progress col-lg-2 d-none d-lg-flex px-0 my-2" role="progressbar">
                         <div class="item-progress text-center progress-bar progress-bar-striped bg-info overflow-visible px-2"></div>
                     </div>
                     <div class="col-lg-2 col-md-2 col-6" style="position: relative;">
