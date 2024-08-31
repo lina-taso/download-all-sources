@@ -392,7 +392,7 @@ $(async () => {
             await bg.config.setPref('mime-mappings', null);
             await bg.config.update();
 
-            const config = await bg.config.getPref();
+            const config = bg.config.getPref();
             // clear all boxes
             $('.row.mime-mapping:not(.d-none)').remove();
 

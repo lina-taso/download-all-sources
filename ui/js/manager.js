@@ -529,8 +529,8 @@ function hashRouter()
         $('#new-download').on('shown.bs.modal', setParameters);
         $('#new-download').modal('show');
 
-        async function setParameters() {
-            const config = await bg.config.getPref();
+        function setParameters() {
+            const config = bg.config.getPref();
 
             $('#dl-single-url').val(bg.lastSource.link);
             // default-referer
@@ -559,9 +559,9 @@ function hashRouter()
     history.replaceState('', '', document.location.pathname);
 }
 
-async function localization()
+function localization()
 {
-    const config = await bg.config.getPref();
+    const config = bg.config.getPref();
 
     $('[data-string]').each(function() {
         $(this).text(browser.i18n.getMessage(this.dataset.string));
@@ -607,10 +607,10 @@ function toggleTheme()
 /********************
   Download functions
  ********************/
-async function download()
+function download()
 {
     const target = $('#new-download-modal-tab > [aria-selected=true]').attr('aria-controls'),
-          config = await bg.config.getPref();
+          config = bg.config.getPref();
 
     switch (target) {
     case 'single':
@@ -697,9 +697,9 @@ async function download()
 
 }
 
-async function sourceDownload()
+function sourceDownload()
 {
-    const config = await bg.config.getPref();
+    const config = bg.config.getPref();
 
     // check invalid
     if ($('#source').find('.is-invalid').length) return;
@@ -878,7 +878,7 @@ function startDownload()
 /*************************
   Modal opening functions
  ************************/
-async function newDownloadModal()
+function newDownloadModal()
 {
     if (!baseurl) {
         // initial url
@@ -889,7 +889,7 @@ async function newDownloadModal()
     }
 
     // initial value
-    const config = await bg.config.getPref();
+    const config = bg.config.getPref();
     // initial authentication
     $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
     // initial filename
@@ -904,7 +904,7 @@ async function newDownloadModal()
     $('#dl-single-option2, #dl-multiple-option2').prop('checked', config['remember-new-option2'] ? config['new-option2-value'] : false).trigger('input');
 }
 
-async function sourceDownloadModal()
+function sourceDownloadModal()
 {
     $('#source-download input:not([type]), #source-download input[type=password]')
         .on('keypress', keypressSourceInput)
@@ -952,7 +952,7 @@ async function sourceDownloadModal()
             $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
     });
     // initial value
-    const config = await bg.config.getPref();
+    const config = bg.config.getPref();
     // filter-filetypes
     filter1 = new RegExp('^(' + config['filetype1-extension'] + ')$'),
     filter2 = new RegExp('^(' + config['filetype2-extension'] + ')$'),
@@ -1107,9 +1107,9 @@ function validateFilename()
     else $('#' + this.id + '-sample').text('');
 }
 
-async function validateLocation()
+function validateLocation()
 {
-    const defaultLocation = await bg.config.getPref('download-location'),
+    const defaultLocation = bg.config.getPref('download-location'),
           location        = bg.normalizeLocation(defaultLocation + this.value),
           $referer        = $('#' + this.id.replace('location', 'referer')),
           $filename       = $('#' + this.id.replace('location', 'filename')),
