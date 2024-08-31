@@ -24,7 +24,9 @@ var lastid = 0,
     queueRestored = false,
     checkWaitingInterval = null;
 
-let updateavailable = false;
+let updateavailable = false,
+    init = false,
+    waitInit = [];
 
 var config = {
     _config : {},
@@ -50,8 +52,23 @@ var config = {
     }
 };
 
+function finishInit()
+{
+    init = true;
+    for (let w of waitInit) w();
+}
+
+async function initialized()
+{
+    if (init) return Promise.resolve();
+    else return new Promise((resolve, reject) => {
+        waitInit.push(resolve);
+    });
+}
+
 (async () => {
     await config.update();
+    finishInit();
     restoreQueue();
 })();
 

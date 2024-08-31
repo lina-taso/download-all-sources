@@ -40,6 +40,7 @@ let source     = [],
 
 $(async () => {
     bg = await browser.runtime.getBackgroundPage();
+    await bg.initialized();
     localization();
     applyTheme();
     createGraph();
