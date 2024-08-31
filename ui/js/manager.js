@@ -316,7 +316,7 @@ function updateList()
         case 'finished':
             if (queue.startTime) {
                 $item.find('.item-speed').text(calcBps({ now : queue.loaded.now, nowTime : queue.endTime, prev : 0, prevTime : queue.startTime }));
-                $item.find('.item-remain').text(parseInt((queue.endTime - queue.startTime) / 1000) + 's');
+                $item.find('.item-remain').text(calcElapsed((queue.endTime - queue.startTime) / 1000));
             }
             break;
         case 'paused':
@@ -398,6 +398,14 @@ function updateList()
         else if (remain < 86400*30) return Math.floor(remain/86400) + 'd ' + Math.floor(remain%86400/3600) + 'h ' + Math.floor(remain%86400%3600/60) + 'm ' + remain%86400%3600%60 + 's';
         // too long (over 30 days)
         else return 'stalled';
+    }
+    function calcElapsed(second)
+    {
+        second = Math.floor(second);
+        if (second < 60)         return second + 's';
+        else if (second < 3600)  return Math.floor(second/60) + 'm ' + second%60 + 's';
+        else if (second < 86400) return Math.floor(second/3600) + 'h ' + Math.floor(second%3600/60) + 'm ' + second%3600%60 + 's';
+        else                     return Math.floor(second/86400) + 'd ' + Math.floor(second%86400/3600) + 'h ' + Math.floor(second%86400%3600/60) + 'm ' + second%86400%3600%60 + 's';
     }
     function createItemGraph($itemSpeedGraph)
     {
