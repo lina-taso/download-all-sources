@@ -21,9 +21,9 @@ $(async () => {
     localization();
 
     // all tooltip enabled
-    $('[data-bs-toggle=tooltip]').tooltip({ title : function() {
-        return browser.i18n.getMessage(this.dataset.titlestring);
-    }});
+    $('[data-bs-toggle=tooltip]').each(function() {
+        new bootstrap.Tooltip(this, { title : browser.i18n.getMessage(this.dataset.titlestring) });
+    });
 
     // input range
     $('#simultaneous-whole, #simultaneous-per-server, #retry-count, #split-count, #split-size, #split-ex-size')
