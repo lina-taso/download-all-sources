@@ -113,7 +113,7 @@ $(async () => {
             if (!/waiting|downloading|paused/.test(queue.status)) return;
 
             queue.filename = $input.val();
-            if ($input.val() === '') $input.val(queue.responseFilename);
+            if ($input.val() == '') $input.val(queue.responseFilename);
             $div.attr('data-editing', '');
             $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
         });
@@ -958,8 +958,7 @@ function detailModal(e)
 {
     const button = e.relatedTarget;
     // update dlid
-    $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-        .attr('data-dlid', button.dataset.dlid);
+    $('#download-detail, #download-detail [data-dlid]').attr('data-dlid', button.dataset.dlid);
     // update detail
     updateDetail(true);
     $(this).attr('data-timer', setInterval(updateDetail, progressInterval));
@@ -1450,8 +1449,7 @@ function switchDetail()
 
     if ($target.length != 0) {
         // update dlid
-        $('#download-detail, #detail-next-button, #detail-prev-button, #detail-stop-button, #detail-pause-button, #detail-resume-button, #detail-redo-button, #detail-redo-button-manual')
-            .attr('data-dlid', $target.attr('id').split('-')[1]);
+        $('#download-detail, #download-detail [data-dlid]').attr('data-dlid', $target.attr('id').split('-')[1]);
         // update detail
         updateDetail(true);
     }
@@ -1527,7 +1525,7 @@ function updateDetail(init)
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-process-count').val(queue.data.filter(d => d.status === 'downloading').length);
+    $('#detail-status-process-count').val(queue.data.filter(d => d.status == 'downloading').length);
 
     // finished
     $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
