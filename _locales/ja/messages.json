@@ -621,6 +621,9 @@
     "button_resume" : {
         "message" : "再開"
     },
+    "button_start" : {
+        "message" : "強制開始"
+    },
     "button_redo" : {
         "message" : "やり直し"
     },

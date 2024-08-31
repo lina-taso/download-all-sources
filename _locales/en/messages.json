@@ -621,6 +621,9 @@
     "button_resume" : {
         "message" : "Resume"
     },
+    "button_start" : {
+        "message" : "Force Start"
+    },
     "button_redo" : {
         "message" : "Redo"
     },

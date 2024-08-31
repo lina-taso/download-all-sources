@@ -149,39 +149,31 @@ html, body {
 .download-item[data-status="finished"][data-reason="complete"] .item-status > :first-child::before {
     content: '\f00c';
 }
-.download-item:focus .item-status > :first-child {
-    display: none;
-}
+.download-item:focus .item-status > :first-child,
 .download-item .item-status:hover > :first-child {
     display: none;
 }
-.download-item:focus .item-status > .item-info-button {
-    display: inline-block;
-}
+.download-item:focus .item-status > .item-info-button,
 .download-item .item-status:hover > .item-info-button {
     display: inline-block;
 }
-#waiting-list .download-item:focus .item-status > .item-cancel-button {
-    display: inline-block;
-}
+#waiting-list .download-item:focus .item-status > .item-cancel-button,
 #waiting-list .download-item .item-status:hover > .item-cancel-button {
     display: inline-block;
 }
-#downloading-list .download-item:focus .item-status > .item-stop-button {
+#waiting-list .download-item:focus .item-status > .item-start-button,
+#waiting-list .download-item .item-status:hover > .item-start-button {
     display: inline-block;
 }
+#downloading-list .download-item:focus .item-status > .item-stop-button,
 #downloading-list .download-item .item-status:hover > .item-stop-button {
     display: inline-block;
 }
-#downloading-list .download-item[data-status="downloading"]:focus .item-status > .item-pause-button {
-    display: inline-block;
-}
+#downloading-list .download-item[data-status="downloading"]:focus .item-status > .item-pause-button,
 #downloading-list .download-item[data-status="downloading"] .item-status:hover > .item-pause-button {
     display: inline-block;
 }
-#downloading-list .download-item[data-status="paused"]:focus .item-status > .item-resume-button {
-    display: inline-block;
-}
+#downloading-list .download-item[data-status="paused"]:focus .item-status > .item-resume-button,
 #downloading-list .download-item[data-status="paused"] .item-status:hover > .item-resume-button {
     display: inline-block;
 }
@@ -242,13 +234,15 @@ html, body {
 #detail-cancel-button,
 #detail-pause-button,
 #detail-resume-button,
+#detail-start-button,
 #detail-redo-button-group {
     display: none;
 }
 #download-detail[data-status="finished"] #detail-redo-button-group {
     display: flex;
 }
-#download-detail[data-status="waiting"] #detail-cancel-button {
+#download-detail[data-status="waiting"] #detail-cancel-button,
+#download-detail[data-status="waiting"] #detail-start-button {
     display: block;
 }
 #download-detail[data-status="downloading"] #detail-stop-button,

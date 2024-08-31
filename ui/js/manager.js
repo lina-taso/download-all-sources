@@ -61,6 +61,7 @@ $(async () => {
     $('#completed-delete-button').on('click', deleteCompleted);
     // item
     $('.item-resume-button').on('click', resumeDownload);
+    $('.item-start-button').on('click', startDownload);
     $('.item-redo-button').on('click', reDownload);
     $('.item-delete-button').on('click', deleteItem);
 
@@ -92,6 +93,7 @@ $(async () => {
         .on('hidden.bs.modal', detailModalHidden);
     // in detail modal
     $('#detail-resume-button').on('click', resumeDownload);
+    $('#detail-start-button').on('click', startDownload);
     $('#detail-redo-button').on('click', reDownload);
     $('#detail-redo-button-manual').on('click', reDownloadManual);
     $('#detail-next-button, #detail-prev-button').on('click', switchDetail);
@@ -829,6 +831,11 @@ function stopWaiting()
 function resumeDownload()
 {
     bg.resumeDownload(this.dataset.dlid);
+}
+
+function startDownload()
+{
+    bg.startDownload(this.dataset.dlid);
 }
 
 /*************************

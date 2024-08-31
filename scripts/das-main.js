@@ -259,17 +259,21 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
     };
 
     // start downloading
-    if (status == 'downloading') {
-        let now = (new Date()).getTime();
-        downloadQueue[dlid].data.push(createXhr(dlid, 0));
-        downloadQueue[dlid].startTime = now;
-        downloadQueue[dlid].prevTime  = now;
-    }
+    if (status == 'downloading') startQueue(dlid);
 
     // update badge
     updateBadge();
     // save queue
     saveQueue();
+}
+
+function startQueue(dlid)
+{
+    const now = (new Date()).getTime();
+    downloadQueue[dlid].status = 'downloading',
+    downloadQueue[dlid].data.push(createXhr(dlid, 0));
+    downloadQueue[dlid].startTime = now;
+    downloadQueue[dlid].prevTime  = now;
 }
 
 function createXhr(dlid, index, start, end)
@@ -759,6 +763,18 @@ function resumeDownload(dlid)
     // no save queue
 }
 
+function startDownload(dlid)
+{
+    const queue = downloadQueue[dlid];
+    if (queue.status != 'waiting') return;
+
+    startQueue(dlid);
+    // update badge
+    updateBadge();
+    // save queue
+    saveQueue();
+}
+
 function deleteQueue(dlid)
 {
     const loaded = downloadQueue[dlid].loaded;
@@ -1158,11 +1174,7 @@ function checkWaiting()
             }
 
             // run
-            let now = (new Date()).getTime();
-            downloadQueue[q.id].status = 'downloading',
-            downloadQueue[q.id].data.push(createXhr(q.id, 0));
-            downloadQueue[q.id].startTime = now;
-            downloadQueue[q.id].prevTime  = now;
+            startQueue(q.id);
         }
 
         // interval
