@@ -348,15 +348,15 @@ function updateList()
 
     function calcByte(byte)
     {
-        if (byte < 1024) return byte.toFixed(1) + ' B';
+        if (byte < 1024) return byte.toFixed(1) + 'B';
         byte /= 1024;
-        if (byte < 1024) return byte.toFixed(1) + ' KB';
+        if (byte < 1024) return byte.toFixed(1) + 'KB';
         byte /= 1024;
-        if (byte < 1024) return byte.toFixed(1) + ' MB';
+        if (byte < 1024) return byte.toFixed(1) + 'MB';
         byte /= 1024;
-        if (byte < 1024) return byte.toFixed(1) + ' GB';
+        if (byte < 1024) return byte.toFixed(1) + 'GB';
         byte /= 1024;
-        return byte.toFixed(1) + ' TB';
+        return byte.toFixed(1) + 'TB';
     }
     function calcBps(loadedObj)
     {
@@ -380,12 +380,14 @@ function updateList()
     {
         if (!loadedObj.now || !total || !loadedObj.Bps) return 'unknown';
 
-        const remain = (total - loadedObj.now) / loadedObj.Bps;
+        const remain = Math.floor((total - loadedObj.now) / loadedObj.Bps);
 
+        if (remain < 60)            return remain + 's';
+        else if (remain < 3600)     return Math.floor(remain/60) + 'm ' + remain%60 + 's';
+        else if (remain < 86400)    return Math.floor(remain/3600) + 'h ' + Math.floor(remain%3600/60) + 'm ' + remain%3600%60 + 's';
+        else if (remain < 86400*30) return Math.floor(remain/86400) + 'd ' + Math.floor(remain%86400/3600) + 'h ' + Math.floor(remain%86400%3600/60) + 'm ' + remain%86400%3600%60 + 's';
         // too long (over 30 days)
-        if (remain > 86400 * 30) return 'stalled';
-
-        return Math.floor(remain) + ' s';
+        else return 'stalled';
     }
     function createItemGraph($itemSpeedGraph)
     {
