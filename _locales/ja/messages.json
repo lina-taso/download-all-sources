@@ -349,6 +349,9 @@
     "confirm_stop_download" : {
         "message" : "このダウンロードを停止しますか？"
     },
+    "confirm_cancel_download" : {
+        "message" : "このダウンロードをキャンセルしますか？"
+    },
     "confirm_pause_download_resumable" : {
         "message" : "このダウンロードを中断しますか？\n中断すると、ダウンロードを分割した容量単位でダウンロード未完了の部分が失われます。"
     },

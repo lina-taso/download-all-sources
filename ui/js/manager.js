@@ -1551,6 +1551,12 @@ function confirmDialog(e)
             .off('click')
             .on('click', stopDownload);
         break;
+    case 'cancel':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_cancel_download'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_cancel'))
+            .off('click')
+            .on('click', stopDownload);
+        break;
     case 'pause':
         bg.downloadQueue[dlid].resumeEnabled
             ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))

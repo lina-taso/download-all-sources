@@ -349,6 +349,9 @@
     "confirm_stop_download" : {
         "message" : "Stop this downloading item?"
     },
+    "confirm_cancel_download" : {
+        "message" : "Cancel this downloading item?"
+    },
     "confirm_pause_download_resumable" : {
         "message" : "Pause this downloading item?\nThe download incomplete part will be lost in divided capacity units, if you pause."
     },

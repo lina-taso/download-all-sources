@@ -161,12 +161,16 @@ html, body {
 .download-item .item-status:hover > .item-info-button {
     display: inline-block;
 }
-#downloading-list .download-item:focus .item-status > .item-stop-button,
-#waiting-list .download-item:focus .item-status > .item-stop-button {
+#waiting-list .download-item:focus .item-status > .item-cancel-button {
     display: inline-block;
 }
-#downloading-list .download-item .item-status:hover > .item-stop-button,
-#waiting-list .download-item .item-status:hover > .item-stop-button {
+#waiting-list .download-item .item-status:hover > .item-cancel-button {
+    display: inline-block;
+}
+#downloading-list .download-item:focus .item-status > .item-stop-button {
+    display: inline-block;
+}
+#downloading-list .download-item .item-status:hover > .item-stop-button {
     display: inline-block;
 }
 #downloading-list .download-item[data-status="downloading"]:focus .item-status > .item-pause-button {
@@ -235,6 +239,7 @@ html, body {
     animation: progress-bar-stripes 1s linear infinite;
 }
 #detail-stop-button,
+#detail-cancel-button,
 #detail-pause-button,
 #detail-resume-button,
 #detail-redo-button-group {
@@ -242,6 +247,9 @@ html, body {
 }
 #download-detail[data-status="finished"] #detail-redo-button-group {
     display: flex;
+}
+#download-detail[data-status="waiting"] #detail-cancel-button {
+    display: block;
 }
 #download-detail[data-status="downloading"] #detail-stop-button,
 #download-detail[data-status="downloading"] #detail-pause-button {
