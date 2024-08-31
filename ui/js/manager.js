@@ -1598,7 +1598,7 @@ function confirmDialog(e)
         break;
     case 'cancel':
         $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_cancel_download'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_cancel'))
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
             .off('click')
             .on('click', stopDownload);
         break;
