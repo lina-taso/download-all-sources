@@ -1519,13 +1519,13 @@ function updateDetail(init)
     if (queue.total) {
         let progress = parseInt(loadedObj.now / queue.total * 100);
         $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
-        $('#detail-status-total').val(queue.total.toLocaleString('en-US'));
+        $('#detail-status-total').val(queue.total.toLocaleString());
     }
     else {
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-current').val(loadedObj.now.toLocaleString('en-US'));
+    $('#detail-status-current').val(loadedObj.now.toLocaleString());
 
     // finished
     $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
