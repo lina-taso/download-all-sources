@@ -208,6 +208,9 @@
     "download_detail_total" : {
         "message" : "ファイルサイズ"
     },
+    "download_detail_process_count" : {
+        "message" : "実行中の処理数"
+    },
     "download_detail_detail" : {
         "message" : "進捗詳細"
     },
@@ -267,6 +270,9 @@
     },
     "download_detail_option2" : {
         "message" : "size mismatchエラーを無視"
+    },
+    "download_detail_split_count" : {
+        "message" : "分割数"
     },
     "source_download_title" : {
         "message" : "ソースダウンロード"

@@ -208,6 +208,9 @@
     "download_detail_total" : {
         "message" : "Total size"
     },
+    "download_detail_process_count" : {
+        "message" : "Running process count"
+    },
     "download_detail_detail" : {
         "message" : "Detailed progress"
     },
@@ -267,6 +270,9 @@
     },
     "download_detail_option2" : {
         "message" : "Ignore size mismatch errors"
+    },
+    "download_detail_split_count" : {
+        "message" : "Split count"
     },
     "source_download_title" : {
         "message" : "Source Download"

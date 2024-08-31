@@ -1492,6 +1492,7 @@ function updateDetail(init)
             .val(queue.location);
         $('#detail-info-option1').prop('checked', queue.option.disableResuming);
         $('#detail-info-option2').prop('checked', queue.option.ignoreSizemismatch);
+        $('#detail-info-split-count').val(queue.option.disableResuming ? 0 : queue.splitCount);
     }
 
     // download finished
@@ -1516,6 +1517,7 @@ function updateDetail(init)
     $('#detail-status-url-open').attr('data-link', queue.responseUrl && queue.responseUrl.href.replace(/:\/\/.+@/,'://'));
     $('#detail-status-user').val(queue.responseUrl && queue.responseUrl.username);
     $('#detail-status-mime').val(queue.contentType);
+    $('#detail-status-current').val(loadedObj.now.toLocaleString());
     if (queue.total) {
         let progress = parseInt(loadedObj.now / queue.total * 100);
         $('#detail-status-progress').css('width', progress + '%').text(progress + '%');
@@ -1525,7 +1527,7 @@ function updateDetail(init)
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-current').val(loadedObj.now.toLocaleString());
+    $('#detail-status-process-count').val(queue.data.filter(d => d.status === 'downloading').length);
 
     // finished
     $('#detail-info-filename-open').attr('data-fxid', queue.fxid);
