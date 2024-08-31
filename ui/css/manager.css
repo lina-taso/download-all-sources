@@ -61,6 +61,20 @@ html, body {
     white-space: pre-wrap;
 }
 
+/* theme */
+#theme-button > i {
+    display: none;
+}
+#theme-button[data-theme="auto"] > #theme-auto {
+    display: inline;
+}
+#theme-button[data-theme="dark"] > #theme-dark {
+    display: inline;
+}
+#theme-button[data-theme="light"] > #theme-light {
+    display: inline;
+}
+
 /* list header */
 #downloading-stop-button,
 #waiting-stop-button,

@@ -41,9 +41,14 @@ let source     = [],
 $(async () => {
     bg = await browser.runtime.getBackgroundPage();
     localization();
+    applyTheme();
     createGraph();
     updateList();
     setInterval(updateList, progressInterval);
+    // initial theme
+    $('#theme-button')
+        .attr('data-theme', bg.config.getPref('theme'))
+        .on('click', toggleTheme);
     // miscellanies events
     $('.openlink-button').on('click', function() { this.dataset.link && browser.tabs.create({ url : this.dataset.link }); });
     $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
@@ -209,6 +214,8 @@ function updateGraph(Bps)
 
 function updateList()
 {
+    applyTheme();
+
     const $template = $('#download-item-template');
 
     let totalLoadedKB = 0;
@@ -565,6 +572,36 @@ async function localization()
     $('[data-configstring]').each(function() {
         $(this).text(config[this.dataset.configstring]);
     });
+}
+
+function applyTheme(t)
+{
+    const theme = t || bg.config.getPref('theme');
+    if (theme == 'auto')
+        $('html').attr('data-bs-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    else
+        $('html').attr('data-bs-theme', theme);
+}
+
+function toggleTheme()
+{
+    const now = $('#theme-button').attr('data-theme');
+    let next;
+    switch (now) {
+    case 'auto':
+        next = 'dark';
+        break;
+    case 'dark':
+        next = 'light';
+        break;
+    case 'light':
+        next = 'auto';
+        break;
+    }
+    bg.config.setPref('theme', next);
+    $('#theme-button').attr('data-theme', next);
+    // apply immediatelly
+    applyTheme(next);
 }
 
 /********************

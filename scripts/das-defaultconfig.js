@@ -1,4 +1,5 @@
 var defaultconfig = {
+    'theme' : 'auto',
     'download-location' : '',
     'simultaneous-whole' : 16,
     'simultaneous-per-server' : 16,
