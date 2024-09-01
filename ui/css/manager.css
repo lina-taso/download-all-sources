@@ -276,7 +276,7 @@ html, body {
     display: inline-block;
     width: 1rem;
     height: 1rem;
-    border: 0.5px solid lightgray;
+    border: 1px solid #80808060;
 }
 #detail-status-detail .detail-tile[data-status="loaded"] {
     background: linear-gradient(to bottom right, #20a0ff, #007bff);
