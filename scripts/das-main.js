@@ -471,7 +471,7 @@ function createXhr(dlid, index, start, end)
 
             // start multi-thread download
             const segBytes= queue.total >= splitSize * splitCount
-                  ? splitSize : Math.floor(queue.total / splitCount);
+                  ? splitSize : Math.ceil(queue.total / splitCount);
 
             // 0th
             datum.rangeEnd = segBytes-1;
@@ -505,7 +505,7 @@ function createXhr(dlid, index, start, end)
 
             // start multi-thread download
             const segBytes= queue.total >= splitSize * splitCount
-                  ? splitSize : Math.floor(queue.total / splitCount);
+                  ? splitSize : Math.ceil(queue.total / splitCount);
 
             // 0th
             datum.rangeEnd = segBytes-1;
