@@ -1576,7 +1576,7 @@ function updateDetail(init)
         $('#detail-status-progress').css('width', '100%').text('unknown');
         $('#detail-status-total').val('unknown');
     }
-    $('#detail-status-process-count').val(queue.data.filter(d => d.status == 'downloading').length);
+    $('#detail-status-thread-count').val(queue.data.filter(d => d.status == 'downloading').length);
 
     // finished
     $('#detail-info-filename-open').attr('data-fxid', queue.fxid);

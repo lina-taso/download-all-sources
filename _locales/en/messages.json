@@ -208,8 +208,8 @@
     "download_detail_total" : {
         "message" : "Total size"
     },
-    "download_detail_process_count" : {
-        "message" : "Running process count"
+    "download_detail_thread_count" : {
+        "message" : "Running thread count"
     },
     "download_detail_detail" : {
         "message" : "Detailed progress"
