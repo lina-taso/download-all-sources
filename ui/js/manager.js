@@ -586,6 +586,7 @@ function localization()
 function applyTheme(t)
 {
     const theme = t || bg.config.getPref('theme');
+    $('#theme-button').attr('data-theme', theme);
     if (theme == 'auto')
         $('html').attr('data-bs-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     else
