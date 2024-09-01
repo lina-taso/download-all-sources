@@ -167,6 +167,57 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
         prevLoaded       : 0,
         prevTime         : null,
         Bps              : 0,
+        splitCount : function() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = domain.split('.');
+            // server specified
+            if (params[domain]) {
+                return params[domain]['split-count'];
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['split-count'];
+                }
+            }
+            // default
+            return config.getPref('split-count');
+        }(),
+        disableResuming : function() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = domain.split('.');
+            // server specified
+            if (params[domain]) {
+                return params[domain]['disable-resuming'] || option.disableResuming;
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['disable-resuming'] || option.disableResuming;
+                }
+            }
+            // default
+            return option.disableResuming;
+        }(),
+        ignoreSizemismatch : function() {
+            const params     = config.getPref('server-parameter'),
+                  subdomains = domain.split('.');
+            // server specified
+            if (params[domain]) {
+                return params[domain]['ignore-sizemismatch'] || option.ignoreSizemismatch;
+            }
+            // server specified (starting with .)
+            while (subdomains.shift()) {
+                const targetdomain = '.' + subdomains.join('.');
+                if (params[targetdomain]) {
+                    return params[targetdomain]['ignore-sizemismatch'] || option.ignoreSizemismatch;
+                }
+            }
+            // default
+            return option.ignoreSizemismatch;
+        }(),
         get detail() {
             // completed
             if (this.status == 'downloaded' || this.reason == 'complete' || this.reason == 'interrupted')
@@ -186,62 +237,21 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
             }
             return detail;
         },
-        get splitCount() {
-            const params     = config.getPref('server-parameter'),
-                  subdomains = this.originalDomain.split('.');
-            // server specified
-            if (params[this.originalDomain]) {
-                return params[this.originalDomain]['split-count'];
-            }
-            // server specified (starting with .)
-            while (subdomains.shift()) {
-                const targetdomain = '.' + subdomains.join('.');
-                if (params[targetdomain]) {
-                    return params[targetdomain]['split-count'];
-                }
-            }
-            // default
-            return config.getPref('split-count');
-        },
-        get disableResuming() {
-            const params     = config.getPref('server-parameter'),
-                  subdomains = this.originalDomain.split('.');
-            // server specified
-            if (params[this.originalDomain]) {
-                return params[this.originalDomain]['disable-resuming'] || this.option.disableResuming;
-            }
-            // server specified (starting with .)
-            while (subdomains.shift()) {
-                const targetdomain = '.' + subdomains.join('.');
-                if (params[targetdomain]) {
-                    return params[targetdomain]['disable-resuming'] || this.option.disableResuming;
-                }
-            }
-            // default
-            return this.option.disableResuming;
-        },
-        get ignoreSizemismatch() {
-            const params     = config.getPref('server-parameter'),
-                  subdomains = this.originalDomain.split('.');
-            // server specified
-            if (params[this.originalDomain]) {
-                return params[this.originalDomain]['ignore-sizemismatch'] || this.option.ignoreSizemismatch;
-            }
-            // server specified (starting with .)
-            while (subdomains.shift()) {
-                const targetdomain = '.' + subdomains.join('.');
-                if (params[targetdomain]) {
-                    return params[targetdomain]['ignore-sizemismatch'] || this.option.ignoreSizemismatch;
-                }
-            }
-            // default
-            return this.option.ignoreSizemismatch;
-        },
         get authentication() {
+            switch (this.finalAuthentication[0]) {
+            case 'option':
+            case 'response':
+                return this.finalAuthentication.slice(1);
+            case 'original':
+                if (!this.responseUrl)
+                return this.finalAuthentication.slice(1);
+            }
+
             const params = config.getPref('authentication-parameter');
 
             // queue specified
             if (this.option.authentication[0]) {
+                this.finalAuthentication = ['option', ...this.option.authentication];
                 return this.option.authentication;
             }
 
@@ -262,6 +272,7 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
                 // file (exact match)
                 else {
                     if ((new RegExp('^' + punyurl + '$', 'i')).test(this.responseUrl || originalPunyUrl)) {
+                        this.finalAuthentication = [this.responseUrl ? 'response' : 'original', params[punyurl].user, params[punyurl].pass];
                         return [params[punyurl].user, params[punyurl].pass];
                     }
                 }
@@ -269,10 +280,14 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
 
             // directory
             if (target) {
+                this.finalAuthentication = [this.responseUrl ? 'response' : 'original', params[target[1]].user, params[target[1]].pass];
                 return [params[target[1]].user, params[target[1]].pass];
             }
+
+            this.finalAuthentication = [this.responseUrl ? 'response' : 'original', '', ''];
             return ['', ''];
-        }
+        },
+        finalAuthentication : ['', '', '']
     };
 
     // start downloading
