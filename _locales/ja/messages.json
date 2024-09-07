@@ -53,16 +53,16 @@
         "message" : "経過時間"
     },
     "header_stop_downloading" : {
-        "message" : "ダウンロード中を全て停止"
+        "message" : "ダウンロード中アイテムを全て停止"
     },
     "header_stop_waiting" : {
-        "message" : "DL待ちを全てキャンセル"
+        "message" : "ダウンロード待ちアイテムを全て停止"
     },
     "header_delete_finished" : {
-        "message" : "完了を全て削除"
+        "message" : "完了したアイテムを全て削除"
     },
     "header_delete_completed" : {
-        "message" : "成功を全て削除"
+        "message" : "成功したアイテムを全て削除"
     },
     "footer_total_speed" : {
         "message" : "合計速度:"
@@ -352,23 +352,23 @@
     "confirm_title" : {
         "message" : "確認"
     },
-    "confirm_stop_download" : {
-        "message" : "このダウンロードを停止しますか？"
-    },
-    "confirm_cancel_download" : {
-        "message" : "このダウンロードをキャンセルしますか？"
-    },
-    "confirm_pause_download_resumable" : {
-        "message" : "このダウンロードを中断しますか？\n中断すると、ダウンロードを分割した容量単位でダウンロード未完了の部分が失われます。"
-    },
-    "confirm_pause_download_nonresumable" : {
-        "message" : "このダウンロードを中断しますか？\nこのファイルは中断すると途中から再開できないため、ダウンロード完了部分が全て失われます。"
-    },
     "confirm_stop_downloading" : {
-        "message" : "ダウンロード中のアイテムを全て停止しますか？"
+        "message" : "このダウンロードアイテムを停止しますか？"
+    },
+    "confirm_pause_downloading_resumable" : {
+        "message" : "このダウンロードアイテムを中断しますか？\n中断すると、ダウンロードを分割した容量単位でダウンロード未完了の部分が失われます。"
+    },
+    "confirm_pause_downloading_nonresumable" : {
+        "message" : "このダウンロードアイテムを中断しますか？\nこのファイルは中断すると途中から再開できないため、ダウンロード完了部分が全て失われます。"
     },
     "confirm_stop_waiting" : {
-        "message" : "DL待ちのアイテムを全てキャンセルしますか？"
+        "message" : "このダウンロード待ちアイテムを停止しますか？"
+    },
+    "confirm_stop_all_downloading" : {
+        "message" : "ダウンロード中のアイテムを全て停止しますか？"
+    },
+    "confirm_stop_all_waiting" : {
+        "message" : "ダウンロード待ちのアイテムを全て停止しますか？"
     },
     "confirm_restore_title" : {
         "message" : "ダウンロードアイテムが復元されました"

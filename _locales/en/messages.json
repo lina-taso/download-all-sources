@@ -53,16 +53,16 @@
         "message" : "Elapsed"
     },
     "header_stop_downloading" : {
-        "message" : "Stop all downloading"
+        "message" : "Stop all downloading items"
     },
     "header_stop_waiting" : {
-        "message" : "Cancel all waiting"
+        "message" : "Stop all waiting items"
     },
     "header_delete_finished" : {
-        "message" : "Delete all finished"
+        "message" : "Delete all finished items"
     },
     "header_delete_completed" : {
-        "message" : "Delete all completed"
+        "message" : "Delete all completed items"
     },
     "footer_total_speed" : {
         "message" : "Total Speed:"
@@ -352,23 +352,23 @@
     "confirm_title" : {
         "message" : "Confirm"
     },
-    "confirm_stop_download" : {
+    "confirm_stop_downloading" : {
         "message" : "Stop this downloading item?"
     },
-    "confirm_cancel_download" : {
-        "message" : "Cancel this downloading item?"
-    },
-    "confirm_pause_download_resumable" : {
+    "confirm_pause_downloading_resumable" : {
         "message" : "Pause this downloading item?\nThe download incomplete part will be lost in divided capacity units, if you pause."
     },
-    "confirm_pause_download_nonresumable" : {
+    "confirm_pause_downloading_nonresumable" : {
         "message" : "Pause this downloading item?\nThe all downloaded part will be lost, because this file can't download from the middle."
     },
-    "confirm_stop_downloading" : {
+    "confirm_stop_waiting" : {
+        "message" : "Stop this waiting item?"
+    },
+    "confirm_stop_all_downloading" : {
         "message" : "Stop all downloading items?"
     },
-    "confirm_stop_waiting" : {
-        "message" : "Cancel all waiting items?"
+    "confirm_stop_all_waiting" : {
+        "message" : "Remove all waiting items?"
     },
     "confirm_restore_title" : {
         "message" : "Download items has been restored"

@@ -1596,34 +1596,34 @@ function confirmDialog(e)
     const dlid = this.dataset.dlid = e.relatedTarget.dataset.dlid;
 
     switch (e.relatedTarget.dataset.action) {
-    case 'stop':
-        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_download'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-            .off('click')
-            .on('click', stopDownload);
-        break;
-    case 'cancel':
-        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_cancel_download'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
-            .off('click')
-            .on('click', stopDownload);
-        break;
-    case 'pause':
-        bg.downloadQueue[dlid].resumeEnabled
-            ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_resumable'))
-            : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_download_nonresumable'));
-        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
-            .off('click')
-            .on('click', pauseDownload);
-        break;
     case 'stop-downloading':
         $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_downloading'));
         $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
             .off('click')
-            .on('click', stopDownloading);
+            .on('click', stopDownload);
+        break;
+    case 'pause-downloading':
+        bg.downloadQueue[dlid].resumeEnabled
+            ? $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_downloading_resumable'))
+            : $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_pause_downloading_nonresumable'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_pause'))
+            .off('click')
+            .on('click', pauseDownload);
         break;
     case 'stop-waiting':
         $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_waiting'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopDownload);
+        break;
+    case 'stop-all-downloading':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_all_downloading'));
+        $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
+            .off('click')
+            .on('click', stopDownloading);
+        break;
+    case 'stop-all-waiting':
+        $(this).find('.modal-body').text(browser.i18n.getMessage('confirm_stop_all_waiting'));
         $(this).find('.modal-action-button').text(browser.i18n.getMessage('button_stop'))
             .off('click')
             .on('click', stopWaiting);
