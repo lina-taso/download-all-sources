@@ -93,9 +93,15 @@ html, body {
 #completed-delete-button {
     position: relative;
 }
+[data-bs-theme="light"]
 #completed-delete-button::before {
     color: white;
     -webkit-text-stroke: 1px #141619;
+}
+[data-bs-theme="dark"]
+#completed-delete-button::before {
+    color: #141619;
+    -webkit-text-stroke: 1px white;
 }
 #completed-delete-button > .fa-check {
     position: absolute;
