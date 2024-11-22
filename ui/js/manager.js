@@ -33,9 +33,12 @@ const progressInterval = 2000,
 // valuables
 let source     = [],
     prevLoadedKB = null, prevLoadedTime = null,
-    baseurl,
     filter1, filter2, filter3, filter4, filter5, filter6,
     totalGraph;
+const inherited = {
+    baseurl  : null,
+    filename : null
+};
 
 
 $(async () => {
@@ -82,7 +85,7 @@ $(async () => {
     $('#new-download')
         .on('show.bs.modal', newDownloadModal)
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); })
-        .on('hide.bs.modal', function() { baseurl = null; });
+        .on('hide.bs.modal', function() { inherited.baseurl = null; });
     // in new download modal
     $('#new-download input:not([type]), #new-download input[type=password]')
         .on('keypress', keypressNewDownloadInput)
@@ -91,7 +94,7 @@ $(async () => {
     $('#dl-single-referer-default')
         .on('input', function() {
             if (this.checked)
-                $('#dl-single-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
+                $('#dl-single-referer').val(inherited.baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
             else
                 $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
         });
@@ -564,7 +567,7 @@ function hashRouter()
         $('[href="'+document.location.hash+'"]').tab('show');
         break;
     case '#new':
-        baseurl = bg.lastSource.baseurl;
+        inherited.baseurl = bg.lastSource.baseurl;
         $('#new-download').on('shown.bs.modal', setParameters);
         $('#new-download').modal('show');
 
@@ -586,7 +589,7 @@ function hashRouter()
 
         break;
     case '#source':
-        baseurl = bg.lastSource.baseurl;
+        inherited.baseurl  = bg.lastSource.baseurl;
         updateSourceList();
         bg.lastSource = {};
         $('#source-download').modal('show');
@@ -754,7 +757,7 @@ function sourceDownload()
               bg.replaceTags({ // location
                   path       : bg.normalizeLocation(config['download-location'] + $('#dl-source-location').val()),
                   targetUrl  : targetUrl,
-                  refererUrl : baseurl,
+                  refererUrl : inherited.baseurl,
                   tag        : tag
               }),
               originalLocation : $('#dl-source-location').val() },
@@ -762,7 +765,7 @@ function sourceDownload()
               bg.replaceTags({ // filename
                   path       : $('#dl-source-filename').val(),
                   targetUrl  : targetUrl,
-                  refererUrl : baseurl,
+                  refererUrl : inherited.baseurl,
                   tag        : tag,
                   title      : title
               }, true),
@@ -919,7 +922,7 @@ function startDownload()
  ************************/
 function newDownloadModal()
 {
-    if (!baseurl) {
+    if (!inherited.baseurl) {
         // initial url
         $('#dl-single-url, #dl-multiple-url').val('').trigger('input');
         // default-referer from new button
@@ -986,7 +989,7 @@ function sourceDownloadModal()
     // default-referer
     $('#dl-source-referer-default').on('input', function() {
         if (this.checked)
-            $('#dl-source-referer').val(baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
+            $('#dl-source-referer').val(inherited.baseurl).prop('readonly', true).removeClass('is-invalid').trigger('input');
         else
             $('#dl-source-referer').val('').prop('readonly', false).trigger('input');
     });
@@ -1033,7 +1036,7 @@ function sourceDownloadModal()
 
 function sourceDownloadModalHidden()
 {
-    baseurl = null;
+    inherited.baseurl = null;
     $(this).remove();
 }
 
