@@ -44,13 +44,11 @@ function onstartup()
 
 function oninstall(details)
 {
-    // installed time
-    if (details.reason == 'install')
-        config.setPref('installed-time',  parseInt((new Date()).getTime()/1000));
-
-    if (details.reason == 'install'
-        || details.reason == 'update') {
-
+    if (details.reason == 'install' || details.reason == 'update') {
+        // installed time
+        browser.storage.local.get('installed-time').then(ret => {
+            if (!ret['installed-time']) config.setPref('installed-time',  parseInt((new Date()).getTime()/1000));
+        });
         return browser.tabs.create({
             url : firstrun_url,
             active : true
