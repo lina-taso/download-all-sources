@@ -16,10 +16,10 @@
         "message" : "&Download all sources..."
     },
     "menus_link_download" : {
-        "message" : "&Download this link..."
+        "message" : "このリンクをダウンロード...(&D)"
     },
     "menus_selection_download" : {
-        "message" : "&Download selected links..."
+        "message" : "選択範囲をダウンロード...(&D)"
     },
 
     //
