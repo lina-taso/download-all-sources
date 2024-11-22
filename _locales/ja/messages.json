@@ -21,6 +21,9 @@
     "menus_selection_download" : {
         "message" : "選択範囲をダウンロード...(&D)"
     },
+    "menus_download_selection_as_filename" : {
+        "message" : "&Download all sources（選択範囲をファイル名に利用）..."
+    },
 
     //
     // Manager UI
@@ -499,6 +502,15 @@
     },
     "options_source_parameters" : {
         "message" : "ソースダウンロードの設定"
+    },
+    "options_contextmenu_add_ext_filename" : {
+        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、末尾にタグ:ext:を付ける"
+    },
+    "options_contextmenu_add_mext_filename" : {
+        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、末尾にタグ:mext:を付ける"
+    },
+    "options_contextmenu_open_options_filename" : {
+        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、オプションを開いた状態にする"
     },
     "options_source_remember_tagname" : {
         "message" : "前回のタグフィルタを記憶する"

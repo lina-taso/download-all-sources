@@ -98,6 +98,12 @@ $(async () => {
     $('input').on('input', function() {
         switch(this.type) {
         case 'checkbox':
+            // exclusive checkbox
+            if (this.id == 'contextmenu-add-ext-filename' && this.checked == true)
+                $('#contextmenu-add-mext-filename').prop('checked', false).trigger('input');
+            if (this.id == 'contextmenu-add-mext-filename' && this.checked == true)
+                $('#contextmenu-add-ext-filename').prop('checked', false).trigger('input');
+
             // server specific parameter
             if (this.classList.contains('server-parameter-box')) {
                 // save pref

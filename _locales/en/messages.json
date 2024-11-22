@@ -21,6 +21,9 @@
     "menus_selection_download" : {
         "message" : "&Download selected links..."
     },
+    "menus_download_selection_as_filename" : {
+        "message" : "&Download all sources (Use selection as filename)..."
+    },
 
     //
     // Manager UI
@@ -499,6 +502,15 @@
     },
     "options_source_parameters" : {
         "message" : "Source Download parameters"
+    },
+    "options_contextmenu_add_ext_filename" : {
+        "message" : "[Contextmenu] When using selection as filename, append the tag :ext: to the end"
+    },
+    "options_contextmenu_add_mext_filename" : {
+        "message" : "[Contextmenu] When using selection as filename, append the tag :mext: to the end"
+    },
+    "options_contextmenu_open_options_filename" : {
+        "message" : "[Contextmenu] When using selection as filename, keep the options panel open"
     },
     "options_source_remember_tagname" : {
         "message" : "Remember last filter by tagname"

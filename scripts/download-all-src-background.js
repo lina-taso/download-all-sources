@@ -112,6 +112,13 @@ browser.menus.create({
     contexts : ['selection']
 });
 
+// all sources filename from selection
+browser.menus.create({
+    id : 'download-all-src-showlist-selection-as-filename',
+    title : browser.i18n.getMessage('menus_download_selection_as_filename'),
+    contexts : ['selection']
+});
+
 var lastSource = {};
 browser.menus.onClicked.addListener(async function(info, tab) {
     switch (info.menuItemId) {
@@ -148,6 +155,24 @@ browser.menus.onClicked.addListener(async function(info, tab) {
             code : runcode_selection_list
         }))[0];
         lastSource = { list : list2, baseurl : '' };
+
+        // base url
+        lastSource.baseurl = tab.url;
+        browser.tabs.create({
+            active : true,
+            url : 'ui/manager.html#source',
+            openerTabId : tab.id,
+            index : tab.index + 1
+        });
+        break;
+
+    case 'download-all-src-showlist-selection-as-filename':
+        let list3 = (await browser.tabs.executeScript(tab.id, {
+            frameId : info.frameId,
+            code : runcode_all_list
+        }))[0];
+        lastSource = { list : list3, baseurl : '', filename : info.selectionText };
+console.log(info.selectionText);
 
         // base url
         lastSource.baseurl = tab.url;

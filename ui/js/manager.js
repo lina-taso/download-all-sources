@@ -590,9 +590,18 @@ function hashRouter()
         break;
     case '#source':
         inherited.baseurl  = bg.lastSource.baseurl;
+        inherited.filename = bg.lastSource.filename;
         updateSourceList();
         bg.lastSource = {};
         $('#source-download').modal('show');
+        if (inherited.filename) {
+            $('#dl-source-filename').val(
+                inherited.filename
+                    + (bg.config.getPref('contextmenu-add-ext-filename') ? ':ext:' : '')
+                    + (bg.config.getPref('contextmenu-add-mext-filename') ? ':mext:' : '')
+            ).trigger('input');
+            if (bg.config.getPref('contextmenu-open-options-filename')) $('#source-download-option').show();
+        }
         break;
     default:
     };
