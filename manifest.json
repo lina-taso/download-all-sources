@@ -53,7 +53,7 @@
         "downloads",
         "downloads.open",
         "tabs",
-        "contextMenus",
+        "menus",
         "storage"
     ]
 }

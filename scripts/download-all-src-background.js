@@ -11,7 +11,7 @@ browser.browserAction.onClicked.addListener(onclicked);
 
 const firstrun_url = 'https://www2.filewo.net/wordpress/category/products/download-all-sources/',
       origin_url = window.document.URL,
-      runCode = `{let urls = {};
+      runcode_all_list = `{let urls = {};
 for(let attr of ['src', 'href']) {
   document.querySelectorAll('['+attr+']').forEach((ele) => {
     let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
@@ -22,7 +22,7 @@ for(let attr of ['src', 'href']) {
   })
 }
 urls};`,
-      runCode2 = `{let urls = {};
+      runcode_selection_list = `{let urls = {};
 let selection = window.getSelection();
 for(let attr of ['src', 'href']) {
   for(let i=0; i<selection.rangeCount; i++) {
@@ -94,33 +94,33 @@ browser.webRequest.onSendHeaders.addListener(function(details) {
 
 
 // all sources
-browser.contextMenus.create({
+browser.menus.create({
     id : 'download-all-src-showlist',
     title : browser.i18n.getMessage('menus_download'),
     contexts : ['page', 'browser_action']
 });
 
 // link
-browser.contextMenus.create({
+browser.menus.create({
     id : 'download-all-src-dllink',
     title : browser.i18n.getMessage('menus_link_download'),
     contexts : ['link']
 });
 
 // selection
-browser.contextMenus.create({
+browser.menus.create({
     id : 'download-all-src-dlselect',
     title : browser.i18n.getMessage('menus_selection_download'),
     contexts : ['selection']
 });
 
 var lastSource = {};
-browser.contextMenus.onClicked.addListener(async function(info, tab) {
+browser.menus.onClicked.addListener(async function(info, tab) {
     switch (info.menuItemId) {
     case 'download-all-src-showlist':
         let list = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
-            code : runCode
+            code : runcode_all_list
         }))[0];
         lastSource = { list : list, baseurl : '' };
 
@@ -147,7 +147,7 @@ browser.contextMenus.onClicked.addListener(async function(info, tab) {
         case 'download-all-src-dlselect':
         let list2 = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
-            code : runCode2
+            code : runcode_selection_list
         }))[0];
         lastSource = { list : list2, baseurl : '' };
 
