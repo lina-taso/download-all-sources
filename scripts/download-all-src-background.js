@@ -134,7 +134,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
         });
         break;
 
-        case 'download-all-src-dllink':
+    case 'download-all-src-dllink':
         lastSource = { link : info.linkUrl, baseurl : tab.url };
         browser.tabs.create({
             active : true,
@@ -144,7 +144,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
         });
         break;
 
-        case 'download-all-src-dlselect':
+    case 'download-all-src-dlselect':
         let list2 = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
             code : runcode_selection_list
