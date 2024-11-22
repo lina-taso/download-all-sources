@@ -45,10 +45,8 @@ function onstartup()
 function oninstall(details)
 {
     // installed time
-    if (details.reason == 'install') {
-        console.log('installed');
+    if (details.reason == 'install')
         config.setPref('installed-time',  parseInt((new Date()).getTime()/1000));
-    }
 
     if (details.reason == 'install'
         || details.reason == 'update') {
