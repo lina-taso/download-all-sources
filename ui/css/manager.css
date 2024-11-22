@@ -75,6 +75,29 @@ html, body {
     display: inline;
 }
 
+/* ad */
+#review-card .card-link, #comment-card .card-link {
+    text-decoration: none;
+}
+#review-card.reviewed::after {
+    width: 100%;
+    height: 100%;
+    content: 'Thank you!';
+    position: absolute;
+    background-color: inherit;
+    border-radius: var(--bs-border-radius);
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#review-stars:hover > i {
+    font-weight: 900;
+}
+#review-stars:hover > i:hover ~ i {
+    font-weight: 400;
+}
+
 /* list header */
 #downloading-stop-button,
 #waiting-stop-button,

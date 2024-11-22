@@ -1,5 +1,8 @@
 var defaultconfig = {
     'theme' : 'auto',
+    'installed-time' : null,
+    'ad-review-hide' : false,
+    'ad-comment-hide' : false,
     'download-location' : '',
     'simultaneous-whole' : 16,
     'simultaneous-per-server' : 16,

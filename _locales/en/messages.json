@@ -34,6 +34,18 @@
     "tab_finished" : {
         "message" : "Finished"
     },
+    "ad_review" : {
+        "message" : "Please review!"
+    },
+    "ad_comment" : {
+        "message" : "Please comment!"
+    },
+    "ad_comment_message" : {
+        "message" : "Please leave your requests and feedback in the comments section of the latest blog post!"
+    },
+    "ad_nevershow" : {
+        "message" : "Never show again"
+    },
     "list_filename" : {
         "message" : "Filename"
     },

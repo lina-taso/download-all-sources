@@ -48,6 +48,15 @@ $(async () => {
     setInterval(updateList, progressInterval);
     // initial theme
     $('#theme-button').on('click', toggleTheme);
+    // ad (show after 7 days from installed)
+    $('#review-card').toggle(
+        !bg.config.getPref('ad-review-hide')
+            && ((new Date()).getTime()/1000 - bg.config.getPref('installed-time')) > 7 * 86400);
+    $('#comment-card').toggle(
+        !bg.config.getPref('ad-comment-hide')
+            && ((new Date()).getTime()/1000 - bg.config.getPref('installed-time')) > 7 * 86400);
+    $('#review-card .ad-nevershow, #comment-card .ad-nevershow').on('click', neverShowCard);
+    $('#review-stars').on('click', reviewClick);
     // miscellanies events
     $('.openlink-button').on('click', function() { this.dataset.link && browser.tabs.create({ url : this.dataset.link }); });
     $('.openfile-button, .item-openfile-button').on('click', async function() { this.dataset.fxid && browser.downloads.open( parseInt(this.dataset.fxid)); });
@@ -204,6 +213,29 @@ $(async () => {
 /**********************
   Manager UI functions
  **********************/
+function neverShowCard()
+{
+    const cardid = $(this).closest('.card').attr('id');
+    switch (cardid) {
+    case 'review-card':
+        bg.config.setPref('ad-review-hide', true);
+        $('#review-card').fadeOut();
+        break;
+    case 'comment-card':
+        bg.config.setPref('ad-comment-hide', true);
+        $('#comment-card').fadeOut();
+        break;
+    }
+}
+
+function reviewClick()
+{
+    bg.config.setPref('ad-review-hide', true);
+    $(window).on('focus', function() {
+        $('#review-card').addClass('reviewed').delay(3000).fadeOut();
+    });
+}
+
 function updateGraph(Bps)
 {
     totalGraph.data.datasets[0].data.shift();

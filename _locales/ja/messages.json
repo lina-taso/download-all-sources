@@ -34,6 +34,18 @@
     "tab_finished" : {
         "message" : "完了"
     },
+    "ad_review" : {
+        "message" : "レビューをお願いします！"
+    },
+    "ad_comment" : {
+        "message" : "コメントをお願いします！"
+    },
+    "ad_comment_message" : {
+        "message" : "要望やご意見は、ブログの最新投稿にコメントをお願いします！"
+    },
+    "ad_nevershow" : {
+        "message" : "もう表示しない"
+    },
     "list_filename" : {
         "message" : "ファイル名"
     },
