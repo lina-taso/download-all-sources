@@ -110,7 +110,7 @@ browser.menus.create({
     contexts : ['selection']
 });
 
-// all sources filename from selection
+// all sources use selection as filename
 browser.menus.create({
     id : 'download-all-src-showlist-selection-as-filename',
     title : browser.i18n.getMessage('menus_download_selection_as_filename'),
