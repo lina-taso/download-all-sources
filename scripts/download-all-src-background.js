@@ -121,14 +121,12 @@ var lastSource = {};
 browser.menus.onClicked.addListener(async function(info, tab) {
     switch (info.menuItemId) {
     case 'download-all-src-showlist':
-        let list = (await browser.tabs.executeScript(tab.id, {
+        const list_showlist = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
             code : runcode_all_list
         }))[0];
-        lastSource = { list : list, baseurl : '' };
+        lastSource = { list : list_showlist, baseurl : tab.url };
 
-        // base url
-        lastSource.baseurl = tab.url;
         browser.tabs.create({
             active : true,
             url : 'ui/manager.html#source',
@@ -148,14 +146,12 @@ browser.menus.onClicked.addListener(async function(info, tab) {
         break;
 
     case 'download-all-src-dlselect':
-        let list2 = (await browser.tabs.executeScript(tab.id, {
+        const list_dlselect = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
             code : runcode_selection_list
         }))[0];
-        lastSource = { list : list2, baseurl : '' };
+        lastSource = { list : list_dlselect, baseurl : tab.url };
 
-        // base url
-        lastSource.baseurl = tab.url;
         browser.tabs.create({
             active : true,
             url : 'ui/manager.html#source',
@@ -165,15 +161,12 @@ browser.menus.onClicked.addListener(async function(info, tab) {
         break;
 
     case 'download-all-src-showlist-selection-as-filename':
-        let list3 = (await browser.tabs.executeScript(tab.id, {
+        const list_showlist_selection1 = (await browser.tabs.executeScript(tab.id, {
             frameId : info.frameId,
             code : runcode_all_list
         }))[0];
-        lastSource = { list : list3, baseurl : '', filename : info.selectionText };
-console.log(info.selectionText);
+        lastSource = { list : list_showlist_selection1, baseurl : tab.url, filename : info.selectionText };
 
-        // base url
-        lastSource.baseurl = tab.url;
         browser.tabs.create({
             active : true,
             url : 'ui/manager.html#source',

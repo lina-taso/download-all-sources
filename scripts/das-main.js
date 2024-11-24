@@ -266,17 +266,13 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
                     if ((new RegExp('^' + punyurl, 'i')).test(this.responseUrl || originalPunyUrl)) {
                         if (!(target && punyurl.split('/').length < target[0])) {
                             target = [punyurl.split('/').length, punyurl];
-                        }
-                    }
-                }
+                        }}}
                 // file (exact match)
                 else {
                     if ((new RegExp('^' + punyurl + '$', 'i')).test(this.responseUrl || originalPunyUrl)) {
                         this.finalAuthentication = [this.responseUrl ? 'response' : 'original', params[punyurl].user, params[punyurl].pass];
                         return [params[punyurl].user, params[punyurl].pass];
-                    }
-                }
-            }
+                    }}}
 
             // directory
             if (target) {
