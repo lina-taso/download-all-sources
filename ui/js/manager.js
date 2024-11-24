@@ -15,14 +15,14 @@ const progressInterval = 2000,
       MAX_FILTER_CNT= 5000,
       allowProtocol = /^(https|http):/,
       // not include tags such as tag and title
-      allowFilename = /^([^\\/:*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
-      allowLocation = /^([^\\:*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
+      allowFilename = /^([^\\/:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
+      allowLocation = /^([^\\:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
       // include tags such as tag and title for source download
-      allowFilenameS= /^([^\\/:*?"<>|]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
-      allowLocationS= /^([^\\:*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
+      allowFilenameS= /^([^\\/:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
+      allowLocationS= /^([^\\:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
       // not include any tags for detail modal
-      allowFilenameD= /^[^\\/:*?"<>|]*$/,
-      allowLocationD= /^[^\\:*?"<>|]*$/,
+      allowFilenameD= /^[^\\/:*?"<>|\t]*$/,
+      allowLocationD= /^[^\\:*?"<>|\t]*$/,
       denyFilename  = /^[. ]+|[. ]+$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       // referer tag pattern
