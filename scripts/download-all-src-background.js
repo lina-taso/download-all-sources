@@ -11,24 +11,24 @@ browser.browserAction.onClicked.addListener(onclicked);
 
 const firstrun_url = 'https://www2.filewo.net/wordpress/category/products/download-all-sources/',
       origin_url = window.document.URL,
-      runcode_all_list = `{let urls = {};
-for(let attr of ['src', 'href']) {
+      runcode_all_list = `{const urls = {};
+for (let attr of ['src', 'href']) {
   document.querySelectorAll('['+attr+']').forEach((ele) => {
-    let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
-    let url = urlobj.toString();
+    const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+    const url = urlobj.toString();
     if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
     urls[url].tag.push(ele.tagName.toLowerCase());
     urls[url].title.push(ele.title);
   })
 }
 urls};`,
-      runcode_selection_list = `{let urls = {};
+      runcode_selection_list = `{const urls = {};
 let selection = window.getSelection();
-for(let attr of ['src', 'href']) {
+for (let attr of ['src', 'href']) {
   for(let i=0; i<selection.rangeCount; i++) {
     selection.getRangeAt(i).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
-      let urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
-      let url = urlobj.toString();
+      const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+      const url = urlobj.toString();
       if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
       urls[url].tag.push(ele.tagName.toLowerCase());
       urls[url].title.push(ele.title);
