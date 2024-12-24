@@ -16,8 +16,8 @@
     },
 
     "icons" : {
-        "48" : "images/logo.svg",
-        "96" : "images/logo.svg"
+        "48" : "/images/logo.svg",
+        "96" : "/images/logo.svg"
     },
 
     "default_locale" : "en",
@@ -25,8 +25,8 @@
     "browser_action" : {
         "browser_style" : false,
         "default_icon" : {
-            "16" : "images/logo.svg",
-            "32" : "images/logo.svg"
+            "16" : "/images/logo.svg",
+            "32" : "/images/logo.svg"
         },
         "default_title" : "__MSG_browser_action__",
         "default_area" : "navbar"
