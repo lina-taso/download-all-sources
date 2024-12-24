@@ -15,6 +15,9 @@
     "menus_download" : {
         "message" : "&Download all sources..."
     },
+    "menus_custom" : {
+        "message" : "Run custom script and download...(&D)"
+    },
     "menus_link_download" : {
         "message" : "&Download this link..."
     },
@@ -23,6 +26,9 @@
     },
     "menus_download_selection_as_filename" : {
         "message" : "&Download all sources (Use selection as filename)..."
+    },
+    "menus_custom_selection_as_filename" : {
+        "message" : "Run custom script and &download (Use selection as filename)..."
     },
 
     //
@@ -535,6 +541,21 @@
     },
     "options_source_remember_option2" : {
         "message" : "Remember last choice of Ignore size mismatch errors option"
+    },
+    "options_customscript_parameters" : {
+        "message" : "Custom script parameters"
+    },
+    "options_customscript_description" : {
+        "message" : "[NOTE]\nYou can customize the script that runs on web pages to pass a URL list to Download All Sources.\nThis is useful in situations like:\n- Performing specific actions before creating the URL list\n- Pre-filtering the URL list\nIf there is an error in the script, Download All Sources Manager will not open (no notification will be displayed on the screen)."
+    },
+    "options_customscript_url" : {
+        "message" : "URL"
+    },
+    "options_customscript_url_description" : {
+        "message" : "Exact match if the ending is not / (for file specification).\nIf ends with / matches everything under the directory (longest match)."
+    },
+    "options_customscript_insertscript" : {
+        "message" : "Insert script template"
     },
     "options_filetype_parameters" : {
         "message" : "Filetype definitions for Filter"

@@ -78,6 +78,18 @@ $(async () => {
     // empty box
     $authTemplate.clone().removeClass('d-none').appendTo($authTemplate.parent());
 
+    // initial customscript parameters
+    const $scriptTemplate = $('.row.customscript-parameter.d-none'),
+          scriptParams    = Object.keys(config['customscript-parameter']);
+    for (let key of scriptParams) {
+        const $target = $scriptTemplate.clone().removeClass('d-none').appendTo($scriptTemplate.parent());
+        $target.find('.customscript-url-punycode').val(key);
+        $target.find('.customscript-url').val(config['customscript-parameter'][key].url);
+        $target.find('.customscript-script').val(config['customscript-parameter'][key].script);
+    }
+    // empty box
+    $scriptTemplate.clone().removeClass('d-none').appendTo($scriptTemplate.parent());
+
     // initial mime mapipngs
     const $mapTemplate = $('.row.mime-mapping.d-none'),
           mimeMappings = Object.keys(config['mime-mappings']);
@@ -95,7 +107,7 @@ $(async () => {
         });
 
     // input event
-    $('input').on('input', function() {
+    $('input, textarea').on('input', function() {
         switch(this.type) {
         case 'checkbox':
             // exclusive checkbox
@@ -152,6 +164,28 @@ $(async () => {
                         };
                     });
                     bg.config.setPref('authentication-parameter', parameters);
+                }
+                return;
+            }
+
+            // customscript parameter
+            if (this.classList.contains('customscript-parameter-box')) {
+                // validation
+                if ($(this).closest('.customscript-parameter').find('.customscript-url').val()) {
+                    $(this).closest('.customscript-parameter').find('.customscript-script').addClass('is-invalid');
+                }
+
+                // save pref
+                if (!$('.customscript-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.customscript-parameter').each(function() {
+                        if ($(this).find('.customscript-url').val() == '') return;
+                        parameters[$(this).find('.customscript-url-punycode').val()] = {
+                            url    : $(this).find('.customscript-url').val(),
+                            script : $(this).find('.customscript-script').val()
+                        };
+                    });
+                    bg.config.setPref('customscript-parameter', parameters);
                 }
                 return;
             }
@@ -300,6 +334,56 @@ $(async () => {
                     bg.config.setPref('authentication-parameter', parameters);
                 }
             }
+            // customscript parameter
+            else if (this.classList.contains('customscript-parameter-box')) {
+                const $urlbox    = $(this).closest('.customscript-parameter').find('.customscript-url'),
+                      $punybox   = $(this).closest('.customscript-parameter').find('.customscript-url-punycode'),
+                      $scriptbox = $(this).closest('.customscript-parameter').find('.customscript-script'),
+                      entered    = $urlbox.val() != '';
+
+                // if last is not empty, add new line
+                if ($(this).closest('.customscript-parameter').is(':last-of-type') && entered) {
+                    const $scriptTemplate = $('.row.customscript-parameter.d-none');
+                    // clone with events
+                    $scriptTemplate.clone(true).removeClass('d-none').appendTo($scriptTemplate.parent());
+                }
+                // validation
+                if (entered) {
+                    let urlvalid = false;
+                    if (!$urlbox.val()) {
+                        $punybox.val('');
+                    }
+                    else {
+                        try {
+                            const url = new URL($urlbox.val());
+                            $punybox.val(url.href);
+                            urlvalid = true;
+                        }
+                        catch (e) {
+                            $punybox.val('');
+                        }
+                    }
+                    const scriptvalid = $scriptbox.val() != '';
+                    $urlbox.toggleClass('is-invalid', !urlvalid);
+                    $scriptbox.toggleClass('is-invalid', !scriptvalid);
+                }
+                else {
+                    $urlbox.toggleClass('is-invalid', false);
+                    $scriptbox.toggleClass('is-invalid', false);
+                }
+                // save pref
+                if (!$('.customscript-parameter').find('.is-invalid').length) {
+                    const parameters = {};
+                    $('.customscript-parameter').each(function() {
+                        if ($(this).find('.customscript-url').val() == '') return;
+                        parameters[$(this).find('.customscript-url-punycode').val()] = {
+                            url    : $(this).find('.customscript-url').val(),
+                            script : $(this).find('.customscript-script').val()
+                        };
+                    });
+                    bg.config.setPref('customscript-parameter', parameters);
+                }
+            }
             // mime filter
             else if (this.classList.contains('mime-filter')) {
                 const $mimes = $('.row.mime-mapping:not(.d-none)'),
@@ -371,6 +455,18 @@ $(async () => {
         .on('click', function() {
             $(this).closest('.authentication-parameter').remove();
             $('.authentication-parameter:last-of-type .authentication-url').trigger('input');
+        });
+
+    // customscript-parameter delete button
+    $('.customscript-parameter-delete')
+        .on('click', function() {
+            $(this).closest('.customscript-parameter').remove();
+            $('.customscript-parameter:last-of-type .customscript-url').trigger('input');
+        });
+    // customscript insert template
+    $('.insert-scripttemplate')
+        .on('click', function() {
+            $(this).parent().next().children('textarea').val(bg.runcode_all_list);
         });
 
     // reset button

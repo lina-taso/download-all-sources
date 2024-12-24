@@ -15,6 +15,9 @@
     "menus_download" : {
         "message" : "&Download all sources..."
     },
+    "menus_custom" : {
+        "message" : "カスタムスクリプトを実行してダウンロード...(&D)"
+    },
     "menus_link_download" : {
         "message" : "このリンクをダウンロード...(&D)"
     },
@@ -23,6 +26,9 @@
     },
     "menus_download_selection_as_filename" : {
         "message" : "&Download all sources（選択範囲をファイル名に利用）..."
+    },
+    "menus_custom_selection_as_filename" : {
+        "message" : "カスタムスクリプトを実行してダウンロード（選択範囲をファイル名に利用）...(&D)"
     },
 
     //
@@ -535,6 +541,21 @@
     },
     "options_source_remember_option2" : {
         "message" : "前回のsize mismatchエラーを無視オプションを記憶する"
+    },
+    "options_customscript_parameters" : {
+        "message" : "カスタムスクリプト設定"
+    },
+    "options_customscript_description" : {
+        "message" : "[注]Download All SourcesにURLリストを渡すためにWebページ上で動作させるスクリプトを、カスタマイズできます。\n以下のようなことをしたいときに有効です。\n- URLリストを作成する前に特定の動作をさせたい\n- URLリストを事前にフィルターさせたい\nスクリプトにエラーがある場合はDownload All Sources Managerが開きません（画面に通知は表示されません）。"
+    },
+    "options_customscript_url" : {
+        "message" : "URL"
+    },
+    "options_customscript_url_description" : {
+        "message" : "/で終わらない場合は完全一致 (ファイル指定用) 。\n/で終わる場合はディレクトリ配下全てが対象 (最長一致) 。"
+    },
+    "options_customscript_insertscript" : {
+        "message" : "スクリプトテンプレートを挿入"
     },
     "options_filetype_parameters" : {
         "message" : "フィルタ拡張子の定義"

@@ -96,6 +96,13 @@ browser.menus.create({
     contexts : ['page', 'browser_action']
 });
 
+// run custom script
+browser.menus.create({
+    id : 'download-all-src-customscript',
+    title : browser.i18n.getMessage('menus_custom'),
+    contexts : ['page', 'browser_action']
+});
+
 // link
 browser.menus.create({
     id : 'download-all-src-dllink',
@@ -117,6 +124,13 @@ browser.menus.create({
     contexts : ['selection']
 });
 
+// run custom script and use selection as filename
+browser.menus.create({
+    id : 'download-all-src-customscript-selection-as-filename',
+    title : browser.i18n.getMessage('menus_custom_selection_as_filename'),
+    contexts : ['selection']
+});
+
 var lastSource = {};
 browser.menus.onClicked.addListener(async function(info, tab) {
     switch (info.menuItemId) {
@@ -126,6 +140,49 @@ browser.menus.onClicked.addListener(async function(info, tab) {
             code : runcode_all_list
         }))[0];
         lastSource = { list : list_showlist, baseurl : tab.url };
+
+        browser.tabs.create({
+            active : true,
+            url : '/ui/manager.html#source',
+            openerTabId : tab.id,
+            index : tab.index + 1
+        });
+        break;
+
+    case 'download-all-src-customscript':
+        const customscript1 = (function() {
+            const params = config.getPref('customscript-parameter');
+
+            // url specified
+            let target   = null;
+            const punyurls = Object.keys(params);
+
+            for (let punyurl of punyurls) {
+                // directory (forward match)
+                if (/\/$/.test(punyurl)) {
+                    if ((new RegExp('^' + punyurl, 'i')).test(tab.url)) {
+                        if (!(target && punyurl.split('/').length < target[0])) {
+                            target = [punyurl.split('/').length, punyurl];
+                        }}}
+                // file (exact match)
+                else {
+                    if ((new RegExp('^' + punyurl + '$', 'i')).test(tab.url)) {
+                        return params[punyurl].script;
+                    }}}
+
+            // directory
+            if (target) {
+                return params[target[1]].script;
+            }
+
+            return null;
+        })();
+
+        const list_customscript = (await browser.tabs.executeScript(tab.id, {
+            frameId : info.frameId,
+            code : customscript1 || runcode_all_list
+        }))[0];
+        lastSource = { list : list_customscript, baseurl : tab.url };
 
         browser.tabs.create({
             active : true,
@@ -174,6 +231,50 @@ browser.menus.onClicked.addListener(async function(info, tab) {
             index : tab.index + 1
         });
         break;
+
+    case 'download-all-src-customscript-selection-as-filename':
+        const customscript2 = (function() {
+            const params = config.getPref('customscript-parameter');
+
+            // url specified
+            let target   = null;
+            const punyurls = Object.keys(params);
+
+            for (let punyurl of punyurls) {
+                // directory (forward match)
+                if (/\/$/.test(punyurl)) {
+                    if ((new RegExp('^' + punyurl, 'i')).test(tab.url)) {
+                        if (!(target && punyurl.split('/').length < target[0])) {
+                            target = [punyurl.split('/').length, punyurl];
+                        }}}
+                // file (exact match)
+                else {
+                    if ((new RegExp('^' + punyurl + '$', 'i')).test(tab.url)) {
+                        return params[punyurl].script;
+                    }}}
+
+            // directory
+            if (target) {
+                return params[target[1]].script;
+            }
+
+            return null;
+        })();
+
+        const list_customscript_selection1 = (await browser.tabs.executeScript(tab.id, {
+            frameId : info.frameId,
+            code : customscript2 || runcode_all_list
+        }))[0];
+        lastSource = { list : list_customscript_selection1, baseurl : tab.url, filename : info.selectionText };
+
+        browser.tabs.create({
+            active : true,
+            url : '/ui/manager.html#source',
+            openerTabId : tab.id,
+            index : tab.index + 1
+        });
+        break;
+
     }
 });
 

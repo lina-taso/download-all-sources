@@ -45,6 +45,7 @@ var defaultconfig = {
     'source-option1-value' : false,
     'remember-source-option2' : false,
     'source-option2-value' : false,
+    'customscript-parameter' : { },
     'filetype1-label' : 'Audio',
     'filetype1-extension' : 'wav|mp3|wma|aac|flac|alac|mid|midi|aif|aiff|aifc|afc',
     'filetype2-label' : 'Video',
