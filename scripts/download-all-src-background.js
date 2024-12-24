@@ -10,32 +10,53 @@ browser.runtime.onInstalled.addListener(oninstall);
 browser.browserAction.onClicked.addListener(onclicked);
 
 const firstrun_url = 'https://www2.filewo.net/wordpress/category/products/download-all-sources/',
-      origin_url = window.document.URL,
-      runcode_all_list = `{const urls = {};
-for (let attr of ['src', 'href']) {
-  document.querySelectorAll('['+attr+']').forEach((ele) => {
-    const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
-    const url = urlobj.toString();
-    if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
-    urls[url].tag.push(ele.tagName.toLowerCase());
-    urls[url].title.push(ele.title);
-  })
-}
-urls};`,
-      runcode_selection_list = `{const urls = {};
-let selection = window.getSelection();
-for (let attr of ['src', 'href']) {
-  for(let i=0; i<selection.rangeCount; i++) {
-    selection.getRangeAt(i).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
-      const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
-      const url = urlobj.toString();
-      if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
-      urls[url].tag.push(ele.tagName.toLowerCase());
-      urls[url].title.push(ele.title);
-    })
-  }
-}
-urls};`;
+      origin_url = window.document.URL;
+
+var runcode_all_list = `{
+	// URLs collection
+	const urls = {};
+	// The attributes from which to extract the URL.
+	for (let attr of ['src', 'href']) {
+		document.querySelectorAll('['+attr+']').forEach((ele) => {
+			const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+			const url    = urlobj.toString();
+			if (!urls[url])
+				urls[url] = {
+					// [REQUIRED] URL string. ex) http://example.com/sample.jpeg
+					url      : url,
+					// [REQUIRED] Protocol string. Protocols other than http: and https: are ignored.
+					protocol : urlobj.protocol,
+					// [OPTIONAL] Filetype string. ex) jpeg
+					filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '',
+					// The tag and title arrays are PAIRED,
+					// allowing multiple combinations of tags and titles to be registered for a single URL.
+					tag : [], title : []
+				};
+			// [REQUIRED] Tag string. ex) a, href, etc...
+			urls[url].tag.push(ele.tagName.toLowerCase());
+			// [OPTIONAL] Title string.
+			urls[url].title.push(ele.title);
+		})
+	}
+	// The last variable is passed to Download All Sources.
+	urls
+};`,
+    runcode_selection_list = `{
+	const urls = {};
+	let selection = window.getSelection();
+	for (let attr of ['src', 'href']) {
+		for(let i=0; i<selection.rangeCount; i++) {
+			selection.getRangeAt(i).cloneContents().querySelectorAll('['+attr+']').forEach((ele) => {
+				const urlobj = new URL(ele.getAttribute(attr).replace(/#.*$/, ''), location.href);
+				const url = urlobj.toString();
+				if (!urls[url]) urls[url] = { url : url, protocol : urlobj.protocol, tag : [], title : [], filetype : urlobj.pathname.match(/\\.([\\w]+)$/) ? RegExp.$1 : '' };
+				urls[url].tag.push(ele.tagName.toLowerCase());
+				urls[url].title.push(ele.title);
+			})
+		}
+	}
+	urls
+};`;
 
 
 function onstartup()
