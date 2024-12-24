@@ -32,10 +32,6 @@
         "default_area" : "navbar"
     },
 
-    "options_ui" : {
-        "page" : "ui/options.html"
-    },
-
     "background" : {
         "scripts" : [
             "/scripts/das-defaultconfig.js",

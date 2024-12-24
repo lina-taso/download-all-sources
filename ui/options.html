@@ -16,348 +16,343 @@
 
     <body>
         <div class="container-fluid">
-            <h2 data-string="options_location"></h2>
-            <div>
-                <label for="download-location" data-string="options_default_location"></label>
-                <input id="download-location" class="form-control">
-                <small id="download-location-sample" class="form-text text-secondary"></small>
-                <p class="form-text text-secondary" data-string="options_location_description"></p>
-            </div>
-            <div class="tags mb-3">
-                <div class="card mt-2">
-                    <div class="card-body">
-                        <h4 class="card-title" data-string="location_tags"></h4>
-                        <dl class="row">
-                            <dt class="col-3"><a href="#">:Y:</a></dt>
-                            <dd class="col-9" data-string="tag_year"></dd>
-                            <dt class="col-3"><a href="#">:M:</a></dt>
-                            <dd class="col-9" data-string="tag_month"></dd>
-                            <dt class="col-3"><a href="#">:D:</a></dt>
-                            <dd class="col-9" data-string="tag_date"></dd>
-                            <dt class="col-3"><a href="#">:h:</a></dt>
-                            <dd class="col-9" data-string="tag_hour"></dd>
-                            <dt class="col-3"><a href="#">:m:</a></dt>
-                            <dd class="col-9" data-string="tag_minute"></dd>
-                            <dt class="col-3"><a href="#">:s:</a></dt>
-                            <dd class="col-9" data-string="tag_second"></dd>
-                            <dt class="col-3"><a href="#">:dom:</a></dt>
-                            <dd class="col-9" data-string="tag_domain"></dd>
-                            <dt class="col-3"><a href="#">:path:</a></dt>
-                            <dd class="col-9" data-string="tag_path"></dd>
-                            <dt class="col-3"><a href="#">:name:</a></dt>
-                            <dd class="col-9" data-string="tag_name"></dd>
-                            <dt class="col-3"><a href="#">:ext:</a></dt>
-                            <dd class="col-9" data-string="tag_ext2"></dd>
-                            <dt class="col-3"><a href="#">:mime:</a></dt>
-                            <dd class="col-9" data-string="tag_mime"></dd>
-                            <dt class="col-3"><a href="#">:mext:</a></dt>
-                            <dd class="col-9" data-string="tag_mext2"></dd>
-                            <dt class="col-3">/</dt>
-                            <dd class="col-9" data-string="tag_delimiter"></dd>
-                        </dl>
+            <div class="row">
+                <!-- sidebar -->
+                <div class="col-lg-2 col-md-3 col-12">
+                    <div class="sticky-top py-3 d-flex flex-column" style="max-height: 100vh;">
+                        <img class="img-fluid d-block mx-auto mb-2" src="/images/title.svg">
+                        <h3 class="text-center mb-3">OPTIONS</h2>
+                        <div id="scrollspy" class="d-md-flex d-none flex-column gap-2 overflow-auto">
+                            <a class="px-1" href="#options_location" data-string="options_location"></a>
+                            <a class="px-1" href="#options_general" data-string="options_general"></a>
+                            <a class="px-1" href="#options_multithread" data-string="options_multithread"></a>
+                            <a class="px-1" href="#options_server_specific_parameters" data-string="options_server_specific_parameters"></a>
+                            <a class="px-1" href="#options_authentication_parameters" data-string="options_authentication_parameters"></a>
+                            <a class="px-1" href="#options_new_parameters" data-string="options_new_parameters"></a>
+                            <a class="px-1" href="#options_source_parameters" data-string="options_source_parameters"></a>
+                            <a class="px-1" href="#options_customscript_parameters" data-string="options_customscript_parameters"></a>
+                            <a class="px-1" href="#options_filetype_parameters" data-string="options_filetype_parameters"></a>
+                            <a class="px-1" href="#options_mime_mappings" data-string="options_mime_mappings"></a>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <h2 data-string="options_general"></h2>
-            <div class="mb-3">
-                <label class="form-label" for="simultaneous-whole" data-string="options_simultaneous"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="simultaneous-whole" type="range" class="form-range" min="1" max="24" value="16">
-                    </div>
-                    <div id="simultaneous-whole-label" class="col-1">16</div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="simultaneous-per-server" data-string="options_simultaneous_server"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="simultaneous-per-server" type="range" class="form-range" min="1" max="24" value="16">
-                    </div>
-                    <div id="simultaneous-per-server-label" class="col-1">16</div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="retry-count" data-string="options_retry_count"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="retry-count" type="range" class="form-range" min="1" max="10" value="4">
-                    </div>
-                    <div id="retry-count-label" class="col-1">4</div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="enable-openfile" type="checkbox" class="form-check-input">
-                    <label for="enable-openfile" class="form-check-label" data-string="options_enable_openfile"></label>
-                    <p class="form-text text-secondary" data-string="options_enable_openfile_description"></p>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="autostart-on-restore" type="checkbox" class="form-check-input">
-                    <label for="autostart-on-restore" class="form-check-label" data-string="options_autostart_on_restore"></label>
-                </div>
-            </div>
                 <!-- main -->
+                <div class="col-lg-10 col-md-9 col-12 pt-3">
+                    <div data-bs-spy="scroll" data-bs-target="#scrollspy" data-bs-smooth-scroll="true">
+                        <h2 id="options_location" data-string="options_location"></h2>
+                        <div>
+                            <label for="download-location" class="form-label" data-string="options_default_location"></label>
+                            <input id="download-location" class="form-control">
+                            <small id="download-location-sample" class="form-text text-secondary"></small>
+                            <p class="form-text text-secondary" data-string="options_location_description"></p>
+                        </div>
+                        <div class="tags mb-3">
+                            <div class="card mt-2">
+                                <div class="card-body row">
+                                    <h4 class="card-title col-12" data-string="location_tags"></h4>
+                                    <div class="col-xl-6 col-12">
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:Y:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_year"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:M:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_month"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:D:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_date"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:h:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_hour"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:m:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_minute"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:s:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_second"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:dom:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_domain"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:path:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_path"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-6 col-12">
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:name:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_name"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:ext:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_ext2"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:mime:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_mime"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">:mext:</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_mext2"></span>
+                                        </div>
+                                        <div class="row mb-2">
+                                            <span class="col-sm-2 col-4 tag"><a href="#">/</a></span>
+                                            <span class="col-sm-10 col-8" data-string="tag_delimiter"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_multithread"></h2>
-            <div class="mb-3">
-                <p class="form-text text-secondary" data-string="options_multithread_description"></p>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="split-count" data-string="options_split_count"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="split-count" type="range" class="form-range" min="1" max="10" value="1">
-                    </div>
-                    <div id="split-count-label" class="col-1">1</div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="split-size" data-string="options_split_size"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="split-size" type="range" class="form-range" min="10" max="200" step="10" value="50">
-                    </div>
-                    <div id="split-size-label" class="col-1">50</div>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label class="form-label" for="split-ex-size" data-string="options_split_ex_size"></label>
-                <div class="row">
-                    <div class="col-11">
-                        <input id="split-ex-size" type="range" class="form-range" min="10" max="100" step="10" value="50">
-                    </div>
-                    <div id="split-ex-size-label" class="col-1">50</div>
-                </div>
-            </div>
+                        <h2 id="options_general" data-string="options_general"></h2>
+                        <div class="mb-3">
+                            <label class="form-label" for="simultaneous-whole" data-string="options_simultaneous"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="simultaneous-whole" type="range" class="form-range" min="1" max="24" value="16">
+                                </div>
+                                <div id="simultaneous-whole-label" class="col-1">16</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="simultaneous-per-server" data-string="options_simultaneous_server"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="simultaneous-per-server" type="range" class="form-range" min="1" max="24" value="16">
+                                </div>
+                                <div id="simultaneous-per-server-label" class="col-1">16</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="retry-count" data-string="options_retry_count"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="retry-count" type="range" class="form-range" min="1" max="10" value="4">
+                                </div>
+                                <div id="retry-count-label" class="col-1">4</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="enable-openfile" type="checkbox" class="form-check-input">
+                                <label for="enable-openfile" class="form-check-label" data-string="options_enable_openfile"></label>
+                                <p class="form-text text-secondary" data-string="options_enable_openfile_description"></p>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="autostart-on-restore" type="checkbox" class="form-check-input">
+                                <label for="autostart-on-restore" class="form-check-label" data-string="options_autostart_on_restore"></label>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_server_specific_parameters"></h2>
-            <div>
-                <div class="row g-1">
-                    <div class="col-auto d-flex align-items-end">
-                        <button class="btn btn-link px-0 disabled"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                    <div class="col d-flex align-items-end">
-                        <span class="form-label fw-bold">
-                            <label data-string="options_server_fqdn"></label>
-                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="options_server_fqdn_description" tabindex="0"></i>
-                        </span>
-                    </div>
-                    <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-lr;" data-string="options_server_simultaneous"></label>
-                    <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-lr;" data-string="options_server_split_count"></label>
-                    <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-lr;" data-string="options_server_disable_resuming"></label>
-                    <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-lr;" data-string="options_server_ignore_sizemismatch"></label>
-                </div>
-                <div class="row g-1 mb-2 server-parameter d-none">
-                    <div class="col-auto">
-                        <button class="btn btn-link px-0 server-parameter-delete"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                    <div class="col">
-                        <input class="form-control px-1 server-parameter-box server-fqdn" placeholder="example.domain.name">
-                        <input type="hidden" class="form-control server-parameter-box server-fqdn-punycode">
-                    </div>
-                    <div class="col-1"><input type="number" class="form-control ps-1 pe-0 server-parameter-box server-simultaneous" min="1" max="24" value="16"></div>
-                    <div class="col-1"><input type="number" class="form-control ps-1 pe-0 server-parameter-box server-split-count" min="1" max="10" value="1"></div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        <input type="checkbox" class="form-check-input server-parameter-box server-disable-resuming">
-                    </div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        <input type="checkbox" class="form-check-input server-parameter-box server-ignore-sizemismatch">
-                    </div>
-                </div>
-            </div>
+                        <h2 id="options_multithread" data-string="options_multithread"></h2>
+                        <div class="mb-3">
+                            <p class="form-text text-secondary" data-string="options_multithread_description"></p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="split-count" data-string="options_split_count"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="split-count" type="range" class="form-range" min="1" max="10" value="1">
+                                </div>
+                                <div id="split-count-label" class="col-1">1</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="split-size" data-string="options_split_size"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="split-size" type="range" class="form-range" min="10" max="200" step="10" value="50">
+                                </div>
+                                <div id="split-size-label" class="col-1">50</div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="split-ex-size" data-string="options_split_ex_size"></label>
+                            <div class="row">
+                                <div class="col-11">
+                                    <input id="split-ex-size" type="range" class="form-range" min="10" max="100" step="10" value="50">
+                                </div>
+                                <div id="split-ex-size-label" class="col-1">50</div>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_authentication_parameters"></h2>
-            <div>
-                <div class="row g-1">
-                    <div class="col-auto d-flex align-items-end">
-                        <button class="btn btn-link px-0 disabled"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                    <div class="col d-flex align-items-end">
-                        <span class="form-label fw-bold">
-                            <label data-string="options_authentication_url"></label>
-                            <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="options_authentication_url_description" tabindex="0"></i>
-                        </span>
-                    </div>
-                    <label class="form-label fw-bold col-2 d-flex align-items-end" data-string="options_authentication_user"></label>
-                    <label class="form-label fw-bold col-2 d-flex align-items-end" data-string="options_authentication_pass"></label>
-                    <label class="form-label fw-bold col-1 d-flex align-items-end text-center" data-string="options_authentication_noauth"></label>
-                </div>
-                <div class="row g-1 mb-2 authentication-parameter d-none">
-                    <div class="col-auto">
-                        <button class="btn btn-link px-0 authentication-parameter-delete"><i class="fa-solid fa-eraser"></i></button>
-                    </div>
-                    <div class="col">
-                        <input class="form-control px-1 authentication-parameter-box authentication-url" placeholder="https://example.domain.name/path/">
-                        <input type="hidden" class="form-control authentication-parameter-box authentication-url-punycode">
-                    </div>
-                    <div class="col-2"><input class="form-control px-1 authentication-parameter-box authentication-user"></div>
-                    <div class="col-2"><input class="form-control px-1 authentication-parameter-box authentication-pass" type="password" autocomplete="new-password"></div>
-                    <div class="col-1 d-flex align-items-center justify-content-center">
-                        <input type="checkbox" class="form-check-input authentication-parameter-box authentication-noauth">
-                    </div>
-                </div>
-            </div>
+                        <h2 id="options_server_specific_parameters" data-string="options_server_specific_parameters"></h2>
+                        <div>
+                            <div class="row g-1">
+                                <div class="col-auto d-flex align-items-end">
+                                    <button class="btn btn-link px-0 disabled"><i class="fa-solid fa-eraser"></i></button>
+                                </div>
+                                <div class="col d-flex align-items-end">
+                                    <span class="form-label fw-bold">
+                                        <label data-string="options_server_fqdn"></label>
+                                        <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="options_server_fqdn_description" tabindex="0"></i>
+                                    </span>
+                                </div>
+                                <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-rl;" data-string="options_server_simultaneous"></label>
+                                <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-rl;" data-string="options_server_split_count"></label>
+                                <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-rl;" data-string="options_server_disable_resuming"></label>
+                                <label class="form-label fw-bold col-1 d-flex align-items-center" style="writing-mode: sideways-rl;" data-string="options_server_ignore_sizemismatch"></label>
+                            </div>
+                            <div class="row g-1 mb-2 server-parameter d-none">
+                                <div class="col-auto">
+                                    <button class="btn btn-link px-0 server-parameter-delete"><i class="fa-solid fa-eraser"></i></button>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control px-1 server-parameter-box server-fqdn" placeholder="example.domain.name">
+                                    <input type="hidden" class="form-control server-parameter-box server-fqdn-punycode">
+                                </div>
+                                <div class="col-1"><input type="number" class="form-control ps-1 pe-0 server-parameter-box server-simultaneous" min="1" max="24" value="16"></div>
+                                <div class="col-1"><input type="number" class="form-control ps-1 pe-0 server-parameter-box server-split-count" min="1" max="10" value="1"></div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <input type="checkbox" class="form-check-input server-parameter-box server-disable-resuming">
+                                </div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <input type="checkbox" class="form-check-input server-parameter-box server-ignore-sizemismatch">
+                                </div>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_new_parameters"></h2>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-new-referer" type="checkbox" class="form-check-input" data-value="new-referer-value new-referer-default-value">
-                    <label for="remember-new-referer" class="form-check-label" data-string="options_new_remember_referer"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-new-filename" type="checkbox" class="form-check-input" data-value="new-filename-value">
-                    <label for="remember-new-filename" class="form-check-label" data-string="options_new_remember_filename"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-new-location" type="checkbox" class="form-check-input" data-value="new-location-value">
-                    <label for="remember-new-location" class="form-check-label" data-string="options_new_remember_location"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-new-option1" type="checkbox" class="form-check-input" data-value="new-option1-value">
-                    <label for="remember-new-option1" class="form-check-label" data-string="options_new_remember_option1"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-new-option2" type="checkbox" class="form-check-input" data-value="new-option2-value">
-                    <label for="remember-new-option2" class="form-check-label" data-string="options_new_remember_option2"></label>
-                </div>
-            </div>
+                        <h2 id="options_authentication_parameters" data-string="options_authentication_parameters"></h2>
+                        <div>
+                            <div class="row g-1">
+                                <div class="col-auto d-flex align-items-end">
+                                    <button class="btn btn-link px-0 disabled"><i class="fa-solid fa-eraser"></i></button>
+                                </div>
+                                <div class="col d-flex align-items-end">
+                                    <span class="form-label fw-bold">
+                                        <label data-string="options_authentication_url"></label>
+                                        <i class="fa-solid fa-question pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-titlestring="options_authentication_url_description" tabindex="0"></i>
+                                    </span>
+                                </div>
+                                <label class="form-label fw-bold col-2 d-flex align-items-end" data-string="options_authentication_user"></label>
+                                <label class="form-label fw-bold col-2 d-flex align-items-end" data-string="options_authentication_pass"></label>
+                                <label class="form-label fw-bold col-1 d-flex align-items-end justify-content-center" data-string="options_authentication_noauth"></label>
+                            </div>
+                            <div class="row g-1 mb-2 authentication-parameter d-none">
+                                <div class="col-auto">
+                                    <button class="btn btn-link px-0 authentication-parameter-delete"><i class="fa-solid fa-eraser"></i></button>
+                                </div>
+                                <div class="col">
+                                    <input class="form-control px-1 authentication-parameter-box authentication-url" placeholder="https://example.domain.name/path/">
+                                    <input type="hidden" class="form-control authentication-parameter-box authentication-url-punycode">
+                                </div>
+                                <div class="col-2"><input class="form-control px-1 authentication-parameter-box authentication-user"></div>
+                                <div class="col-2"><input class="form-control px-1 authentication-parameter-box authentication-pass" type="password" autocomplete="new-password"></div>
+                                <div class="col-1 d-flex align-items-center justify-content-center">
+                                    <input type="checkbox" class="form-check-input authentication-parameter-box authentication-noauth">
+                                </div>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_source_parameters"></h2>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="contextmenu-add-ext-filename" type="checkbox" class="form-check-input">
-                    <label for="contextmenu-add-ext-filename" class="form-check-label" data-string="options_contextmenu_add_ext_filename"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="contextmenu-add-mext-filename" type="checkbox" class="form-check-input">
-                    <label for="contextmenu-add-mext-filename" class="form-check-label" data-string="options_contextmenu_add_mext_filename"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="contextmenu-open-options-filename" type="checkbox" class="form-check-input">
-                    <label for="contextmenu-open-options-filename" class="form-check-label" data-string="options_contextmenu_open_options_filename"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-tagname" type="checkbox" class="form-check-input" data-value="source-filetype-value">
-                    <label for="remember-source-tagname" class="form-check-label" data-string="options_source_remember_tagname"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-filetype" type="checkbox" class="form-check-input" data-value="source-filetype-value">
-                    <label for="remember-source-filetype" class="form-check-label" data-string="options_source_remember_filetype"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-keyword" type="checkbox" class="form-check-input" data-value="source-keyword-value source-regex-value">
-                    <label for="remember-source-keyword" class="form-check-label" data-string="options_source_remember_keyword"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-referer" type="checkbox" class="form-check-input" data-value="source-referer-value source-referer-default-value">
-                    <label for="remember-source-referer" class="form-check-label" data-string="options_source_remember_referer"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-filename" type="checkbox" class="form-check-input" data-value="source-filename-value">
-                    <label for="remember-source-filename" class="form-check-label" data-string="options_source_remember_filename"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-location" type="checkbox" class="form-check-input" data-value="source-location-value">
-                    <label for="remember-source-location" class="form-check-label" data-string="options_source_remember_location"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-option1" type="checkbox" class="form-check-input" data-value="source-option1-value">
-                    <label for="remember-source-option1" class="form-check-label" data-string="options_source_remember_option1"></label>
-                </div>
-            </div>
-            <div class="mb-3">
-                <div class="form-check">
-                    <input id="remember-source-option2" type="checkbox" class="form-check-input" data-value="source-option2-value">
-                    <label for="remember-source-option2" class="form-check-label" data-string="options_source_remember_option2"></label>
-                </div>
-            </div>
+                        <h2 id="options_new_parameters" data-string="options_new_parameters"></h2>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-new-referer" type="checkbox" class="form-check-input" data-value="new-referer-value new-referer-default-value">
+                                <label for="remember-new-referer" class="form-check-label" data-string="options_new_remember_referer"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-new-filename" type="checkbox" class="form-check-input" data-value="new-filename-value">
+                                <label for="remember-new-filename" class="form-check-label" data-string="options_new_remember_filename"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-new-location" type="checkbox" class="form-check-input" data-value="new-location-value">
+                                <label for="remember-new-location" class="form-check-label" data-string="options_new_remember_location"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-new-option1" type="checkbox" class="form-check-input" data-value="new-option1-value">
+                                <label for="remember-new-option1" class="form-check-label" data-string="options_new_remember_option1"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-new-option2" type="checkbox" class="form-check-input" data-value="new-option2-value">
+                                <label for="remember-new-option2" class="form-check-label" data-string="options_new_remember_option2"></label>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_filetype_parameters"></h2>
-            <div>
-                <div class="row g-1">
-                    <label class="form-label fw-bold col-3" data-string="options_filetype_filetype"></label>
-                    <label class="form-label fw-bold col" data-string="options_filetype_ext"></label>
-                    <label class="form-label fw-bold col-2" data-string="options_filetype_reset"></label>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype1-label" type="text" class="form-control"></div>
-                    <div class="col"><input id="filetype1-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype2-label" class="form-control"></div>
-                    <div class="col"><input id="filetype2-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype3-label" class="form-control"></div>
-                    <div class="col"><input id="filetype3-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype4-label" class="form-control"></div>
-                    <div class="col"><input id="filetype4-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype5-label" class="form-control"></div>
-                    <div class="col"><input id="filetype5-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-                <div class="row g-1 mb-2">
-                    <div class="col-3"><input id="filetype6-label" class="form-control"></div>
-                    <div class="col"><input id="filetype6-extension" class="form-control"></div>
-                    <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
-                </div>
-            </div>
+                        <h2 id="options_source_parameters" data-string="options_source_parameters"></h2>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="contextmenu-add-ext-filename" type="checkbox" class="form-check-input">
+                                <label for="contextmenu-add-ext-filename" class="form-check-label" data-string="options_contextmenu_add_ext_filename"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="contextmenu-add-mext-filename" type="checkbox" class="form-check-input">
+                                <label for="contextmenu-add-mext-filename" class="form-check-label" data-string="options_contextmenu_add_mext_filename"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="contextmenu-open-options-filename" type="checkbox" class="form-check-input">
+                                <label for="contextmenu-open-options-filename" class="form-check-label" data-string="options_contextmenu_open_options_filename"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-tagname" type="checkbox" class="form-check-input" data-value="source-filetype-value">
+                                <label for="remember-source-tagname" class="form-check-label" data-string="options_source_remember_tagname"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-filetype" type="checkbox" class="form-check-input" data-value="source-filetype-value">
+                                <label for="remember-source-filetype" class="form-check-label" data-string="options_source_remember_filetype"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-keyword" type="checkbox" class="form-check-input" data-value="source-keyword-value source-regex-value">
+                                <label for="remember-source-keyword" class="form-check-label" data-string="options_source_remember_keyword"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-referer" type="checkbox" class="form-check-input" data-value="source-referer-value source-referer-default-value">
+                                <label for="remember-source-referer" class="form-check-label" data-string="options_source_remember_referer"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-filename" type="checkbox" class="form-check-input" data-value="source-filename-value">
+                                <label for="remember-source-filename" class="form-check-label" data-string="options_source_remember_filename"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-location" type="checkbox" class="form-check-input" data-value="source-location-value">
+                                <label for="remember-source-location" class="form-check-label" data-string="options_source_remember_location"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-option1" type="checkbox" class="form-check-input" data-value="source-option1-value">
+                                <label for="remember-source-option1" class="form-check-label" data-string="options_source_remember_option1"></label>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input id="remember-source-option2" type="checkbox" class="form-check-input" data-value="source-option2-value">
+                                <label for="remember-source-option2" class="form-check-label" data-string="options_source_remember_option2"></label>
+                            </div>
+                        </div>
 
-            <h2 data-string="options_mime_mappings"></h2>
-            <div class="row mb-3">
-                <div class="col me-auto">
-                    <button id="mime-reset" class="d-inline-block btn btn-outline-danger" data-string="options_mime_reset"></button>
-                </div>
-                <div class="col">
-                    <input class="mime-filter d-inline-block form-control" placeholder="Filter...">
-                </div>
-            </div>
-            <div>
-                <div class="row g-1">
-                    <label class="form-label fw-bold col" data-string="options_mime_mime"></label>
-                    <label class="form-label fw-bold col-2" data-string="options_mime_extension"></label>
-                </div>
-                <div class="row g-1 mb-2 mime-mapping d-none">
-                    <div class="col"><input class="form-control mime-mapping-box mime-mime"></div>
-                    <div class="col-2"><input class="form-control mime-mapping-box mime-ext"></div>
                         <h2 id="options_customscript_parameters" data-string="options_customscript_parameters"></h2>
                         <div class="mb-3">
                             <p class="form-text text-secondary" data-string="options_customscript_description"></p>
@@ -388,6 +383,66 @@
                                 </div>
                             </div>
                         </div>
+
+                        <h2 id="options_filetype_parameters" data-string="options_filetype_parameters"></h2>
+                        <div>
+                            <div class="row g-1">
+                                <label class="form-label fw-bold col-3" data-string="options_filetype_filetype"></label>
+                                <label class="form-label fw-bold col" data-string="options_filetype_ext"></label>
+                                <label class="form-label fw-bold col-2" data-string="options_filetype_reset"></label>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype1-label" type="text" class="form-control"></div>
+                                <div class="col"><input id="filetype1-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype2-label" class="form-control"></div>
+                                <div class="col"><input id="filetype2-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype3-label" class="form-control"></div>
+                                <div class="col"><input id="filetype3-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype4-label" class="form-control"></div>
+                                <div class="col"><input id="filetype4-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype5-label" class="form-control"></div>
+                                <div class="col"><input id="filetype5-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                            <div class="row g-1 mb-2">
+                                <div class="col-3"><input id="filetype6-label" class="form-control"></div>
+                                <div class="col"><input id="filetype6-extension" class="form-control"></div>
+                                <div class="col-2 d-grid"><button class="btn btn-outline-danger filetype-reset" data-string="options_filetype_reset"></button></div>
+                            </div>
+                        </div>
+
+                        <h2 id="options_mime_mappings" data-string="options_mime_mappings"></h2>
+                        <div class="row mb-3">
+                            <div class="col me-auto">
+                                <button id="mime-reset" class="d-inline-block btn btn-outline-danger" data-string="options_mime_reset"></button>
+                            </div>
+                            <div class="col">
+                                <input class="mime-filter d-inline-block form-control" placeholder="Filter...">
+                            </div>
+                        </div>
+                        <div>
+                            <div class="row g-1">
+                                <label class="form-label fw-bold col" data-string="options_mime_mime"></label>
+                                <label class="form-label fw-bold col-2" data-string="options_mime_extension"></label>
+                            </div>
+                            <div class="row g-1 mb-2 mime-mapping d-none">
+                                <div class="col"><input class="form-control mime-mapping-box mime-mime"></div>
+                                <div class="col-2"><input class="form-control mime-mapping-box mime-ext"></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /main -->
             </div>

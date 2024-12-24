@@ -19,6 +19,7 @@ const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|nam
 $(async () => {
     bg = await browser.runtime.getBackgroundPage();
     localization();
+    applyTheme();
 
     // all tooltip enabled
     $('[data-bs-toggle=tooltip]').each(function() {
@@ -511,7 +512,7 @@ $(async () => {
 
     // tag insertion
     $('.tags')
-        .on('click', 'dt > a[href="#"]', function(e) {
+        .on('click', '.tag > a[href="#"]', function(e) {
             $(e.delegateTarget).prev().children('input')[0].value += this.text;
             $(e.delegateTarget).prev().children('input').eq(0).trigger('input');
         });
@@ -525,4 +526,14 @@ function localization()
     $('[data-string]').each(function() {
         $(this).text(browser.i18n.getMessage(this.dataset.string));
     });
+}
+
+function applyTheme(t)
+{
+    const theme = t || bg.config.getPref('theme');
+    $('#theme-button').attr('data-theme', theme);
+    if (theme == 'auto')
+        $('html').attr('data-bs-theme', window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    else
+        $('html').attr('data-bs-theme', theme);
 }

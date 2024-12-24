@@ -459,16 +459,16 @@
         "message" : "If starting with . matches backwards"
     },
     "options_server_simultaneous" : {
-        "message" : "Max simultaneous download count"
+        "message" : "Max simultaneous\ndownload count"
     },
     "options_server_split_count" : {
         "message" : "Split count"
     },
     "options_server_disable_resuming" : {
-        "message" : "Disable multi-thread download"
+        "message" : "Disable\nmulti-thread\ndownload"
     },
     "options_server_ignore_sizemismatch" : {
-        "message" : "Ignore size mismatch error"
+        "message" : "Ignore\nsize mismatch\nerror"
     },
     "options_authentication_parameters" : {
         "message" : "Authentication parameters"

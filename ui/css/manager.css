@@ -144,6 +144,10 @@ html, body {
     content: 'Sample: ';
 }
 
+.tag {
+    font-weight: bold;
+}
+
 /* item-status */
 .item-status {
     flex-grow: 1;

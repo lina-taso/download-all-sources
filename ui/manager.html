@@ -15,74 +15,78 @@
     </head>
 
     <body>
-        <div class="container-fluid my-3">
+        <div class="container-fluid">
             <div class="row">
                 <!-- sidebar -->
                 <div class="col-lg-2 col-md-3 col-12">
-                    <img class="img-fluid d-block mx-auto mb-3" src="/images/title.svg">
+                    <div class="sticky-top py-3 gap-3 d-flex flex-column overflow-auto" style="max-height: 100vh;">
+                        <img class="img-fluid d-block mx-auto" src="/images/title.svg">
 
-                    <div class="d-grid">
-                        <button type="button" class="btn btn-warning btn-lg mb-3" data-bs-toggle="modal" data-bs-target="#new-download">
-                            <i class="fa-solid fa-square-plus"></i>&nbsp;New
-                        </button>
-                    </div>
-
-                    <!-- tab -->
-                    <div class="list-group list-group-flush mb-3" role="tablist" aria-orientation="vertical">
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 active"
-                                id="downloading-tab" href="#downloading"
-                                data-bs-toggle="tab" role="tab" aria-controls="downloading" aria-selected="true">
-                            <span data-string="tab_downloading"></span>
-                            <span class="badge bg-dark rounded-pill">0</span>
-                        </button>
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
-                                id="waiting-tab" href="#waiting"
-                                data-bs-toggle="tab" role="tab" aria-controls="waiting" aria-selected="false">
-                            <span data-string="tab_waiting"></span>
-                            <span class="badge bg-dark rounded-pill">0</span>
-                        </button>
-                        <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
-                                id="finished-tab" href="#finished"
-                                data-bs-toggle="tab" role="tab" aria-controls="finished" aria-selected="false">
-                            <span data-string="tab_finished"></span>
-                            <span class="badge bg-dark rounded-pill">0</span>
-                        </button>
-                    </div>
-
-                    <!-- setting -->
-                    <button id="setting-button" type="button" class="btn btn-secondary mb-3">
-                        <i class="fa-solid fa-gear"></i>
-                    </button>
-                    <button id="theme-button" type="button" class="btn btn-secondary mb-3" data-theme="">
-                        <i id="theme-auto" class="fa-solid fa-circle-half-stroke"></i>
-                        <i id="theme-dark" class="fa-regular fa-circle"></i>
-                        <i id="theme-light" class="fa-solid fa-circle"></i>
-                    </button>
-
-                    <!-- ad -->
-                    <div id="review-card" class="card mt-2" style="display: none;">
-                        <div class="card-body">
-                            <h5 class="card-title" data-string="ad_review"></h5>
-                            <p class="card-text">
-                                <a id="review-stars" class="text-warning fs-4 d-block" href="https://addons.mozilla.org/firefox/addon/download-all-sources/" target="_blank">
-                                    <i class="fa-solid fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i>
-                                </a>
-                            </p>
-                            <a href="#" class="card-link ad-nevershow"><span class="text-secondary" data-string="ad_nevershow"></span></a>
+                        <div class="d-grid">
+                            <button type="button" class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#new-download">
+                                <i class="fa-solid fa-square-plus"></i>&nbsp;New
+                            </button>
                         </div>
-                    </div>
-                    <div id="comment-card" class="card mt-2" style="display: none;">
-                        <div class="card-body">
-                            <h5 class="card-title" data-string="ad_comment"></h5>
-                            <p class="card-text">
-                                <a class="d-block" data-string="ad_comment_message" href="https://www2.filewo.net/wordpress/category/products/download-all-sources/" target="_blank"></a>
-                            </p>
-                            <a href="#" class="card-link ad-nevershow"><span class="text-secondary" data-string="ad_nevershow"></span></a>
+
+                        <!-- tab -->
+                        <div class="list-group list-group-flush" role="tablist" aria-orientation="vertical">
+                            <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2 active"
+                                    id="downloading-tab" href="#downloading"
+                                    data-bs-toggle="tab" role="tab" aria-controls="downloading" aria-selected="true">
+                                <span data-string="tab_downloading"></span>
+                                <span class="badge bg-dark rounded-pill">0</span>
+                            </button>
+                            <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
+                                    id="waiting-tab" href="#waiting"
+                                    data-bs-toggle="tab" role="tab" aria-controls="waiting" aria-selected="false">
+                                <span data-string="tab_waiting"></span>
+                                <span class="badge bg-dark rounded-pill">0</span>
+                            </button>
+                            <button class="list-group-item list-group-item-action list-group-item-light d-flex align-items-center justify-content-between px-2"
+                                    id="finished-tab" href="#finished"
+                                    data-bs-toggle="tab" role="tab" aria-controls="finished" aria-selected="false">
+                                <span data-string="tab_finished"></span>
+                                <span class="badge bg-dark rounded-pill">0</span>
+                            </button>
+                        </div>
+
+                        <!-- setting -->
+                        <div class="d-flex gap-2">
+                            <button id="setting-button" type="button" class="btn btn-secondary">
+                                <i class="fa-solid fa-gear"></i>
+                            </button>
+                            <button id="theme-button" type="button" class="btn btn-secondary" data-theme="">
+                                <i id="theme-auto" class="fa-solid fa-circle-half-stroke"></i>
+                                <i id="theme-dark" class="fa-regular fa-circle"></i>
+                                <i id="theme-light" class="fa-solid fa-circle"></i>
+                            </button>
+                        </div>
+
+                        <!-- ad -->
+                        <div id="review-card" class="card" style="display: none;">
+                            <div class="card-body">
+                                <h5 class="card-title" data-string="ad_review"></h5>
+                                <p class="card-text">
+                                    <a id="review-stars" class="text-warning fs-4 d-block" href="https://addons.mozilla.org/firefox/addon/download-all-sources/" target="_blank">
+                                        <i class="fa-solid fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i><i class="fa-regular fa-star fa-fw"></i>
+                                    </a>
+                                </p>
+                                <a href="#" class="card-link ad-nevershow"><span class="text-secondary" data-string="ad_nevershow"></span></a>
+                            </div>
+                        </div>
+                        <div id="comment-card" class="card" style="display: none;">
+                            <div class="card-body">
+                                <h5 class="card-title" data-string="ad_comment"></h5>
+                                <p class="card-text">
+                                    <a class="d-block" data-string="ad_comment_message" href="https://www2.filewo.net/wordpress/category/products/download-all-sources/" target="_blank"></a>
+                                </p>
+                                <a href="#" class="card-link ad-nevershow"><span class="text-secondary" data-string="ad_nevershow"></span></a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <!-- main -->
-                <div class="col-lg-10 col-md-9 col-12">
+                <div class="col-lg-10 col-md-9 col-12 pt-3">
                     <div class="tab-content">
                         <div class="tab-pane fade show active" id="downloading" role="tabpanel" aria-labelledby="downloading-tab">
                             <ul id="downloading-list" class="list-group list-group-flush mb-3">
@@ -212,31 +216,55 @@
                                         <div class="card mt-2">
                                             <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                href="#dl-single-filename-tags" data-string="filename_tags"></a>
-                                            <div class="card-body">
-                                                <dl class="row">
-                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                    <dd class="col-9" data-string="tag_year"></dd>
-                                                    <dt class="col-3"><a href="#">:M:</a></dt>
-                                                    <dd class="col-9" data-string="tag_month"></dd>
-                                                    <dt class="col-3"><a href="#">:D:</a></dt>
-                                                    <dd class="col-9" data-string="tag_date"></dd>
-                                                    <dt class="col-3"><a href="#">:h:</a></dt>
-                                                    <dd class="col-9" data-string="tag_hour"></dd>
-                                                    <dt class="col-3"><a href="#">:m:</a></dt>
-                                                    <dd class="col-9" data-string="tag_minute"></dd>
-                                                    <dt class="col-3"><a href="#">:s:</a></dt>
-                                                    <dd class="col-9" data-string="tag_second"></dd>
-                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_domain"></dd>
-                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                    <dt class="col-3"><a href="#">:name:</a></dt>
-                                                    <dd class="col-9" data-string="tag_name"></dd>
-                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_ext"></dd>
-                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mext"></dd>
-                                                </dl>
+                                            <div class="card-body row">
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:Y:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_year"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:M:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_month"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:D:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_date"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:h:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_hour"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:m:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_minute"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:s:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_second"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:dom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_domain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refdom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refdomain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:name:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_name"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:ext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_ext"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mext"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -252,39 +280,71 @@
                                         <div class="card mt-2">
                                             <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                href="#dl-single-location-tags" data-string="location_tags"></a>
-                                            <div class="card-body">
-                                                <dl class="row">
-                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                    <dd class="col-9" data-string="tag_year"></dd>
-                                                    <dt class="col-3"><a href="#">:M:</a></dt>
-                                                    <dd class="col-9" data-string="tag_month"></dd>
-                                                    <dt class="col-3"><a href="#">:D:</a></dt>
-                                                    <dd class="col-9" data-string="tag_date"></dd>
-                                                    <dt class="col-3"><a href="#">:h:</a></dt>
-                                                    <dd class="col-9" data-string="tag_hour"></dd>
-                                                    <dt class="col-3"><a href="#">:m:</a></dt>
-                                                    <dd class="col-9" data-string="tag_minute"></dd>
-                                                    <dt class="col-3"><a href="#">:s:</a></dt>
-                                                    <dd class="col-9" data-string="tag_second"></dd>
-                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_domain"></dd>
-                                                    <dt class="col-3"><a href="#">:path:</a></dt>
-                                                    <dd class="col-9" data-string="tag_path"></dd>
-                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                    <dt class="col-3"><a href="#">:refpath:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refpath"></dd>
-                                                    <dt class="col-3"><a href="#">:name:</a></dt>
-                                                    <dd class="col-9" data-string="tag_name"></dd>
-                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_ext2"></dd>
-                                                    <dt class="col-3"><a href="#">:mime:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mime"></dd>
-                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mext2"></dd>
-                                                    <dt class="col-3">/</dt>
-                                                    <dd class="col-9" data-string="tag_delimiter"></dd>
-                                                </dl>
+                                            <div class="card-body row">
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:Y:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_year"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:M:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_month"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:D:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_date"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:h:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_hour"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:m:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_minute"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:s:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_second"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:dom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_domain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:path:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_path"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refdom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refdomain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refpath:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refpath"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:name:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_name"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:ext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_ext2"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mime:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mime"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mext2"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">/</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_delimiter"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -344,31 +404,55 @@
                                         <div class="card mt-2">
                                             <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                href="#dl-multiple-filename-tags" data-string="filename_tags"></a>
-                                            <div class="card-body">
-                                                <dl class="row">
-                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                    <dd class="col-9" data-string="tag_year"></dd>
-                                                    <dt class="col-3"><a href="#">:M:</a></dt>
-                                                    <dd class="col-9" data-string="tag_month"></dd>
-                                                    <dt class="col-3"><a href="#">:D:</a></dt>
-                                                    <dd class="col-9" data-string="tag_date"></dd>
-                                                    <dt class="col-3"><a href="#">:h:</a></dt>
-                                                    <dd class="col-9" data-string="tag_hour"></dd>
-                                                    <dt class="col-3"><a href="#">:m:</a></dt>
-                                                    <dd class="col-9" data-string="tag_minute"></dd>
-                                                    <dt class="col-3"><a href="#">:s:</a></dt>
-                                                    <dd class="col-9" data-string="tag_second"></dd>
-                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_domain"></dd>
-                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                    <dt class="col-3"><a href="#">:name:</a></dt>
-                                                    <dd class="col-9" data-string="tag_name"></dd>
-                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_ext"></dd>
-                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mext"></dd>
-                                                </dl>
+                                            <div class="card-body row">
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:Y:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_year"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:M:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_month"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:D:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_date"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:h:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_hour"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:m:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_minute"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:s:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_second"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:dom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_domain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refdom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refdomain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:name:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_name"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:ext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_ext"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mext"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -384,39 +468,71 @@
                                         <div class="card mt-2">
                                             <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                href="#dl-multiple-location-tags" data-string="location_tags"></a>
-                                            <div class="card-body">
-                                                <dl class="row">
-                                                    <dt class="col-3"><a href="#">:Y:</a></dt>
-                                                    <dd class="col-9" data-string="tag_year"></dd>
-                                                    <dt class="col-3"><a href="#">:M:</a></dt>
-                                                    <dd class="col-9" data-string="tag_month"></dd>
-                                                    <dt class="col-3"><a href="#">:D:</a></dt>
-                                                    <dd class="col-9" data-string="tag_date"></dd>
-                                                    <dt class="col-3"><a href="#">:h:</a></dt>
-                                                    <dd class="col-9" data-string="tag_hour"></dd>
-                                                    <dt class="col-3"><a href="#">:m:</a></dt>
-                                                    <dd class="col-9" data-string="tag_minute"></dd>
-                                                    <dt class="col-3"><a href="#">:s:</a></dt>
-                                                    <dd class="col-9" data-string="tag_second"></dd>
-                                                    <dt class="col-3"><a href="#">:dom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_domain"></dd>
-                                                    <dt class="col-3"><a href="#">:path:</a></dt>
-                                                    <dd class="col-9" data-string="tag_path"></dd>
-                                                    <dt class="col-3"><a href="#">:refdom:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refdomain"></dd>
-                                                    <dt class="col-3"><a href="#">:refpath:</a></dt>
-                                                    <dd class="col-9" data-string="tag_refpath"></dd>
-                                                    <dt class="col-3"><a href="#">:name:</a></dt>
-                                                    <dd class="col-9" data-string="tag_name"></dd>
-                                                    <dt class="col-3"><a href="#">:ext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_ext2"></dd>
-                                                    <dt class="col-3"><a href="#">:mime:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mime"></dd>
-                                                    <dt class="col-3"><a href="#">:mext:</a></dt>
-                                                    <dd class="col-9" data-string="tag_mext2"></dd>
-                                                    <dt class="col-3">/</dt>
-                                                    <dd class="col-9" data-string="tag_delimiter"></dd>
-                                                </dl>
+                                            <div class="card-body row">
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:Y:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_year"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:M:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_month"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:D:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_date"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:h:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_hour"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:m:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_minute"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:s:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_second"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:dom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_domain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:path:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_path"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refdom:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refdomain"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:refpath:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_refpath"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xl-6 col-12">
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:name:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_name"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:ext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_ext2"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mime:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mime"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">:mext:</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_mext2"></span>
+                                                    </div>
+                                                    <div class="row mb-2">
+                                                        <span class="col-sm-3 col-4 tag"><a href="#">/</a></span>
+                                                        <span class="col-sm-9 col-8" data-string="tag_delimiter"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -808,35 +924,63 @@
                                             <div class="card mt-2">
                                                 <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                    href="#dl-source-filename-tags" data-string="filename_tags"></a>
-                                                <div class="card-body">
-                                                    <dl class="row">
-                                                        <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:title:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_title"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_ext"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_mext"></dd>
-                                                    </dl>
+                                                <div class="card-body row">
+                                                    <div class="col-xl-6 col-12">
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:Y:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_year"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:M:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_month"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:D:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_date"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:h:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_hour"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:m:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_minute"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:s:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_second"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-12">
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:dom:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_domain"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:refdom:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_refdomain"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:tag:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_tag"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:title:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_title"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:name:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_name"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:ext:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_ext"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:mext:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_mext"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -852,41 +996,75 @@
                                             <div class="card mt-2">
                                                 <a class="card-header" data-bs-toggle="collapse" aria-expanded="false"
                                                    href="#dl-source-location-tags" data-string="location_tags"></a>
-                                                <div class="card-body">
-                                                    <dl class="row">
-                                                        <dt class="col-lg-2 col-4"><a href="#">:Y:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_year"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:M:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_month"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:D:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_date"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:h:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_hour"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:m:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_minute"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:s:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_second"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:dom:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_domain"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:path:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_path"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:refdom:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_refdomain"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:refpath:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_refpath"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:tag:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_tag"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:name:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_name"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:ext:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_ext2"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:mime:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_mime"></dd>
-                                                        <dt class="col-lg-2 col-4"><a href="#">:mext:</a></dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_mext2"></dd>
-                                                        <dt class="col-lg-2 col-4">/</dt>
-                                                        <dd class="col-lg-4 col-8" data-string="tag_delimiter"></dd>
-                                                    </dl>
+                                                <div class="card-body row">
+                                                    <div class="col-xl-6 col-12">
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:Y:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_year"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:M:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_month"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:D:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_date"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:h:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_hour"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:m:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_minute"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:s:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_second"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:dom:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_domain"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:path:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_path"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:refdom:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_refdomain"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:refpath:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_refpath"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-6 col-12">
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:tag:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_tag"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:name:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_name"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:ext:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_ext2"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:mime:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_mime"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">:mext:</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_mext2"></span>
+                                                        </div>
+                                                        <div class="row mb-2">
+                                                            <span class="col-sm-2 col-4 tag"><a href="#">/</a></span>
+                                                            <span class="col-sm-10 col-8" data-string="tag_delimiter"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>

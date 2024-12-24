@@ -459,16 +459,16 @@
         "message" : ".から始めると後方一致"
     },
     "options_server_simultaneous" : {
-        "message" : "同時ダウンロード数"
+        "message" : "同時\nダウンロード数"
     },
     "options_server_split_count" : {
         "message" : "分割数"
     },
     "options_server_disable_resuming" : {
-        "message" : "マルチスレッド無効"
+        "message" : "マルチスレッド\n無効"
     },
     "options_server_ignore_sizemismatch" : {
-        "message" : "size mismatchエラーを無視"
+        "message" : "size mismatch\nエラーを無視"
     },
     "options_authentication_parameters" : {
         "message" : "認証設定"

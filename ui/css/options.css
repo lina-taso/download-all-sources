@@ -1,9 +1,6 @@
 html {
     font-size: initial;
 }
-body {
-    font-size: 90%;
-}
 h2 {
     margin-bottom: .5em;
 }
@@ -13,6 +10,16 @@ h2:not(:first-child) {
 .tooltip {
     white-space: pre-wrap;
 }
+
+[data-bs-theme="dark"] #scrollspy > a.active {
+    border-left: 3px rgb(var(--bs-light-rgb)) solid;
+    color: rgb(var(--bs-light-rgb));
+}
+[data-bs-theme="light"] #scrollspy > a.active {
+    border-left: 3px rgb(var(--bs-secondary-rgb)) solid;
+    color: rgb(var(--bs-secondary-rgb));
+}
+
 
 /* highlighted-code */
 textarea[is=highlighted-code] {
@@ -37,10 +44,14 @@ input.form-check-input.authentication-parameter-box {
 }
 /* localization */
 [data-string] {
-    white-space: pre-line;
+    white-space: pre-wrap;
 }
 
 /* sample */
 #download-location-sample::before {
     content: 'Sample: ';
+}
+
+.tag {
+    font-weight: bold;
 }

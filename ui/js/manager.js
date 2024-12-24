@@ -71,7 +71,7 @@ $(async () => {
     // download buttons
     $('#download-button').on('click', download);
     $('#source-download-button1, #source-download-button2').on('click', sourceDownload);
-    $('#setting-button').on('click', () => { browser.runtime.openOptionsPage(); });
+    $('#setting-button').on('click', () => { browser.tabs.create({ active : true, url : '/ui/options.html' }); });
     // finished list
     $('#finished-delete-button').on('click', deleteFinished);
     $('#completed-delete-button').on('click', deleteCompleted);
@@ -204,7 +204,7 @@ $(async () => {
 
     // tag insertion
     $('.tags')
-        .on('click', 'dt > a[href="#"]', function(e) {
+        .on('click', '.tag > a[href="#"]', function(e) {
             $(e.delegateTarget).siblings('input')[0].value += this.text;
             $(e.delegateTarget).siblings('input').eq(0).trigger('input');
         });
