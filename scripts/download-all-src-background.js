@@ -60,7 +60,7 @@ function oninstall(details)
 function onclicked()
 {
     browser.tabs.create({
-        active : true, url : 'ui/manager.html'
+        active : true, url : '/ui/manager.html'
     });
 }
 
@@ -129,7 +129,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
 
         browser.tabs.create({
             active : true,
-            url : 'ui/manager.html#source',
+            url : '/ui/manager.html#source',
             openerTabId : tab.id,
             index : tab.index + 1
         });
@@ -139,7 +139,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
         lastSource = { link : info.linkUrl, baseurl : tab.url };
         browser.tabs.create({
             active : true,
-            url : 'ui/manager.html#new',
+            url : '/ui/manager.html#new',
             openerTabId : tab.id,
             index : tab.index + 1
         });
@@ -154,7 +154,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
 
         browser.tabs.create({
             active : true,
-            url : 'ui/manager.html#source',
+            url : '/ui/manager.html#source',
             openerTabId : tab.id,
             index : tab.index + 1
         });
