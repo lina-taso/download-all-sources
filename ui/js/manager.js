@@ -98,11 +98,6 @@ $(async () => {
             else
                 $('#dl-single-referer').val('').prop('readonly', false).trigger('input');
         });
-    // source download modal
-    $('#source-download')
-        .on('show.bs.modal', sourceDownloadModal)
-        .on('shown.bs.modal', outputSourceList)
-        .on('hidden.bs.modal', sourceDownloadModalHidden);
     // detail modal
     $('#download-detail')
         .on('show.bs.modal', detailModal)
@@ -560,11 +555,13 @@ function createGraph()
 
 function hashRouter()
 {
-    switch (document.location.hash) {
+    const hash = document.location.hash;
+
+    switch (hash) {
     case '#downloading':
     case '#waiting':
     case '#finished':
-        $('[href="'+document.location.hash+'"]').tab('show');
+        $('[href="'+hash+'"]').tab('show');
         break;
     case '#new':
         inherited.baseurl = bg.lastSource.baseurl;
@@ -572,6 +569,7 @@ function hashRouter()
         $('#new-download').modal('show');
 
         function setParameters() {
+            $('#new-download').off('shown.bs.modal', setParameters);
             const config = bg.config.getPref();
 
             $('#dl-single-url').val(bg.lastSource.link);
@@ -584,23 +582,74 @@ function hashRouter()
             }
             bg.lastSource = {};
 
-            $('#new-download').off('shown.bs.modal', setParameters);
+            // automatically download
+            if (config['contextmenu-auto-download-link']) download();
         }
-
         break;
+    case '#select':
     case '#source':
         inherited.baseurl  = bg.lastSource.baseurl;
         inherited.filename = bg.lastSource.filename;
         updateSourceList();
         bg.lastSource = {};
+
+        // source download modal
+        $('#source-download')
+            .on('show.bs.modal', sourceDownloadModal)
+            .on('hidden.bs.modal', sourceDownloadModalHidden);
+
+        $('#source-download').on('shown.bs.modal', setParametersSource);
         $('#source-download').modal('show');
-        if (inherited.filename) {
-            $('#dl-source-filename').val(
-                inherited.filename
-                    + (bg.config.getPref('contextmenu-add-ext-filename') ? ':ext:' : '')
-                    + (bg.config.getPref('contextmenu-add-mext-filename') ? ':mext:' : '')
-            ).trigger('input');
-            if (bg.config.getPref('contextmenu-open-options-filename')) $('#source-download-option').show();
+
+        async function setParametersSource() {
+            const config = bg.config.getPref();
+
+            if (inherited.filename) {
+                $('#dl-source-filename').val(
+                    inherited.filename
+                        + (config.getPref('contextmenu-add-ext-filename') ? ':ext:' : '')
+                        + (config.getPref('contextmenu-add-mext-filename') ? ':mext:' : '')
+                ).trigger('input');
+                if (config.getPref('contextmenu-open-options-filename')) $('#source-download-option').show();
+            }
+
+            // automatically download
+            switch (hash) {
+            case '#select':
+                if (config['contextmenu-auto-download-allselect']) {
+                    await outputSourceList();
+                    $('#source-all').prop('checked', true);
+                    await changeSourceAll.apply($('#source-all')[0]);
+                    sourceDownload();
+                }
+                else if (config['contextmenu-auto-download-oneselect']) {
+                    const count = await outputSourceList();
+                    if (count == 1) {
+                        $('#source-all').prop('checked', true);
+                        await changeSourceAll.apply($('#source-all')[0]);
+                        sourceDownload();
+                    }
+                }
+                else outputSourceList();
+                break;
+            case '#source':
+                if (config['contextmenu-auto-download-allurl']) {
+                    await outputSourceList();
+                    $('#source-all').prop('checked', true);
+                    await changeSourceAll.apply($('#source-all')[0]);
+                    sourceDownload();
+                }
+                else if (config['contextmenu-auto-download-oneurl']) {
+                    const count = await outputSourceList();
+                    if (count == 1) {
+                        $('#source-all').prop('checked', true);
+                        await changeSourceAll.apply($('#source-all')[0]);
+                        sourceDownload();
+                    }
+                }
+                else outputSourceList();
+                break;
+            }
         }
         break;
     default:
@@ -1268,17 +1317,21 @@ function changeSourceAll()
     };
 
     if ($('#source-list .source-item').length < MAX_FILTER_CNT)
-        new Promise(output);
+        return new Promise(output);
     else {
         const $loading = $('#loading-cover');
-        // loading start
-        $loading.on('transitionend', async function() {
-            $(this).off('transitionend');
-
-            await new Promise(output);
-            // loading end
-            $loading.removeClass('show');
-        }).addClass('show');
+        return new Promise((resolve, reject) => {
+            // loading start
+            $loading.on('transitionend', async function() {
+                $(this).off('transitionend');
+                await new Promise(output);
+                // loading end
+                $loading.on('transitionend', function() {
+                    $(this).off('transitionend');
+                    resolve();
+                }).removeClass('show');
+            }).addClass('show');
+        });
     }
 }
 
@@ -1362,8 +1415,9 @@ function outputSourceList()
               $type     = $template.find('.source-type'),
               $tag      = $template.find('.source-tag'),
               $title    = $template.find('.source-title');
+        let i = null;
 
-        for (let i in list) {
+        for (i in list) {
             // checkbox id & attr
             $urlInput.attr({ id : 'source' + i, value : list[i].url });
             // label for & text
@@ -1375,25 +1429,28 @@ function outputSourceList()
             // title
             $title.text(list[i].title).attr('title', list[i].title);
 
-            docfrag.appendChild($template.clone().attr({ id : '', 'data-filetype' : list[i].filetype })[0]);
+            docfrag.appendChild($template.clone().attr({ id : null, 'data-filetype' : list[i].filetype })[0]);
         }
         $('#source-list')[0].appendChild(docfrag);
-        resolve();
+        resolve(++i);
     };
 
     if (source.length < MAX_FILTER_CNT)
-        new Promise(output);
+        return new Promise(output);
     else {
         const $loading = $('#loading-cover');
-        // loading start
-        $loading.on('transitionend', async function() {
-            $(this).off('transitionend');
-
-            await new Promise(output);
-            // loading end
-            $loading.removeClass('show');
-
-        }).addClass('show');
+        return new Promise((resolve, reject) => {
+            // loading start
+            $loading.on('transitionend', async function() {
+                $(this).off('transitionend');
+                const ret = await new Promise(output);
+                // loading end
+                $loading.on('transitionend', function() {
+                    $(this).off('transitionend');
+                    resolve(ret);
+                }).removeClass('show');
+            }).addClass('show');
+        });
     }
 }
 

@@ -232,7 +232,7 @@ browser.menus.onClicked.addListener(async function(info, tab) {
 
         browser.tabs.create({
             active : true,
-            url : '/ui/manager.html#source',
+            url : '/ui/manager.html#select',
             openerTabId : tab.id,
             index : tab.index + 1
         });
