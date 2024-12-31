@@ -16,10 +16,10 @@
         "message" : "&Download all sources..."
     },
     "menus_custom" : {
-        "message" : "カスタムスクリプトを実行してダウンロード...(&D)"
+        "message" : "&Download all sources（カスタムスクリプトを実行）..."
     },
     "menus_link_download" : {
-        "message" : "このリンクをダウンロード...(&D)"
+        "message" : "リンク先をダウンロード...(&D)"
     },
     "menus_selection_download" : {
         "message" : "選択範囲をダウンロード...(&D)"
@@ -28,7 +28,7 @@
         "message" : "&Download all sources（選択範囲をファイル名に利用）..."
     },
     "menus_custom_selection_as_filename" : {
-        "message" : "カスタムスクリプトを実行してダウンロード（選択範囲をファイル名に利用）...(&D)"
+        "message" : "&Download all sources（カスタムスクリプトを実行、選択範囲をファイル名に利用）..."
     },
 
     //

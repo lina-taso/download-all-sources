@@ -16,19 +16,19 @@
         "message" : "&Download all sources..."
     },
     "menus_custom" : {
-        "message" : "Run custom script and download...(&D)"
+        "message" : "&Download all sources (by executing custom script)...(&D)"
     },
     "menus_link_download" : {
-        "message" : "&Download this link..."
+        "message" : "&Download link..."
     },
     "menus_selection_download" : {
-        "message" : "&Download selected links..."
+        "message" : "&Download links in selection..."
     },
     "menus_download_selection_as_filename" : {
-        "message" : "&Download all sources (Use selection as filename)..."
+        "message" : "&Download all sources (using selection as filename)..."
     },
     "menus_custom_selection_as_filename" : {
-        "message" : "Run custom script and &download (Use selection as filename)..."
+        "message" : "&Download all sources (by executing custom script, using selection as filename)..."
     },
 
     //
