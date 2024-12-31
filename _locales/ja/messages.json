@@ -509,15 +509,6 @@
     "options_source_parameters" : {
         "message" : "ソースダウンロードの設定"
     },
-    "options_contextmenu_add_ext_filename" : {
-        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、末尾にタグ:ext:を付ける"
-    },
-    "options_contextmenu_add_mext_filename" : {
-        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、末尾にタグ:mext:を付ける"
-    },
-    "options_contextmenu_open_options_filename" : {
-        "message" : "[右クリックメニュー] 選択範囲をファイル名として利用する際に、オプションを開いた状態にする"
-    },
     "options_source_remember_tagname" : {
         "message" : "前回のタグフィルタを記憶する"
     },
@@ -541,6 +532,42 @@
     },
     "options_source_remember_option2" : {
         "message" : "前回のsize mismatchエラーを無視オプションを記憶する"
+    },
+    "options_contextmenu_parameters" : {
+        "message" : "右クリックメニューの設定"
+    },
+    "options_contextmenu_parameters_dllink" : {
+        "message" : "リンク先をダウンロード"
+    },
+    "options_contextmenu_auto_download_link" : {
+        "message" : "リンク先を自動的にダウンロードする"
+    },
+    "options_contextmenu_parameters_dlselect" : {
+        "message" : "選択範囲をダウンロード"
+    },
+    "options_contextmenu_auto_download_allselect" : {
+        "message" : "選択範囲全てのリンクを自動的にダウンロードする"
+    },
+    "options_contextmenu_auto_download_oneselect" : {
+        "message" : "選択範囲のリンクが1つだけのとき、そのリンクを自動的にダウンロードする"
+    },
+    "options_contextmenu_parameters_source" : {
+        "message" : "Download all sources"
+    },
+    "options_contextmenu_add_ext_filename" : {
+        "message" : "選択範囲をファイル名として利用する際に、末尾にタグ:ext:を付ける"
+    },
+    "options_contextmenu_add_mext_filename" : {
+        "message" : "選択範囲をファイル名として利用する際に、末尾にタグ:mext:を付ける"
+    },
+    "options_contextmenu_open_options_filename" : {
+        "message" : "選択範囲をファイル名として利用する際に、オプションを開いた状態にする"
+    },
+    "options_contextmenu_auto_download_allurl" : {
+        "message" : "自動的に全てのURLをダウンロードする"
+    },
+    "options_contextmenu_auto_download_oneurl" : {
+        "message" : "URLが1つだけのとき、そのURLを自動的にダウンロードする"
     },
     "options_customscript_parameters" : {
         "message" : "カスタムスクリプト設定"
