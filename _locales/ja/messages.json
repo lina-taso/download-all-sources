@@ -429,7 +429,7 @@
         "message" : "このアドオンからダウンロードしたファイルやその場所を開けるようにする"
     },
     "options_enable_openfile_description" : {
-        "message" : "[注]\nこのオプションを有効にすると、ダウンロードしたアイテムがFirefoxの履歴から削除されなくなります。"
+        "message" : "このオプションを有効にすると、ダウンロードしたアイテムがFirefoxの履歴から削除されなくなります。"
     },
     "options_autostart_on_restore" : {
         "message" : "未完了のダウンロードアイテムを復元すると同時に自動的にダウンロードを再開する"
@@ -438,7 +438,7 @@
         "message" : "マルチスレッドダウンロードの設定"
     },
     "options_multithread_description" : {
-        "message" : "[注]\n同時ダウンロード数は分割を考慮しません。\n\"サーバ毎の最大同時ダウンロード数×分割数\"が、1サーバに対する最大セッション数になります。\nセッションを張りすぎないよう値を調整して下さい。"
+        "message" : "同時ダウンロード数は分割を考慮しません。\n\"サーバ毎の最大同時ダウンロード数×分割数\"が、1サーバに対する最大セッション数になります。\nセッションを張りすぎないよう値を調整して下さい。"
     },
     "options_split_count" : {
         "message" : "分割数"
@@ -546,7 +546,7 @@
         "message" : "カスタムスクリプト設定"
     },
     "options_customscript_description" : {
-        "message" : "[注]Download All SourcesにURLリストを渡すためにWebページ上で動作させるスクリプトを、カスタマイズできます。\n以下のようなことをしたいときに有効です。\n- URLリストを作成する前に特定の動作をさせたい\n- URLリストを事前にフィルターさせたい\nスクリプトにエラーがある場合はDownload All Sources Managerが開きません（画面に通知は表示されません）。"
+        "message" : "Download All SourcesにURLリストを渡すためにWebページ上で動作させるスクリプトを、カスタマイズできます。\n以下のようなことをしたいときに有効です。\n- URLリストを作成する前に特定の動作をさせたい\n- URLリストを事前にフィルターさせたい\nスクリプトにエラーがある場合はDownload All Sources Managerが開きません（画面に通知は表示されません）。"
     },
     "options_customscript_url" : {
         "message" : "URL"

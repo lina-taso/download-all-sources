@@ -429,7 +429,7 @@
         "message" : "Enable to open downloaded file or downloaded location from this addon"
     },
     "options_enable_openfile_description" : {
-        "message" : "[NOTE]\nIf this option is enabled, this addon will not erase items from the Firefox's download history."
+        "message" : "If this option is enabled, this addon will not erase items from the Firefox's download history."
     },
     "options_autostart_on_restore" : {
         "message" : "Automatically resume downloads at the same time as restoring imcomplete downloaded items"
@@ -438,7 +438,7 @@
         "message" : "Multi-thread parameters"
     },
     "options_multithread_description" : {
-        "message" : "[NOTE]\nSimultaneous download count doesn't consider splitting.\n\"Max simultaneous count download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
+        "message" : "Simultaneous download count doesn't consider splitting.\n\"Max simultaneous count download per server\" times \"Split count\" is max sessions per server.\nPlease adjust numbers not to make too much sessions."
     },
     "options_split_count" : {
         "message" : "Split count"
@@ -546,7 +546,7 @@
         "message" : "Custom script parameters"
     },
     "options_customscript_description" : {
-        "message" : "[NOTE]\nYou can customize the script that runs on web pages to pass a URL list to Download All Sources.\nThis is useful in situations like:\n- Performing specific actions before creating the URL list\n- Pre-filtering the URL list\nIf there is an error in the script, Download All Sources Manager will not open (no notification will be displayed on the screen)."
+        "message" : "You can customize the script that executes on web pages to pass a URL list to Download All Sources.\nThis is useful in situations like:\n- Performing specific actions before creating the URL list\n- Pre-filtering the URL list\nIf there is an error in the script, Download All Sources Manager will not open (no notification will be displayed on the screen)."
     },
     "options_customscript_url" : {
         "message" : "URL"
