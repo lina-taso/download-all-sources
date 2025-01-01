@@ -607,10 +607,10 @@ function hashRouter()
             if (inherited.filename) {
                 $('#dl-source-filename').val(
                     inherited.filename
-                        + (config.getPref('contextmenu-add-ext-filename') ? ':ext:' : '')
-                        + (config.getPref('contextmenu-add-mext-filename') ? ':mext:' : '')
+                        + (config['contextmenu-add-ext-filename'] ? ':ext:' : '')
+                        + (config['contextmenu-add-mext-filename'] ? ':mext:' : '')
                 ).trigger('input');
-                if (config.getPref('contextmenu-open-options-filename')) $('#source-download-option').show();
+                if (config['contextmenu-open-options-filename']) $('#source-download-option').show();
             }
 
             // automatically download
