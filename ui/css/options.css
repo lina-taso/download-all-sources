@@ -43,6 +43,11 @@ input.form-check-input.authentication-parameter-box {
     width: 2em;
     height: 2em;
 }
+/* .customscript-parameter */
+.customscript-parameter:last-of-type .customscript-parameter-delete {
+    visibility: hidden;
+}
+
 /* localization */
 [data-string] {
     white-space: pre-wrap;
