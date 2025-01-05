@@ -467,7 +467,7 @@ $(async () => {
     // customscript insert template
     $('.insert-scripttemplate')
         .on('click', function() {
-            $(this).parent().next().children('textarea').val(bg.runcode_all_list);
+            $(this).parent().next().children('textarea').val(bg.runcode_all_list).trigger('input');
         });
 
     // reset button
