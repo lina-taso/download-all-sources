@@ -46,7 +46,7 @@ $(async () => {
         }
     });
 
-    // initial server parameters
+    // initial server specific parameters
     const $paramTemplate = $('.row.server-parameter.d-none'),
           serverParams   = Object.keys(config['server-parameter']);
     for (let key of serverParams) {
