@@ -18,6 +18,7 @@ const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|nam
 
 $(async () => {
     bg = await browser.runtime.getBackgroundPage();
+    await bg.initialized();
     localization();
     applyTheme();
 
