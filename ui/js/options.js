@@ -6,7 +6,7 @@
  */
 
 // background
-var bg;
+let bg;
 
 const allowLocation = /^([^:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
