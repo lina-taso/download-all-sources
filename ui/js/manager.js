@@ -16,13 +16,13 @@ const progressInterval = 2000,
       allowProtocol = /^(https|http):/,
       // not include tags such as tag and title
       allowFilename = /^([^\\/:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|refdom|name|ext|mext):))*$/,
-      allowLocation = /^([^\\:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
+      allowLocation = /^([^:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
       // include tags such as tag and title for source download
       allowFilenameS= /^([^\\/:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|refdom|tag|title|name|ext|mext):))*$/,
-      allowLocationS= /^([^\\:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
+      allowLocationS= /^([^:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|tag|name|ext|mime|mext):))*$/,
       // not include any tags for detail modal
       allowFilenameD= /^[^\\/:*?"<>|\t]*$/,
-      allowLocationD= /^[^\\:*?"<>|\t]*$/,
+      allowLocationD= /^[^:*?"<>|\t]*$/,
       denyFilename  = /^[. ]+|[. ]+$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       // referer tag pattern
