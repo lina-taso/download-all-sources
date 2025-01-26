@@ -8,7 +8,7 @@
 // background
 var bg;
 
-const allowLocation = /^([^:,;*?"<>|]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
+const allowLocation = /^([^:*?"<>|\t]|(:(Y|M|D|h|m|s|dom|path|refdom|refpath|name|ext|mime|mext):))*$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       allowSimultaneous = /^([1-9]|1[0-9]|2[0-4])$/,
       allowSplitCount = /^([1-9]|10)$/,
