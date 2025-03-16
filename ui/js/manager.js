@@ -279,8 +279,11 @@ function updateList()
                 }
                 break;
             case 'waiting':
-                if ($('#waiting-list').has($item).length)
+                if ($('#waiting-list').has($item).length) {
+                    // filename
+                    $item.find('.item-filename').text(queue.autoFilename || queue.filename || queue.responseFilename || queue.originalUrlInput);
                     continue;
+                }
                 else
                     $item.appendTo($('#waiting-list'));
                 break;
