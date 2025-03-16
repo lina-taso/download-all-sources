@@ -23,6 +23,9 @@ const progressInterval = 2000,
       // not include any tags for detail modal
       allowFilenameD= /^[^\\/:*?"<>|\t]*$/,
       allowLocationD= /^[^:*?"<>|\t]*$/,
+      // include some tags for detail modal (waiting only)
+      allowFilenameDW= /^([^\\/:*?"<>|\t]|(:(name|ext|mext):))*$/,
+      allowLocationDW= /^([^:*?"<>|\t]|(:(name|ext|mime|mext):))*$/,
       denyFilename  = /^[. ]+|[. ]+$/,
       denyLocation  = /^[. ]+|\/[. ]+|[. ]+\/|^\/|(\.\/|\.\.\/|\/\/)/,
       // referer tag pattern
@@ -149,14 +152,18 @@ $(async () => {
     // filename validation
     $('#detail-info-filename')
         .on('input', function() {
-            const valid = allowFilenameD.test(this.value) && !denyFilename.test(this.value);
+            const allowPattern = $(this).closest('#download-detail').is('[data-status=waiting]')
+                  ? allowFilenameDW : allowFilenameD;
+            const valid = allowPattern.test(this.value) && !denyFilename.test(this.value);
             $(this).toggleClass('is-invalid', !valid);
         });
     // location validation
     $('#detail-info-location')
         .on('input', function() {
+            const allowPattern = $(this).closest('#download-detail').is('[data-status=waiting]')
+                  ? allowLocationDW : allowLocationD;
             const location = bg.normalizeLocation(this.value);
-            const valid = allowLocationD.test(location) && !denyLocation.test(location);
+            const valid = allowPattern.test(location) && !denyLocation.test(location);
             $(this).toggleClass('is-invalid', !valid);
         });
 
