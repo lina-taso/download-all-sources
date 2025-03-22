@@ -116,6 +116,7 @@ $(async () => {
         .on('click', function() {
             $(this).parent().prev().attr('data-editing', 'true');
             $(this).parent().prev().children().eq(0).prop('readonly', false).addClass('form-control').removeClass('form-control-plaintext').focus();
+            $(this).parent().prev().children().eq(1).show();
         });
     $('#detail-info-filename-apply')
         .on('click', function() {
@@ -132,6 +133,7 @@ $(async () => {
             if ($input.val() == '') $input.val(queue.responseFilename);
             $div.attr('data-editing', '');
             $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
+            $(this).parent().prev().children().eq(1).hide();
         });
     $('#detail-info-location-apply')
         .on('click', function() {
@@ -148,6 +150,7 @@ $(async () => {
             queue.location = $input.val(location).val();
             $div.attr('data-editing', '');
             $input.prop('readonly', true).addClass('form-control-plaintext').removeClass('form-control');
+            $(this).parent().prev().children().eq(1).hide();
         });
     // filename validation
     $('#detail-info-filename')
