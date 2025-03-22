@@ -88,7 +88,7 @@ $(async () => {
     $('#new-download')
         .on('show.bs.modal', newDownloadModal)
         .on('shown.bs.modal', function() { $(this).find('[data-focus=true]').focus(); })
-        .on('hide.bs.modal', function() { inherited.baseurl = null; });
+        .on('hide.bs.modal', function() { inherited.baseurl = null; blurNewDownloadInput(); });
     // in new download modal
     $('#new-download input:not([type]), #new-download input[type=password]')
         .on('keypress', keypressNewDownloadInput)
@@ -1109,6 +1109,7 @@ function sourceDownloadModalHidden()
 {
     inherited.baseurl = null;
     $(this).remove();
+    blurSourceInput();
 }
 
 function detailModal(e)
