@@ -339,6 +339,13 @@ html, body {
 #download-detail[data-status="paused"] [data-editing="true"] + div > #detail-info-location-apply {
     display: inline-block;
 }
+#download-detail .tags {
+    display: none;
+}
+#download-detail[data-status="waiting"] [data-editing="true"] .tags,
+#download-detail[data-status="waiting"] [data-editing="true"] .tags {
+    display: block;
+}
 #detail-info-filename-open[data-fxid],
 #detail-info-location-open[data-fxid] {
     display: inline-block;
