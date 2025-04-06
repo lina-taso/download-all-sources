@@ -607,14 +607,15 @@ function restartXhr(dlid, index)
 
     function onload(e)
     {
+        datum.blob   = this.response;
+        datum.loaded = this.response.size;
+        datum.xhr    = undefined;
+
         // check downloaded size
         if (datum.rangeEnd && datum.rangeEnd - datum.rangeStart + 1 != this.response.size) {
             DEBUG && console.log({ dlid : dlid, index : index, rangestart : datum.rangeStart, rangeend : datum.rangeEnd, loaded : datum.loaded, message : 'onload, size mismatch' });
 
             datum.status = 'size mismatch';
-            datum.blob   = this.response;
-            datum.loaded = this.response.size;
-            datum.xhr    = undefined;
             retryPartialDownload(dlid, index);
             return;
         }
@@ -656,9 +657,6 @@ function restartXhr(dlid, index)
 
         // update progress
         datum.status = 'complete';
-        datum.blob   = this.response;
-        datum.loaded = this.response.size;
-        datum.xhr    = undefined;
 
         // update download queue
         partialDownloadCompleted(dlid);
