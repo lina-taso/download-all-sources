@@ -298,7 +298,7 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
 function startQueue(dlid)
 {
     const now = (new Date()).getTime();
-    downloadQueue[dlid].status = 'downloading',
+    downloadQueue[dlid].status = 'downloading';
     downloadQueue[dlid].data.push(createXhr(dlid, 0));
     downloadQueue[dlid].startTime = now;
     downloadQueue[dlid].prevTime  = now;
