@@ -100,6 +100,9 @@
     "new_download_multiple" : {
         "message" : "複数"
     },
+    "new_download_m3u8" : {
+        "message" : "M3U8 (試験的機能)"
+    },
     "new_download_single_url" : {
         "message" : "ダウンロードURL"
     },
@@ -175,6 +178,27 @@
     "new_download_multiple_option2_description" : {
         "message" : "size mismatchが理由でダウンロードに失敗しても途中までのファイルが必要な場合に、チェックを入れてください。"
     },
+    "new_download_m3u8_url" : {
+        "message" : "M3U8 URL"
+    },
+    "new_download_m3u8_authentication" : {
+        "message" : "BASIC認証 [任意]"
+    },
+    "new_download_m3u8_user" : {
+        "message" : "ユーザ名"
+    },
+    "new_download_m3u8_pass" : {
+        "message" : "パスワード"
+    },
+    "new_download_m3u8_referer" : {
+        "message" : "リファラ [任意]"
+    },
+    "new_download_m3u8_filename" : {
+        "message" : "ファイル名 [任意]"
+    },
+    "new_download_m3u8_location" : {
+        "message" : "ディレクトリ [任意]"
+    },
     "download_detail_title" : {
         "message" : "ダウンロード詳細"
     },
@@ -234,6 +258,15 @@
     },
     "download_detail_detail" : {
         "message" : "進捗詳細"
+    },
+    "download_detail_mode" : {
+        "message" : "モード"
+    },
+    "download_detail_mode_normal" : {
+        "message" : "通常モード"
+    },
+    "download_detail_mode_m3u8" : {
+        "message" : "M3U8モード"
     },
     "download_detail_registered" : {
         "message" : "登録日時"

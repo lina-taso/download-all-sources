@@ -100,6 +100,9 @@
     "new_download_multiple" : {
         "message" : "Multiple Download"
     },
+    "new_download_m3u8" : {
+        "message" : "M3U8 Download (Experimental)"
+    },
     "new_download_single_url" : {
         "message" : "Download URL"
     },
@@ -175,6 +178,27 @@
     "new_download_multiple_option2_description" : {
         "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
+    "new_download_m3u8_url" : {
+        "message" : "M3U8 URL"
+    },
+    "new_download_m3u8_authentication" : {
+        "message" : "BASIC Authentication [Optional]"
+    },
+    "new_download_m3u8_user" : {
+        "message" : "Username"
+    },
+    "new_download_m3u8_pass" : {
+        "message" : "Password"
+    },
+    "new_download_m3u8_referer" : {
+        "message" : "Referer [Optional]"
+    },
+    "new_download_m3u8_filename" : {
+        "message" : "Filename [Optional]"
+    },
+    "new_download_m3u8_location" : {
+        "message" : "Download location [Optional]"
+    },
     "download_detail_title" : {
         "message" : "Download Detail"
     },
@@ -234,6 +258,15 @@
     },
     "download_detail_detail" : {
         "message" : "Detailed progress"
+    },
+    "download_detail_mode" : {
+        "message" : "Mode"
+    },
+    "download_detail_mode_normal" : {
+        "message" : "Normal Mode"
+    },
+    "download_detail_mode_m3u8" : {
+        "message" : "M3U8 Mode"
     },
     "download_detail_registered" : {
         "message" : "Registered time"
