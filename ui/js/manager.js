@@ -180,7 +180,7 @@ $(async () => {
     if (bg.queueRestored) $('#confirm-dialog-restore').modal('show');
 
     // url validation
-    $('#dl-single-url')
+    $('#dl-single-url, #dl-m3u8-url')
         .on('input', validateUrl);
     // urls validation
     $('#dl-multiple-url')
@@ -190,16 +190,18 @@ $(async () => {
         .on('input', () => validateAuthentication($('#dl-single-user'), $('#dl-single-pass')));
     $('#dl-multiple-user, #dl-multiple-pass')
         .on('input', () => validateAuthentication($('#dl-multiple-user'), $('#dl-multiple-pass')));
+    $('#dl-m3u8-user, #dl-m3u8-pass')
+        .on('input', () => validateAuthentication($('#dl-m3u8-user'), $('#dl-m3u8-pass')));
     $('#dl-source-user, #dl-source-pass')
         .on('input', () => validateAuthentication($('#dl-source-user'), $('#dl-source-pass')));
     // referer validation
-    $('#dl-single-referer, #dl-multiple-referer, #dl-source-referer')
+    $('#dl-single-referer, #dl-multiple-referer, #dl-m3u8-referer, #dl-source-referer')
         .on('input', validateReferer);
     // filename validation
-    $('#dl-single-filename, #dl-multiple-filename, #dl-source-filename')
+    $('#dl-single-filename, #dl-multiple-filename, #dl-m3u8-filename, #dl-source-filename')
         .on('input', validateFilename);
     // location validation
-    $('#dl-single-location, #dl-multiple-location, #dl-source-location')
+    $('#dl-single-location, #dl-multiple-location, #dl-m3u8-location, #dl-source-location')
         .on('input', validateLocation);
     // checkbox validation
     $('#dl-single-option1, #dl-multiple-option1, #dl-source-option1').on('input', checkDownloadOptions);
@@ -338,8 +340,12 @@ function updateList()
             $item.find('.item-progress')
             .css('width', parseInt(loadedObj.now / queue.total*100) + '%')
             .text(calcByte(loadedObj.now) + ' / ' + calcByte(queue.total));
+        else if (queue.mode == 'm3u8' && queue.m3u8)
+            $item.find('.item-progress')
+            .css('width', parseInt(queue.data.filter(datum => datum.status == 'complete').length / queue.m3u8.length*100) + '%')
+            .text(calcByte(loadedObj.now) + ' /  unknown' );
         else
-            $item.find('.item-progress').css('width', '100%').text(calcByte(loadedObj.now) + ' / ' + 'unknown');
+            $item.find('.item-progress').css('width', '100%').text(calcByte(loadedObj.now) + ' / unknown');
         // speed
         switch (queue.status) {
         case 'downloading':
@@ -800,6 +806,45 @@ function download()
         if (config['remember-new-option1']) bg.config.setPref('new-option1-value', $('#dl-multiple-option1').prop('checked'));
         if (config['remember-new-option2']) bg.config.setPref('new-option2-value', $('#dl-multiple-option2').prop('checked'));
         break;
+
+    case 'm3u8':
+        const m3u8Url = $('#dl-m3u8-url').val();
+        // check invalid
+        if (!m3u8Url || $('#m3u8').find('.is-invalid').length) return;
+        // download
+        bg.downloadFile(
+            m3u8Url,
+            [{ name : 'X-DAS-Referer', value : $('#dl-m3u8-referer').val() }],
+            { location :
+              bg.replaceTags({ // location
+                  path       : bg.normalizeLocation(config['download-location'] + $('#dl-m3u8-location').val()),
+                  targetUrl  : m3u8Url,
+                  refererUrl : $('#dl-m3u8-referer').val()
+              }),
+              originalLocation : $('#dl-m3u8-location').val() },
+            { filename :
+              bg.replaceTags({ // filename
+                  path       : $('#dl-m3u8-filename').val(),
+                  targetUrl  : m3u8Url,
+                  refererUrl : $('#dl-m3u8-referer').val()
+              }, true),
+              originalFilename : $('#dl-m3u8-filename').val() },
+            { authentication : [ $('#dl-m3u8-user').val(), $('#dl-m3u8-pass').val() ],
+              mode           : 'm3u8' }
+        );
+
+        // config save
+        if (config['remember-new-referer']) {
+            if ($('#dl-m3u8-referer-default').prop('checked'))
+                bg.config.setPref('new-referer-default-value', true);
+            else {
+                bg.config.setPref('new-referer-default-value', false);
+                bg.config.setPref('new-referer-value', $('#dl-m3u8-referer').val());
+            }
+        }
+        if (config['remember-new-filename']) bg.config.setPref('new-filename-value', $('#dl-m3u8-filename').val());
+        if (config['remember-new-location']) bg.config.setPref('new-location-value', $('#dl-m3u8-location').val());
+        break;
     }
 
     $('#new-download input, #new-download textarea').val('');
@@ -899,7 +944,10 @@ function reDownloadManual()
           queue = bg.downloadQueue[dlid];
 
     $('#download-detail').modal('hide');
-    $('#new-download').on('shown.bs.modal', setParameters);
+    if (queue.mode == 'm3u8')
+        $('#new-download').on('shown.bs.modal', setParameters_m3u8);
+    else
+        $('#new-download').on('shown.bs.modal', setParameters);
     $('#new-download').modal('show');
 
     function setParameters()
@@ -915,6 +963,20 @@ function reDownloadManual()
         $('#dl-single-filename').val(queue.originalFilename).trigger('input');
         $('#dl-single-option1').prop('checked', queue.option.disableResuming).trigger('input');
         $('#dl-single-option2').prop('checked', queue.option.ignoreSizemismatch).trigger('input');
+
+        $('#new-download').off('shown.bs.modal', setParameters);
+    }
+    function setParameters_m3u8()
+    {
+        $('#m3u8-tab').tab('show');
+        $('#dl-m3u8-url').val(queue.originalUrlInput);
+        $('#dl-m3u8-user').val(queue.option.authentication[0]);
+        $('#dl-m3u8-pass').val(queue.option.authentication[1]);
+        if (queue.option.authentication[0]) $('#new-download-m3u8-authentication').collapse('show');
+        const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
+        $('#dl-m3u8-referer').val(referer.value).trigger('input');
+        $('#dl-m3u8-location').val(queue.originalLocation).trigger('input');
+        $('#dl-m3u8-filename').val(queue.originalFilename).trigger('input');
 
         $('#new-download').off('shown.bs.modal', setParameters);
     }
@@ -992,7 +1054,7 @@ function newDownloadModal()
 {
     if (!inherited.baseurl) {
         // initial url
-        $('#dl-single-url, #dl-multiple-url').val('').trigger('input');
+        $('#dl-single-url, #dl-multiple-url, #dl-m3u8-url').val('').trigger('input');
         // default-referer from new button
         $('#dl-single-referer-default').prop('checked', false).trigger('input');
         $('#dl-single-referer-default-group').css('display', 'none');
@@ -1001,13 +1063,13 @@ function newDownloadModal()
     // initial value
     const config = bg.config.getPref();
     // initial authentication
-    $('#dl-single-user, #dl-multiple-user, #dl-single-pass, #dl-multiple-pass').val('');
+    $('#dl-single-user, #dl-multiple-user, #dl-m3u8-user, #dl-single-pass, #dl-multiple-pass, #dl-m3u8-pass').val('');
     // initial filename
-    $('#dl-single-filename, #dl-multiple-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '');
+    $('#dl-single-filename, #dl-multiple-filename, #dl-m3u8-filename').val(config['remember-new-filename'] ? config['new-filename-value'] : '');
     // initial location
-    $('#dl-single-location, #dl-multiple-location').val(config['remember-new-location'] ? config['new-location-value'] : '');
+    $('#dl-single-location, #dl-multiple-location, #dl-m3u8-location').val(config['remember-new-location'] ? config['new-location-value'] : '');
     // initial referer
-    $('#dl-single-referer, #dl-multiple-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '').trigger('input');
+    $('#dl-single-referer, #dl-multiple-referer, #dl-m3u8-referer').val(config['remember-new-referer'] ? config['new-referer-value'] : '').trigger('input');
     // initial option1
     $('#dl-single-option1, #dl-multiple-option1').prop('checked', config['remember-new-option1'] ? config['new-option1-value'] : false).trigger('input');
     // initial option2
@@ -1635,6 +1697,7 @@ function updateDetail(init)
     // init
     if (init) {
         $('#detail-status-dlid').val(dlid);
+        $('#detail-info-mode').val(queue.mode ? browser.i18n.getMessage('download_detail_mode_' + queue.mode) : browser.i18n.getMessage('download_detail_mode_normal'));
         $('#detail-info-registered').val(new Date(queue.regTime).toLocaleString());
         $('#detail-info-url').val(queue.originalUrlInput);
         $('#detail-info-url-open').attr('data-link', queue.originalUrlInput);
