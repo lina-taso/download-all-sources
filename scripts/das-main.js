@@ -223,6 +223,18 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
             if (this.status == 'downloaded' || this.reason == 'complete' || this.reason == 'interrupted')
                 return [...Array(TILE_SIZE)].fill('loaded', 0, TILE_SIZE);
 
+            // m3u8 file
+            if (this.mode == 'm3u8' && this.m3u8) {
+                const detail = [...Array(TILE_SIZE)];
+                for (let i = 1; i<this.data.length; i++) {
+                    const firstBlock = Math.ceil((i-1) * TILE_SIZE / this.m3u8.length),
+                          lastBlock  = Math.floor(i * TILE_SIZE / this.m3u8.length),
+                          nextBlock  = i * TILE_SIZE % this.m3u8.length > 0;
+                    detail.fill('loaded', firstBlock, nextBlock ? lastBlock+1 : lastBlock);
+                }
+                return detail;
+            }
+
             // downloading size unknown file
             if (!this.total)
                 return [...Array(TILE_SIZE)].fill('unknown', 0, TILE_SIZE);
@@ -283,7 +295,10 @@ async function downloadFile(url, requestHeaders, locs, names, option, restore)
             this.finalAuthentication = [this.responseUrl ? 'response' : 'original', '', ''];
             return ['', ''];
         },
-        finalAuthentication : ['', '', '']
+        finalAuthentication : ['', '', ''],
+        get mode() {
+            return this.option.mode ? this.option.mode : 'normal';
+        }
     };
 
     // start downloading
@@ -335,7 +350,13 @@ function createXhr(dlid, index, start, end)
         // readystatechange
         datum.xhr.addEventListener('readystatechange', onreadystatechange);
 
-    datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authentication);
+    // m3u8 mode
+    if (index != 0 && queue.mode == 'm3u8')
+        datum.xhr.open('GET', new URL(queue.m3u8[index-1], queue.responseUrl || queue.originalUrl), true, ...queue.authentication);
+    // normal mode
+    else
+        datum.xhr.open('GET', queue.responseUrl || queue.originalUrl, true, ...queue.authentication);
+
     datum.xhr.responseType = 'blob';
     queue.requestHeaders.forEach(header => datum.xhr.setRequestHeader(header.name, header.value));
 
@@ -354,6 +375,9 @@ function createXhr(dlid, index, start, end)
         datum.blob   = this.response;
         datum.loaded = this.response.size;
         datum.xhr    = undefined;
+
+        // for m3u8
+        if (queue.mode == 'm3u8') { onload_m3u8.apply(this); return; }
 
         // check downloaded size
         if (datum.rangeEnd && datum.rangeEnd - datum.rangeStart + 1 != this.response.size) {
@@ -433,6 +457,9 @@ function createXhr(dlid, index, start, end)
         if (this.readyState != 2) return;
         this.removeEventListener('readystatechange', onreadystatechange);
         DEBUG && console.log({ dlid : dlid, index : index, message : 'readystate 2' });
+
+        // for m3u8
+        if (queue.mode === 'm3u8') return;
 
         // update download queue (url & filename)
         const url = new URL(this.responseURL);
@@ -578,6 +605,85 @@ function createXhr(dlid, index, start, end)
         // non resumable -> continue download
         else
             DEBUG && console.log({ dlid : dlid, index : index, message : 'not resumable. initial download continued.' });
+    }
+    async function onload_m3u8()
+    {
+        DEBUG && console.log({ dlid : dlid, index : index, message : 'm3u8 mode. onload' });
+
+        // first download (m3u8 file)
+        if (!queue.responseUrl) {
+            // check whether readble m3u8 file
+            const m3u8Text = await datum.blob.text();
+            if (!/#EXTINF/i.test(m3u8Text)) {
+                DEBUG && console.log({ dlid : dlid, index : index, loaded : datum.loaded, message : 'm3u8 mode. onload, imcompatible m3u8 file' });
+
+                datum.status = 'imcompatible m3u8 file';
+                downloadFailed(dlid, datum.status);
+                return;
+            }
+
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'm3u8 mode. onload2' });
+
+            // update download queue (url & filename)
+            const url = new URL(this.responseURL);
+            queue.responseUrl = url;
+            queue.responseFilename = url.pathname.match("/([^/]*)$")[1];
+            // the content-type will be updated and the filename/location tags will be replaced when the first M3U8 segment is downloaded.
+
+            // total size
+            queue.total = 0;
+
+            // resumable
+            queue.resumeEnabled = true;
+            DEBUG && console.log({ dlid : dlid, index : index, message : 'm3u8 mode. resumable.' });
+
+            // update progress
+            datum.status = 'complete';
+
+            // register m3u8 segument urls
+            queue.m3u8 = [];
+            m3u8Text.split(/\n|\r\n/).filter(ele => ele != '').forEach((ele, i, arr) => {
+                if (/^#EXTINF/i.test(ele) && arr[i+1]) queue.m3u8.push(arr[i+1]);
+            });
+
+            // start downloading m3u8 segments
+            for (let i=1; i<=splitCount; i++)
+                queue.data.push(
+                    createXhr(dlid, i)
+                );
+
+            return;
+        }
+
+        // update progress
+        datum.status = 'complete';
+
+        if (index == 1) {
+            // content type
+            queue.contentType = (this.getResponseHeader('content-type') ? this.getResponseHeader('content-type') : DEFAULT_MIME).split(';')[0].toLowerCase();
+
+            // split filename and extension
+            const filename = queue.responseFilename.split(/\.(?=[^.]+$)/);
+            // replace tags for location
+            if (queue.location) {
+                queue.location = replaceTags({
+                    path : queue.location,
+                    name : filename[0],
+                    ext  : filename[1] || DEFAULT_EXTENSION,
+                    mime : queue.contentType
+                });
+            }
+            // replace tags for filename
+            queue.filename = replaceTags({
+                path : queue.filename || ':name::mext:',
+                name : filename[0],
+                ext  : filename[1], // filename extension starting with a period
+                mime : queue.contentType
+            }, true);
+        }
+
+        // update download queue
+        partialDownloadCompleted_m3u8(dlid);
     }
 }
 
@@ -879,6 +985,32 @@ function partialDownloadCompleted(dlid)
         // complete
         downloadCompleted(dlid, blob);
     }
+}
+
+function partialDownloadCompleted_m3u8(dlid)
+{
+    const queue = downloadQueue[dlid];
+
+    DEBUG && console.log({ dlid : dlid, message : 'm3u8 mode. partially completed.' });
+
+    // check other running downloads
+    if (queue.m3u8.length+1 > queue.data.length) {
+        queue.data.push(
+            createXhr(dlid, queue.data.length)
+        );
+        return;
+    }
+
+    // check other running downloads
+    if (queue.data.filter(datum => datum.status != 'complete').length > 0) return;
+
+    // all downloads finished
+    // merge blobs
+    const blob = new Blob(queue.data.slice(1).map(datum => datum.blob));
+    queue.total = blob.size;
+    queue.data.forEach(datum => datum.blob = undefined);
+    // complete
+    downloadCompleted(dlid, blob);
 }
 
 async function downloadCompleted(dlid, blob)
