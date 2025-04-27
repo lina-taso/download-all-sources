@@ -448,6 +448,12 @@
     "toast_enter_to_download" : {
         "message" : "Press Enter key to start download."
     },
+    "toast_auto_download_oneselect" : {
+        "message" : "Started download automatically because there was only one link in the selection."
+    },
+    "toast_auto_download_oneurl" : {
+        "message" : "Started download automatically because there was only one URL."
+    },
 
     //
     // Options UI

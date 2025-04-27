@@ -644,6 +644,7 @@ function hashRouter()
                         $('#source-all').prop('checked', true);
                         await changeSourceAll.apply($('#source-all')[0]);
                         sourceDownload();
+                        showAutoHideToast(browser.i18n.getMessage('toast_auto_download_oneselect'));
                     }
                 }
                 else outputSourceList();
@@ -661,6 +662,7 @@ function hashRouter()
                         $('#source-all').prop('checked', true);
                         await changeSourceAll.apply($('#source-all')[0]);
                         sourceDownload();
+                        showAutoHideToast(browser.i18n.getMessage('toast_auto_download_oneurl'));
                     }
                 }
                 else outputSourceList();

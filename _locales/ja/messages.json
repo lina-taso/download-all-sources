@@ -448,6 +448,12 @@
     "toast_enter_to_download" : {
         "message" : "Enterキーを押すとダウンロードが始まります"
     },
+    "toast_auto_download_oneselect" : {
+        "message" : "選択範囲のリンクが1つだったので自動的にダウンロードを開始しました"
+    },
+    "toast_auto_download_oneurl" : {
+        "message" : "URLが1つだったので自動的にダウンロードを開始しました"
+    },
 
     //
     // Options UI
