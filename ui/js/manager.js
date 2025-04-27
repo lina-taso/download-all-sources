@@ -1334,11 +1334,11 @@ function keypressNewDownloadInput(e)
 }
 function focusNewDownloadInput()
 {
-    $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('toast_enter_to_download'));
+    showToast(browser.i18n.getMessage('toast_enter_to_download'));
 }
 function blurNewDownloadInput()
 {
-    $('#toast').delay(200).fadeOut(400);
+    delayHideToast();
 }
 
 /*********************************
@@ -1368,14 +1368,14 @@ function keypressSourceInput(e)
 function focusSourceInput()
 {
     if ($('#source-download-button1').prop('disabled'))
-        $('#toast').fadeOut(400);
+        hideToast();
     else
-        $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(browser.i18n.getMessage('toast_enter_to_download'));
+        showToast(browser.i18n.getMessage('toast_enter_to_download'));
 }
 
 function blurSourceInput()
 {
-    $('#toast').delay(200).fadeOut(400);
+    delayHideToast();
 }
 
 function changeSourceAll()
@@ -1805,4 +1805,27 @@ function confirmDialog(e)
             .on('click', stopWaiting);
         break;
     }
+}
+
+/*****************
+  Toast functions
+ *****************/
+function showToast(text)
+{
+    $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(text);
+}
+
+function hideToast()
+{
+    $('#toast').fadeOut(400);
+}
+
+function delayHideToast()
+{
+    $('#toast').delay(200).fadeOut(400);
+}
+
+function showAutoHideToast(text)
+{
+    $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(text).delay(400).fadeOut(400);
 }
