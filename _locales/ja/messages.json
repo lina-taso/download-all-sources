@@ -103,6 +103,21 @@
     "new_download_m3u8" : {
         "message" : "M3U8 (試験的機能)"
     },
+    "new_download_m3u8_warning_title" : {
+        "message" : "この機能は実験的な機能です。"
+    },
+    "new_download_m3u8_warning_collapse" : {
+        "message" : "詳細を表示"
+    },
+    "new_download_m3u8_warning_p1" : {
+        "message" : "このモードは、M3U8プレイリストを読み込んで動画をダウンロードします。\n扱えるM3U8ファイルは、#EXTINFタグによる動画セグメントが含まれるものに限ります。\n#EXT-X-STREAM-INFタグによってM3U8プレイリストが入れ子になっている場合などは扱えません。"
+    },
+    "new_download_m3u8_warning_p2" : {
+        "message" : "このモードでは、#EXTINFタグで指定された動画セグメントを、上から順に全てダウンロードして単純に結合したファイルを保存します。\n保存されたファイルは、動画の視聴には支障はありませんが、シークにもたつく可能性があります。\nシークの操作性を改善するためには、外部ツールのffmpegを導入して以下の様に処理させると解決する事があります。"
+    },
+    "new_download_m3u8_warning_code" : {
+        "message" : "ffmpeg -i downloaded.ts -c copy output.mp4"
+    },
     "new_download_single_url" : {
         "message" : "ダウンロードURL"
     },

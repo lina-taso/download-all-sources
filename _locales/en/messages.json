@@ -178,6 +178,21 @@
     "new_download_multiple_option2_description" : {
         "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
+    "new_download_m3u8_warning_title" : {
+        "message" : "This feature is experimental."
+    },
+    "new_download_m3u8_warning_collapse" : {
+        "message" : "Show details"
+    },
+    "new_download_m3u8_warning_p1" : {
+        "message" : "In this mode, Download All Sources loads an M3U8 playlist to download videos.\nOnly M3U8 files containing video segments specified with the #EXTINF tag are supported.\nPlaylists that are nested using the #EXT-X-STREAM-INF tag, among others, are not supported."
+    },
+    "new_download_m3u8_warning_p2" : {
+        "message" : "In this mode, the video segments specified by the #EXTINF tags are downloaded sequentially from top to bottom and simply concatenated into a single file.\nWhile the saved file should have no issues with playback, seeking within the video may be sluggish.\nTo improve seek performance, you can use an external tool like ffmpeg to reprocess the file with the following command:"
+    },
+    "new_download_m3u8_warning_code" : {
+        "message" : "ffmpeg -i downloaded.ts -c copy output.mp4"
+    },
     "new_download_m3u8_url" : {
         "message" : "M3U8 URL"
     },
