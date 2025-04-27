@@ -1505,7 +1505,8 @@ function outputSourceList()
             docfrag.appendChild($template.clone().attr({ id : null, 'data-filetype' : list[i].filetype })[0]);
         }
         $('#source-list')[0].appendChild(docfrag);
-        resolve(++i);
+        // i == null -> no list item
+        resolve(i == null ? 0 : ++i);
     };
 
     if (source.length < MAX_FILTER_CNT)
