@@ -1829,5 +1829,5 @@ function delayHideToast()
 
 function showAutoHideToast(text)
 {
-    $('#toast').stop(true, true).fadeIn(400).find('.toast-body').text(text).delay(400).fadeOut(400);
+    $('#toast').stop(true, true).fadeIn(400).delay(4000).fadeOut(400).find('.toast-body').text(text);
 }
