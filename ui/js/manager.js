@@ -182,6 +182,11 @@ $(async () => {
     // url validation
     $('#dl-single-url, #dl-m3u8-url')
         .on('input', validateUrl);
+    // bulk url validation
+    $('#dl-multiple-bulk-url')
+        .on('input', validateBulkUrl);
+    $('#dl-multiple-bulk-button')
+        .on('click', addBulkUrl2List);
     // urls validation
     $('#dl-multiple-url')
         .on('input', validateUrls);
@@ -1056,7 +1061,7 @@ function newDownloadModal()
 {
     if (!inherited.baseurl) {
         // initial url
-        $('#dl-single-url, #dl-multiple-url, #dl-m3u8-url').val('').trigger('input');
+        $('#dl-single-url, #dl-multiple-bulk-url, #dl-multiple-url, #dl-m3u8-url').val('').trigger('input');
         // default-referer from new button
         $('#dl-single-referer-default').prop('checked', false).trigger('input');
         $('#dl-single-referer-default-group').css('display', 'none');
@@ -1213,6 +1218,53 @@ function validateUrl()
     }
 }
 
+function validateBulkUrl()
+{
+    const $sample = $('#' + this.id + '-sample');
+    const $sample1 = $('#' + this.id + '-sample1');
+    const $sample2 = $('#' + this.id + '-sample2');
+    const $sample3 = $('#' + this.id + '-sample3');
+
+    if (!this.value) {
+        $(this).toggleClass('is-invalid', false);
+        $sample.text('');
+        $sample1.text('');
+        $sample2.text('');
+        $sample3.text('');
+        return;
+    }
+
+    let result;
+    // brace expansion
+    try {
+        result = braceExpansion(this.value);
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+        $sample.text(e.message);
+        return;
+    }
+    // url check
+    try {
+        new URL(result[0]);
+        $(this).toggleClass('is-invalid', !allowProtocol.test(result[0]));
+    }
+    catch (e) {
+        $(this).toggleClass('is-invalid', true);
+        $sample.text(e.message);
+        return;
+    }
+
+    // sample
+    $sample.text('');
+    $sample1.text('');
+    $sample2.text('');
+    $sample3.text('');
+    result[0] && $sample1.text(result[0]);
+    result[1] && $sample2.text(result[1]);
+    result[2] && $sample3.text(result[2]);
+}
+
 function validateUrls()
 {
     if (!this.value) {
@@ -1341,6 +1393,19 @@ function focusNewDownloadInput()
 function blurNewDownloadInput()
 {
     delayHideToast();
+}
+function addBulkUrl2List()
+{
+    const $bulk = $('#dl-multiple-bulk-url'),
+          $textarea = $('#dl-multiple-url');
+
+    if ($bulk.hasClass('is-invalid')) return;
+
+    const result = braceExpansion($bulk.val());
+    if (!$textarea.val() || /\n$/.test($textarea.val()))
+        $textarea.val($textarea.val() + result.join('\n')).trigger('input');
+    else
+        $textarea.val($textarea.val() + '\n' + result.join('\n')).trigger('input');
 }
 
 /*********************************

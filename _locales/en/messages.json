@@ -142,6 +142,18 @@
     "new_download_single_option2_description" : {
         "message" : "Check this option if you want incomplete files of failed download with the size mismatch error."
     },
+    "new_download_multiple_bulk" : {
+        "message" : "Generate URL (Brace expansion supported)"
+    },
+    "new_download_multiple_bulk_url" : {
+        "message" : "URL pattern string"
+    },
+    "new_download_multiple_bulk_url_placeholder" : {
+        "message" : "https://example.com/photo{1..10}.png"
+    },
+    "new_download_multiple_bulk_button" : {
+        "message" : "Add to list below"
+    },
     "new_download_multiple_url" : {
         "message" : "Download URLs (per line)"
     },

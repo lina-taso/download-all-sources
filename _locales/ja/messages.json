@@ -157,6 +157,18 @@
     "new_download_single_option2_description" : {
         "message" : "size mismatchが理由でダウンロードに失敗しても途中までのファイルが必要な場合に、チェックを入れてください。"
     },
+    "new_download_multiple_bulk" : {
+        "message" : "URLを生成（ブレース展開を利用可能）"
+    },
+    "new_download_multiple_bulk_url" : {
+        "message" : "URLパターン文字列"
+    },
+    "new_download_multiple_bulk_url_placeholder" : {
+        "message" : "https://example.com/photo{1..10}.png"
+    },
+    "new_download_multiple_bulk_button" : {
+        "message" : "以下の一覧に追加"
+    },
     "new_download_multiple_url" : {
         "message" : "ダウンロードURL (1行ずつ)"
     },
