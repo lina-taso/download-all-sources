@@ -963,7 +963,7 @@ function reDownloadManual()
         $('#dl-single-url').val(queue.originalUrlInput);
         $('#dl-single-user').val(queue.option.authentication[0]);
         $('#dl-single-pass').val(queue.option.authentication[1]);
-        if (queue.option.authentication[0]) $('#new-download-single-authentication').collapse('show');
+        if (queue.option.authentication[0]) $('#dl-single-authentication').collapse('show');
         const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#dl-single-referer').val(referer.value).trigger('input');
         $('#dl-single-location').val(queue.originalLocation).trigger('input');
@@ -979,7 +979,7 @@ function reDownloadManual()
         $('#dl-m3u8-url').val(queue.originalUrlInput);
         $('#dl-m3u8-user').val(queue.option.authentication[0]);
         $('#dl-m3u8-pass').val(queue.option.authentication[1]);
-        if (queue.option.authentication[0]) $('#new-download-m3u8-authentication').collapse('show');
+        if (queue.option.authentication[0]) $('#dl-m3u8-authentication').collapse('show');
         const referer = queue.requestHeaders.find((ele) => { return ele.name == 'X-DAS-Referer'; });
         $('#dl-m3u8-referer').val(referer.value).trigger('input');
         $('#dl-m3u8-location').val(queue.originalLocation).trigger('input');
