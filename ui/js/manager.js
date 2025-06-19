@@ -1220,17 +1220,13 @@ function validateUrl()
 
 function validateBulkUrl()
 {
-    const $sample = $('#' + this.id + '-sample');
-    const $sample1 = $('#' + this.id + '-sample1');
-    const $sample2 = $('#' + this.id + '-sample2');
-    const $sample3 = $('#' + this.id + '-sample3');
+    const $sample = $('#' + this.id + '-sample').text('');
+    const $sample1 = $('#' + this.id + '-sample1').text('');
+    const $sample2 = $('#' + this.id + '-sample2').text('');
+    const $sample3 = $('#' + this.id + '-sample3').text('');
 
     if (!this.value) {
         $(this).toggleClass('is-invalid', false);
-        $sample.text('');
-        $sample1.text('');
-        $sample2.text('');
-        $sample3.text('');
         return;
     }
 
@@ -1256,10 +1252,6 @@ function validateBulkUrl()
     }
 
     // sample
-    $sample.text('');
-    $sample1.text('');
-    $sample2.text('');
-    $sample3.text('');
     result[0] && $sample1.text(result[0]);
     result[1] && $sample2.text(result[1]);
     result[2] && $sample3.text(result[2]);
