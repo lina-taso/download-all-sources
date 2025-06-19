@@ -140,15 +140,16 @@ html, body {
 #dl-multiple-bulk-url-sample::before,
 #dl-multiple-filename-sample::before,
 #dl-multiple-location-sample::before,
+#dl-m3u8-filename-sample::before,
+#dl-m3u8-location-sample::before,
 #dl-source-filename-sample::before,
 #dl-source-location-sample::before {
     content: 'Sample: ';
 }
 #dl-multiple-bulk-url-sample::before {
     content: 'Sample: ';
-    height: 1.3em;
-    display: block;
 }
+#dl-multiple-bulk-url-sample,
 #dl-multiple-bulk-url-sample1,
 #dl-multiple-bulk-url-sample2,
 #dl-multiple-bulk-url-sample3 {
